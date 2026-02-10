@@ -3,8 +3,15 @@
 *.gdraw
 *.gsheet
 *.gslide
+*.gslides
 *.gform
 *.gmap
 
 # Windows
 desktop.ini
+
+# Large binaries (exceed GitHub 100 MB limit or 50 MB recommended)
+*.psd
+*.psb
+Regelbøger/Dnd 2E - All 26 Books.pdf
+Regelbøger/RulesCyclopedia-Basic.pdf

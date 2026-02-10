@@ -1,0 +1,45 @@
+{
+  "mcpServers": {
+    "mysql-php-edens-efterklang": {
+      "url": "https://mysqlmcp.snilld-api.dk/index.php",
+      "headers": {
+        "X-API-Key": "rGjg3XyGZfG_g3Yg3yGfG",
+        "X-MySQL-Host": "mysqlmcp.snilld-api.dk",
+        "X-MySQL-User": "pmu",
+        "X-MySQL-Password": "Foq6KOjeDAzu5APO7eWO6oBEnIQEK2",
+        "X-MySQL-Database": "edens_efterklang",
+        "X-MySQL-Port": "3306"
+      }
+    },
+    "image-generator-tool": {
+      "name": "Image Generator Tool",
+      "description": "Image Generator Tool using Together AI, best model is google/gemini-3-pro-image which takes no other parameters than prompt. Smallest possible size for all models is 1024x1024px. Eksempel pǾ korrekt curl kommando: curl -X POST \"https://api.together.xyz/v1/images/generations\" \\ -H \"Authorization: Bearer $TOGETHER_API_KEY\" \\ -H \"Content-Type: application/json\" \\ -d \u0027{\"model\": \"google/gemini-3-pro-image\",\"prompt\": \"\",\"disable_safety_checker\": true}\u0027",
+      "command": "npx.cmd",
+      "args": [
+        "-y",
+        "together-mcp@latest"
+      ],
+      "env": {
+        "TOGETHER_API_KEY": "tgp_v1_IX2zew6h-h-WN4CuiGjvu2DLv5jhmmvH0nAVrs_XhoA"
+      }
+    },
+    "online-search-tool": {
+      "url": "https://backend.composio.dev/v3/mcp/b8080fd8-400a-4275-af75-fe17d5f185bb/mcp?user_id=pg-test-c565e96a-c712-4f27-96ae-ca34848a4b3c",
+      "headers": {
+        "X-API-key": "ak_OxaoBmxmyRhMYroI8Bxj"
+      }
+    },
+    "google-docs-tool": {
+      "url": "https://backend.composio.dev/v3/mcp/270a97d0-0ce5-428f-aff5-2b69e89a85e0/mcp?user_id=pg-test-c565e96a-c712-4f27-96ae-ca34848a4b3c",
+      "headers": {
+        "X-API-key": "ak_OxaoBmxmyRhMYroI8Bxj"
+      }
+    },
+    "google-drive-tool": {
+      "url": "https://backend.composio.dev/v3/mcp/670b9b0e-a0f1-4205-9167-454e233c721a/mcp?user_id=pg-test-c565e96a-c712-4f27-96ae-ca34848a4b3c",
+      "headers": {
+        "X-API-key": "ak_OxaoBmxmyRhMYroI8Bxj"
+      }
+    }
+  }
+}

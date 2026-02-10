@@ -1,0 +1,4 @@
+# PDF til læsbar tekst/markdown (Rules Cyclopedia m.m.)
+# [layout] tilføjer pymupdf-layout for bedre side-layout og tabeller
+pymupdf>=1.24.0
+pymupdf4llm[layout]>=0.0.0
