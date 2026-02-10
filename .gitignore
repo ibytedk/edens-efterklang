@@ -1,0 +1,10 @@
+# Google Drive placeholder/shortcut files (cause git index errors on Windows)
+*.gdoc
+*.gdraw
+*.gsheet
+*.gslide
+*.gform
+*.gmap
+
+# Windows
+desktop.ini
