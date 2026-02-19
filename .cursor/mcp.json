@@ -40,6 +40,12 @@
       "headers": {
         "X-API-key": "ak_OxaoBmxmyRhMYroI8Bxj"
       }
+    },
+    "library-mcp": {
+        "url": "https://library-mcp.snilld-api.dk/index.php",
+        "headers": {
+            "X-API-Key": "18c9de5f1b9da5bf1747985ee8cdb6679a88893b408a6fe5cf30d83a054cc39b"
+        }
     }
   }
 }
