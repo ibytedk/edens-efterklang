@@ -77,7 +77,7 @@
 
 **KONKLUSION:** Med rimelig grundighed når spillerne **3.000-4.000 XP per karakter**, hvilket er tilstrækkeligt til Level 4. Den øvre grænse (4.000+) kræver, at de finder de fleste skjulte skatte OG renser undead-krypten.
 
-**Aktuel stand (Session 13):** Spillerne står i **R10 (Hvilepladsen)** og har slået lejr der. Rummet var tomt da de ankom (gnollerne var ude). Gnollerne **vender tilbage i starten af næste session** fra nord (R9). Se R10 under "VARIANT: Session 13" for åbnings-scene, antal, overraskelse og read-aloud.
+**Aktuel stand (Session 13):** Spillerne står i **R10 (Hvilepladsen)** og har slået lejr der. **Gnollerne er IKKE i rummet fra start** – partiet er allerede der. Gnollerne **ankommer** (vender tilbage) i starten af sessionen fra nord (R9). Brug **kun** R10 under "VARIANT: Session 13" for åbnings-scene, antal, overraskelse og read-aloud. Se også `Sessioner/Session Logs/Noter til Session 13.md`.
 
 ---
 
@@ -120,24 +120,57 @@
 
 (Tjek for et møde: 1-i-6 chance én gang i timen. Regler for Møder: side 101 i Rules Cyclopedia)
 
-| SLAG (1d12) | MONSTER (L3) | ANTAL (opgraderet) | BEMÆRKNINGER |
-| ----- | ----- | ----- | ----- |
-| 1-3 | Gnolls | **2d4+2** (4-10) | Større patrulje. Overvej 1 Gnoll Sergeant (HD 3, +1 angreb) blandt dem, hvis gruppen er stor eller godt udstyret. |
-| 4 | Ghoul | **1d4+1** (2-5) | Flere undøde; lamme stadig farlig. |
-| 5 | Gray Ooze | **1d2** (1-2) | To slims i samme gang er en reel trussel (metal + nærkamp). |
-| 6 | Stirges | **2d4** eller **1d6+3** | Flere blodsugere; øger risiko for flere fæstninger. |
-| 7 | Shadows | **2** (uændret) | Allerede hårdt (Styrke-drain, immun mod normale våben). Behold. |
-| 8 | Kæmpe Rotte (Mutant) | **1d4+1** eller **2+1 Alpha** | Enten flere rotter, eller 2 normale + 1 "Alpha" (HD 2, +2 skade). |
-| 9 | Kobolds | **3d4** eller **1d4 Gnolls** | Enten flere desperate kobolds, eller erstat med en lille gnoll-gruppe (1d4) som backup-patrulje. |
-| 10 | Kæmpe Edderkop | **1** eller **1 + 1d4 små** | Behold 1 kæmpe; valgfrit: 1d4 små edderkopper (HD ½) som support. |
-| 11 | Vagt-statue (Forvirret) | 1 | Uændret – allerede farlig. |
-| 12 | Spor & Tegn | INTET | Uændret. |
+**Terninger:** Tabellen bruger kun **1d20** (ingen d24). Antal i rækkerne bruger d2, d3, d4, d6, d8, d10, d12, d20 – alt kompatibelt med d2/d3/d4/d6/d8/d10/d12/d20/d50/d100.
 
-**Alternativ:** Hvis du vil bevare den oprindelige tabel som "lav trussel" og kun sometimes eskalere: brug opgraderede tal kun ved **dobbel tjek** (to tjek i træk) eller når spillerne har hvilet/slået mange møder – så får wandering stadig vægt uden at hver gang være max-tung.
+**Variation:** Brug **1d20** for bred variation. Zone kan justere sandsynlighed (se nedenfor) eller DM vælger passende slag efter område.
+
+---
+
+### **Hovedtabel: 1d20**
+
+| SLAG | ENCOUNTER | ANTAL / BEMÆRKNINGER |
+| ----- | ----- | ----- |
+| **1** | **Gnolls (patrol)** | 2d4+2 Gnolls; i Zone A: +1 Gnoll Sergeant (HD 3). Ved slag 1: én bærer Jernhåndens sten-amulet (Sub-plot D). |
+| **2** | **Gnolls (scouts)** | 1d4 Gnolls, forsigtige – de vil helst rapportere end kæmpe. Morale 6. Kan trække mod R9/R10. |
+| **3** | **Ghouls** | 1d4+1. Ofte nær knogler eller mørke kroge. Lamme stadig farlig. |
+| **4** | **Gray Ooze** | 1d2. I Zone C/svampenær: kan "dryppe" fra loft eller krybe fra en revne. Metal + nærkamp = risiko. |
+| **5** | **Stirges** | 2d4. Flok fra et rede i en sprække. Fæstning = prioritet; flere fæstninger hurtigt. |
+| **6** | **Shadows** | 2. Styrke-drain, immun mod normale våben. Kun i Zone B/C eller nær R18 – "præsternes korrupte ånder". |
+| **7** | **Giant Rats** | 1d4+1 normal, eller 2 normal + 1 Alpha (HD 2, +2 skade). Æder affald eller lig; aggressive ved forstyrrelse. |
+| **8** | **Kobolds** | 3d4. Desperate, underernærede. Reaktion: 2d6 (usikre). Kan flygte, bytte information (fx Skrik-relateret) eller angribe ved trussel. |
+| **9** | **Giant Spider** | 1, evt. +1d4 small spiders (HD ½). I Zone C: ofte ved svampe eller mørke tunneler. |
+| **10** | **Living Statue (Crystal)** | 1 Living Statue (Crystal), forvirret. Bevæger sig langsomt; reagerer på larm eller nær passage. Allerede farlig. |
+| **11** | **Blandet: Gnolls + undead** | 1d3 Gnolls *forfølges* af 1 Ghoul. Gnollerne er bange; Ghoulen er sulten. Spillere kan blive indblandet eller observere og lade dem slås. |
+| **12** | **Skeletons** | 1d3 Skeletons. Rejst fra ældre ofre eller tempelpræster. Ingen skat; ren undead. Kan være ved relieffer (R25) eller nær R18. |
+| **13** | **Spejlets aftryk (ingen kamp)** | Kort sanseligt indtryk: I ser jeres spejlbilleder bevæge sig *før* I gør, eller en skygge der ikke matcher. Ingen skade; Wis save (DC 12) eller urolig resten af turnet. Foreshadowing til R50. |
+| **14** | **Stemmefragment** | En hvisken fra væggen eller en gang: uforståelig, eller ét ord ("…kom…", "…spejl…"). Ingen monster. Atmosfære. |
+| **15** | **Spor og tegn** | Blodspor, frisk slim, gnoll-fodspor, eller knogler der er flyttet. Ingen møde nu; +1 på næste wandering-tjek i samme time. |
+| **16** | **Tom gang – uro** | Intet monster. Lyde: fjernt skridt, dryppen, eller en dør der knirker et sted. Valgfrit: næste tjek i denne zone er automatisk møde (DM vælger fra tabel). |
+| **17** | **Krystaller resonerer** | I nærheden af krystal/væg (fx Zone D-nær): et svagt, ubehageligt hum. Ingen direkte effekt; magi-brugere kan mærke "noget ser med". Valgfrit: næste encounter i Zone D får +1 på initiative for fjenden. |
+| **18** | **Kobold (desperate)** | 1 Kobold, alene – skadet eller udmattet. Kan være Skriks "kusine" eller lign.; bærere af lore eller kort hjælp. Reaktion 2d6; kan bytte info for mad/beskyttelse. |
+| **19** | **Gray Ooze (trail)** | Gray Ooze har lige forladt området: spor i støv, ætset metal. Oozen er 1d6×10 fod væk (evt. næste rum eller sidegang). Spillere kan følge eller undgå. |
+| **20** | **Værre: Dobbel trussel** | Træk **to** møder fra denne tabel (igen 1d20, eller DM vælger). Fx Gnoll-patrulje + Ghouls fra modsatte retninger, eller Gray Ooze + Stirges. Brug kun ved dobbel tjek eller i Zone A/C i høj aktivitet. |
+
+---
+
+### **Zone-modifikationer (valgfri)**
+
+| Zone | Effekt |
+| ----- | ----- |
+| **A (R1–R10)** | Gnoll-slag (1, 2, 11) tæller dobbelt på 1d20 (reroll 1d20 indtil andet resultat). Færre "Spejlets aftryk" / stemmer (13, 14) her. |
+| **B (R11–R24)** | Øget chance for Shadows (6), stemmefragment (14), spor (15). Gnoller sjældnere. |
+| **C (R25–R40)** | Øget chance for Gray Ooze (4, 19), Giant Spider (9), Gray Ooze trail (19). Svampenær: Kobold (8, 18) mulig. |
+| **D (R41–R50)** | Mere "Spejlets aftryk" (13), krystaller (17), tom gang – uro (16). Spar "Dobbel trussel" (20) til her eller efter R44/Spejlets rester. |
+
+**Implementering:** Enten (a) rul 1d20 og accepter resultatet, (b) rul 1d20 og skift til zone-passende hvis resultatet føles forkert, eller (c) rul 1d12 for zone (1–3=A, 4–6=B, 7–9=C, 10–12=D) og så 1d20 med fordobling af zone-relevante slag som ovenfor.
+
+---
+
+**Alternativ (lav trussel):** Brug kun "opgraderede" antal (sergeant, 1d4+1 ghouls, 2 shadows osv.) ved **dobbel tjek** (to tjek i træk) eller efter spillerne har hvilet/slået mange møder – så får wandering vægt uden at hver gang være max-tung.
 
 #### **SUB-PLOT D (Wandering): Gnollens Sten-Amulet**
 
-Ved gnoll-patruljer (slag 1-3) bærer **én** af gnollerne en sten-amulet om halsen: en rå, sortpoleret sten med et symbol indgraveret – den knyttede jernhånd.
+Ved gnoll-encounters (slag 1 eller 2) bærer **én** af gnollerne en sten-amulet om halsen: en rå, sortpoleret sten med et symbol indgraveret – den knyttede jernhånd.
 
 - **Effekt:** Bekræfter, at gnollerne arbejdede under Jernhåndens Kompagni. Amuletten har ingen magi, men er et plot-bevis – gnollerne bar lejsoldat-kompagniets mærke som en form for identifikation.
 - **Skat:** Ingen monetær værdi. 10 XP for opdagelsen.
@@ -151,13 +184,13 @@ Disse rum har **faste møder** (ikke kun wandering). For Level 3 bør antal elle
 | Rum | Beskrivelse | Original (L1–2) | Forslag til Niveau 3 |
 | ----- | ----- | ----- | ----- |
 | **R18** | Sovekammer for Præster | 2 Shadows | **Behold 2.** Allerede hårdt (Styrke-drain, immun mod normale våben). Evt. give dem lidt flere HP (max per HD) så de ikke falder i én runde. |
-| **R19** | Køkkenet | 1 Kæmpe Rotte (Mutant) | **2 Kæmpe Rotter** eller **1 Kæmpe Rotte + 1 "Alpha"** (HD 2, +2 skade, sygdom som normalt). |
+| **R19** | Køkkenet | 1 Giant Rat (mutant) | **2 Giant Rats** eller **1 Giant Rat + 1 Alpha** (HD 2, +2 skade, sygdom som normalt). |
 | **R20** | Spisehallen | 1d6 Stirges | **2d4 Stirges** eller **1d6+3** – flere fæstninger = større ressourcetræk. |
-| **R28** | Laboratoriet | 1 Living Statue (Crystal), forvirret | **Behold 1**, men brug **max HP** for HD (eller +1 HD). Forvirringen gør den uforudsigelig; ekstra liv giver flere runder. |
+| **R28** | Laboratoriet | 1 Living Statue (Crystal), confused | **Behold 1**, men brug **max HP** for HD (eller +1 HD). Forvirringen gør den uforudsigelig; ekstra liv giver flere runder. |
 | **R31** | Olie-rummet | 1 Gray Ooze | **1 Gray Ooze** (behold) med **max HP**, eller **2 Gray Ooze** hvis gulvet/olien logisk kan rumme det ("splittet" fra samme kilde). |
 | **R37** | Knoglegruben | 1d3 Ghouls | **1d4+1 Ghouls** (2–5). Flere lamme-forsøg = reel fare. |
 | **R42** | Vogternes Statuer | 2 Living Statues (Crystal) | **Behold 2.** Evt. **max HP** på begge, eller én med +1 HD. Kampen er allerede svær (to statuer + mulig flygt). |
-| **R50** | Det Tomme Kammer (Boss) | Vogteren af Tomheden (Living Statue Crystal) | **Forstærket boss:** +1 HD og max HP, eller give den **2 angreb/runde** (bersærk). Evt. 1d4 runder inden kamp: den "vågner" langsomt (dramatik). |
+| **R50** | Det Tomme Kammer (Boss) | Vogteren af Tomheden (Living Statue [Crystal]) | **Forstærket boss:** +1 HD og max HP, eller give den **2 angreb/runde** (bersærk). Evt. 1d4 runder inden kamp: den "vågner" langsomt (dramatik). |
 
 **Kort:** R18, R42 og R50 er allerede de tunge møder; der er primært tale om at **bibeholde trussel** med lidt ekstra HP eller ét ekstra angreb på boss. R19, R20, R31 og R37 er de, der mest gavner ved **større antal** til niveau 3.
 
@@ -167,24 +200,24 @@ Disse rum har **faste møder** (ikke kun wandering). For Level 3 bør antal elle
 
 I den nuværende udformning har niveauet **ingen egentlig monster-lair** og **få fast placerede undead** i forhold til et ældgammelt, begravet tempel.
 
-**Lair:** ~~Gnollerne var beskrevet som en hær, der er rykket videre.~~ **OPDATERET:** R10 er nu en **aktiv gnoll-lair** med 2d4+1 gnoller + 1 sergent, lair-skat (~397 gp + Potion of Healing), og rationer/vand. Se R10 for detaljer.
+**Lair:** ~~Gnollerne var beskrevet som en hær, der er rykket videre.~~ **OPDATERET:** R10 er gnollernes **base**, men **gnollerne er IKKE i rummet fra start** når partiet allerede har slået lejr der (Session 13). De **ankommer** efter – brug VARIANT: Session 13. Hvis et andet party *træder ind* i R10 uden at have overnattet, kan standard lair (gnoller ved ildstedet) bruges. Lair-skat ~397 gp + Potion of Healing, rationer/vand. Se R10 for detaljer.
 
 **Undead:** Kun disse er faste:
 - **R18:** 2 Shadows (præsternes korrupte ånder) – den eneste "ældgamle tempel-undead".
 - **R37:** 1d3 Ghouls (opstået fra gnollernes slagteriaffald og døde slaver – altså **nyere** undead).
 - **R29:** Et skelet – **inert** (død eventyrer, ~100 år; kun skat, ingen kamp).
 
-Wandering giver 1d3 Ghouls (slag 4). Der er ingen skeletvagter, ingen præst-krypt, ingen wight/wraith fra templets oprindelige orden – så for et tempel, der har ligget begravet i årtusinder (Spejlet stod her i 8000 år; kortet i R17 er 8000+ år gammelt), føles undead-tilstedeværelsen tynd.
+Wandering giver Ghouls (3), Shadows (6), Skeletons (12) og blandet Gnolls+Ghoul (11). Faste undead er kun R18 (Shadows), R37 (Ghouls) og R29 (inert skelet). Forslag B nedenfor giver *yderligere* faste undead (skeletvagter, krypt, R29 animeret, R37 udvidet) hvis du vil tykke på undead-tilstedeværelsen.
 
 ---
 
 #### Forslag A: Gnoll-lair (aktiv rearguard)
 
-Gør R10 (**Hvilepladsen**) til et **aktivt lair** i stedet for forladt:
+R10 (**Hvilepladsen**) er gnollernes base. **Hvis partiet allerede har slået lejr i R10** (Session 13): gnollerne er **ikke** der ved "indgang" – de **ankommer** under sessionen. Brug **VARIANT: Session 13** i R10-beskrivelsen (gnoller vender tilbage fra nord). Mekanikken nedenfor er til det *alternative* scenario, hvor et party **træder ind** i R10 og gnoller *er* til stede.
 
 - **Lore:** En rearguard på 1d4+2 gnoller (eller 2d4+1 til L3) er efterladt for at holde motorvejen og rydde op. De har en **sergeant** (HD 3, 1 angreb +1 skade) eller en **shaman** (som den døde i R45, men levende her) som leder.
 - **Skat:** Lair-skat i en kiste eller under sten: 2d6×10 gp, 1d4 smykker (50 gp værdi hver), evt. en mindre magi (fx en ekstra Potion of Healing eller en Scroll).
-- **Mekanik:** Ved indgang: 1–2 gnoller ved ildstedet, resten i et tilstødende "lager" eller sove. Sergeant/shaman i bagenden. Morale 8 (7 i undertal). Tjek for reinforcement fra korridor (wandering) hvis kampen varer længe.
+- **Mekanik (kun når party *træder ind* og gnoller er der):** 1–2 gnoller ved ildstedet, resten i et tilstødende "lager" eller sove. Sergeant/shaman i bagenden. Morale 8 (7 i undertal). Tjek for reinforcement fra korridor (wandering) hvis kampen varer længe.
 
 Alternativt: et **nyt rum** (fx "R10B – Gnollernes Baghold") som hemmelig gang fra R9 eller R6, med 2d4 gnoller + leder og lair-skat.
 
@@ -681,7 +714,7 @@ Metal Korrosion: Hvis metalliske genstande (våben, rustning, spyd, skjolde) kom
 
 Bevægelse: Karakterer, der forsøger at bevæge sig hurtigt gennem slimen, skal klare et Balance-tjek (DC 13), ellers snubler de og tager kontaktskaden nævnt ovenfor (Ability Checks, side 150).
 
-Møder: Tjek for Wandering Monsters (jf. side 101). Krydset er et knudepunkt for Gnolls (slag 1-3), der patruljerer. En kamp her vil være ekstremt farlig.
+Møder: Tjek for Wandering Monsters (jf. side 101). Krydset er et knudepunkt for Gnolls (slag 1-2), der patruljerer. En kamp her vil være ekstremt farlig.
 
 #### **SKJULT SKAT: Ofringsgaver i Slimpølen**
 
@@ -722,15 +755,16 @@ Resultat: Hvis tjekket lykkes, kan spilleren fastslå, at lejrpladsen har været
 
 #### **GNOLL-LAIR: Den Aktive Bagtrop (Forslag A – Implementeret)**
 
-**Lejren er IKKE forladt.** En rearguard af gnoller er efterladt for at holde "motorvejen" åben og rydde op. De bevogtede nedstigningen, men har trukket sig sammen i R10, fordi de frygter Zone C (undead, slime) og er demoraliseret uden ledelse.
+**Lejren er IKKE forladt.** En rearguard af gnoller bruger R10 som base; de var ude (patrulje/jagt) da partiet ankom og slået lejr. **VIGTIGT:** Hvis partiet **allerede er i R10** (fx Session 13), er gnollerne **IKKE** i rummet fra start – de **ankommer** under sessionen. Brug **VARIANT: Session 13** nedenfor (gnoller vender tilbage fra nord). Den read-aloud nedenfor er **kun** til det alternative scenario, hvor et party *træder ind* i R10 og gnoller *er* der.
 
-**LÆS OP (Opdatering – erstatter "forladt lejrplads"):**
+**LÆS OP (KUN hvis party træder ind i R10 og gnoller er til stede – IKKE ved Session 13):**
 
 *Mens I nærmer jer rummet, hører I noget, der ikke passer til et forladt sted: lavmælt gnølen, knitrende ild, og en tung, dyreagtig stank af gnoll. Ved ildstedet sidder to store gnoller, der gnaver på en knogle. Længere inde, langs væggen, kan I skimte flere sovende skikkelser. I et hjørne sidder en gnoll, der er større end de andre, med et groft jernbælte og en pletvis rusten hellebard – en sergent.*
 
 **DM's Viden (Gnoll-lair):**
+- **Hvis partiet allerede er i R10 (Session 13):** Gnollerne er **ikke** i rummet. De **ankommer** under sessionen – brug **VARIANT: Session 13** nedenfor (bølge-indgang fra nord).
 - **Antal:** 2d4+1 gnoller (5–9) + 1 **Gnoll-sergent** (HD 3, HP 15, AC 5, 1 angreb +1 skade med hellebard, Morale 8).
-- **Disposition:** 2 gnoller ved ildstedet (vågne), resten sover langs væggen. Sergenten sidder vågen i hjørnet, men er træt og uopmærksom (Surprise 1-3 på 1d6).
+- **Disposition (kun når party træder ind og gnoller er til stede):** 2 gnoller ved ildstedet (vågne), resten sover langs væggen. Sergenten sidder vågen i hjørnet, men er træt og uopmærksom (Surprise 1-3 på 1d6).
 - **Morale:** 7 (demoraliseret; 6 uden sergent). Flygter mod R1-udgangen, hvis 50% er faldet.
 
 **Skat (Gnoll-lair):**
@@ -761,11 +795,11 @@ Kræver et Intelligence Check (DC 10\) for hurtigt at finde tørre træstykker o
 
 ---
 
-#### **VARIANT: Session 13 – Spillerne har slået lejr i R10 (tomt lair). Gnoller vender tilbage.**
+#### **VARIANT: Session 13 – Spillerne har slået lejr i R10. Gnoller ankommer (IKKE der fra start).**
 
-*(Brug denne variant når spillere sluttede session 12 i R10 uden at møde gnoller. Karaktererne ved ikke at rummet er et gnoll-lair.)*
+*(**Brug altid denne variant** når partiet allerede er i R10 – gnollerne er **IKKE** i rummet fra start. De ankommer under sessionen. Se også `Sessioner/Session Logs/Noter til Session 13.md`.)*
 
-**Setup:** Da I ankom til R10, var rummet tomt – bålrester, gnavede knogler, sodet væg med dragetegning. I har slået lejr her. Gnollerne var ude (patrulje mod R6/R9 eller jagt) og kommer nu tilbage.
+**Setup:** Da I ankom til R10, var rummet tomt – bålrester, gnavede knogler, sodet væg med dragetegning. I har slået lejr her. Gnollerne var ude (patrulje mod R6/R9 eller jagt) og **vender nu tilbage** – de kommer ind i rummet under sessionen, de er ikke der fra start.
 
 **Åbning næste session (gnoller vender tilbage):**
 - **Retning:** Gnollerne kommer fra **nord** (passagen mod Rum 9). De snakker lavmælt, slæber evt. bytte eller et dødt dyr.
@@ -773,9 +807,28 @@ Kræver et Intelligence Check (DC 10\) for hurtigt at finde tørre træstykker o
 - **Overraskelse:** Rul 1d6 for hver side. Spillerne er optaget af lejr/bål – **Overraskelse mod spillere: 1–2 på 1d6**. Gnollerne forventer ikke indtrængende – **Overraskelse mod gnoller: 1–3 på 1d6**. Hvis begge par overraskes, opdager de hinanden samtidigt (ingen free round).
 - **LÆS OP (når gnoller ankommer):** *Lyden af grove stemmer og skraben af klo mod sten kommer fra passagen mod nord. Fakkel- eller lampelys danser på væggen. Et øjeblik efter træder den første skikkelse ind i rummet – høj, pelset, med glødende øjne og en hængende kæbe. Den standser brat. Så skriger den noget på et hæst sprog, og I hører flere stemmer svare fra gangen.*
 
+**Session 13 pacing (anbefalet, "maks gas"):**
+- **Standard for 3-4 PC på level 3:** **6 gnoller + 1 sergent**.
+- **Hvis partiet er presset (lav HP/spells):** **5 gnoller + 1 sergent**.
+- **Hvis partiet er friskt/større:** **7 gnoller + 1 sergent**.
+- **Bølge-indgang:**  
+  - Runde 1: 2 gnoller presser ind fra R9.  
+  - Runde 2: sergenten + 2 gnoller.  
+  - Runde 3: resterende 1-3 gnoller.
+- **Procedure (RC):** Surprise -> evt. Reaction -> Initiative hver runde -> Morale ved 50 % tab og ved sergentens fald.
+
 **Efter kamp:** Brug samme lair-skat og ressourcer som beskrevet ovenfor (under sten, i kiste, sergentens kappe). Ritualcirklen (Sub-plot H) kan stadig opdages under bålresterne.
 
-**Balance for 3× Level 3:** 5–7 gnoller + 1 sergent er hårdt men fair. Sergenten (HD 3, Morale 8) holder formationen; når han falder eller 50 % gnoller er væk, morale check. Overvej at lade 1–2 gnoller sove i "bagenden" (kommer ind 1d3 runder efter kampstart) hvis I vil øge pres uden at overbelaste åbningen.
+**Balance for 3× Level 3:** 5–7 gnoller + 1 sergent er hårdt men fair; **6 + sergent** er baseline for denne session. Sergenten (HD 3, Morale 8) holder formationen; når han falder eller 50 % gnoller er væk, morale check. Overvej at lade 1–2 gnoller komme ind 1d3 runder efter kampstart, hvis I vil øge pres uden one-round wipe.
+
+**Intensitetsmoduler (vælg 1-2):**
+- **Jagten mod R9:** 1-2 gnoller bryder af ved dårligt morale og forsøger at trække partiet op i krydset med sort slim (R9). Tvinger et hårdt valg mellem forfølgelse og sikring af R10.
+- **Ekko i gangene:** Når sergenten dør, høres et fjernt svarhyl. Lav **et ekstra wandering monster check** pga. larm.
+- **Ritual-flash:** Hvis kampen ruller over bålresterne, får nærmeste karakter et kort sanseligt glimt af Spejlets sorte overflade i asken (ingen direkte skade; stemning/foreshadowing).
+
+**Efterfølgende retningsvalg (samme session):**
+- **Vest (R11 -> R12):** Mere kontrol, forsyning og lore (Aquarin + Svends dagbog).
+- **Øst (R9 -> R25):** Højere risiko, højere payoff (slimfare + relieffer om Klingen/Spejlet).
 
 ---
 
@@ -1048,15 +1101,15 @@ I træder ind i et koldt, rektangulært rum, der tydeligvis har været sovekamme
 
 Indhold: Fire primitive stenlejer. Intet af værdi ligger i syne.
 
-Trussel: Rummet er hjemsted for 2 Shadows (Skygger), som er de korrupte astrale rester af præster, der døde her.
+Trussel: Rummet er hjemsted for 2 **Shadows**, som er de korrupte astrale rester af præster, der døde her.
 
 **Niveau 3 (opgraderet):** Behold 2 Shadows; brug max HP per HD så de ikke falder i én runde.
 
-Overraskelse: Skygger lurer og forsøger at overraske spillere, når de er tæt på centrum af rummet. (Tjek for Surprise på 1-3 på 1d6 for Skyggerne, der er usynlige i mørke).
+Overraskelse: Shadows lurer og forsøger at overraske spillere, når de er tæt på centrum af rummet. (Tjek for Surprise på 1-3 på 1d6 for Shadows, der er usynlige i mørke).
 
 **Spil-Mekanik (BECMI Regler)**
 
-Skygger Angreb: Skygger dræner Styrke (Strength Drain) ved berøring, hvilket er en alvorlig trussel (se Shadows i Rules Cyclopedia, side 253, for detaljeret beskrivelse og effekt).
+Shadows – angreb: Shadows dræner Styrke (Strength Drain) ved berøring, hvilket er en alvorlig trussel (se Shadows i Rules Cyclopedia, side 253, for detaljeret beskrivelse og effekt).
 
 Immunitet: Shadows er immune over for normale våben. De kan kun skades af magi eller magiske våben (såsom Spyd \+1 i Rum 21). Dette er et klassisk BECMI-møde, der tvinger spillerne til at ty til deres magiske ressourcer.
 
@@ -1103,9 +1156,9 @@ I befinder jer i et stort køkken, der er domineret af to massive, stensatte ild
 
 **DM's Viden (Faktuelt)**
 
-Trussel: En Kæmpe Rotte (Mutant), usædvanligt stor og aggressiv (samme som dem i sommerhuset, muligvis en del af samme stamme), har bygget rede i ovnen.
+Trussel: En **Giant Rat** (mutant), usædvanligt stor og aggressiv (samme som dem i sommerhuset, muligvis en del af samme stamme), har bygget rede i ovnen.
 
-**Niveau 3 (opgraderet):** 2 Kæmpe Rotter, eller 1 Kæmpe Rotte + 1 Alpha (HD 2, +2 skade, sygdom som normalt).
+**Niveau 3 (opgraderet):** 2 Giant Rats, eller 1 Giant Rat + 1 Alpha (HD 2, +2 skade, sygdom som normalt).
 
 Overraskelse: Rotten lurer og vil forsøge at overraske enhver, der nærmer sig dens rede (Tjek for Surprise på 1-3 på 1d6 for Rotten, hvis den ikke er opdaget).
 
@@ -1113,7 +1166,7 @@ Rottens Angreb: Rotter i BECMI har en chance for at overføre sygdom ved bid.
 
 **Spil-Mekanik (BECMI Regler)**
 
-Møde: Dette er et fast møde. Se Kæmpe Rotte i Rules Cyclopedia for statblock.
+Møde: Dette er et fast møde. Se Giant Rat i Rules Cyclopedia for statblock.
 
 Skat/Overlevelse: Rotten kan have hamstret 3d6 Days of Gnoll Rations (Stale/Spoiled) i sin rede.
 
@@ -1139,7 +1192,7 @@ I træder ind i en stor hal. Rummet er koldt og imponerende, domineret af flere 
 
 Indhold: Massive stenborde. Intet af værdi på bordene.
 
-Trussel: Loftet er dækket af sovende Stirges (Flagermus), som er blodsugende væsner. De er i et dvalelignende stadie, men vågner ved høj støj.
+Trussel: Loftet er dækket af sovende **Stirges**, som er blodsugende væsner. De er i et dvalelignende stadie, men vågner ved høj støj.
 
 Antal: 1d6 Stirges (Se tabel for Vandrende Monstre, Slag 6).
 
@@ -1189,7 +1242,7 @@ Opdagelse: For at genkende stangen som et spyd og dens potentielle værdi, skal 
 
 Handling: Kræver et succesfuldt Intelligence Check (DC 13\) for at bemærke, at stangen er usædvanligt tung i forhold til dens udseende, eller et Wisdom Check (DC 15\) for en Kæmper (Fighter) med Weapon Mastery for at genkende det dværgesmedede håndværk. (RULING baseret på Ability Checks, side 150).
 
-Betydning: Dette Spyd \+1 er essentielt for at bekæmpe væsner, der er immune over for normale våben, såsom Shadows (Skygger) i Rum 18 (se Shadows i Rules Cyclopedia, side 253).
+Betydning: Dette Spyd \+1 er essentielt for at bekæmpe væsner, der er immune over for normale våben, såsom Shadows i Rum 18 (se Shadows i Rules Cyclopedia, side 253).
 
 Erfaring (XP): Magiske genstande giver XP, når de er identificeret (side 10).
 
@@ -1381,7 +1434,7 @@ Fare: Krystallerne er skarpe; hastig bevægelse eller kamp kan få dem til at fa
 
 Atmosfære: Ingen direkte monster her, men rummet skaber uro og kan trigge Wandering Monster-tjek (side 101).
 
-Møder: Tjek for Wandering Monsters. Gray Ooze (Slag 5) eller Vagt-statue (Slag 11) passer thematisk.
+Møder: Tjek for Wandering Monsters. Gray Ooze (Slag 4) eller Living Statue (Crystal) (Slag 10) passer thematisk.
 
 --------------------------------------------------------------------------------------------------------------------------
 
@@ -1608,7 +1661,7 @@ Ikke alle svampe er giftige. Blandt de lilla og gule klynger vokser en type **bl
 
 **Lore:** At Skrik har overlevet i uger her er beviset – kobolder er hårdføre, men selv de har brug for mad.
 
-Møder: Tjek for Wandering Monsters (side 101). Gray Ooze eller Kæmpe Edderkop passer thematisk.
+Møder: Tjek for Wandering Monsters (side 101). Gray Ooze eller Giant Spider passer thematisk.
 
 #### **SUB-PLOT C: Koboldens Overlevende – Skrik**
 
