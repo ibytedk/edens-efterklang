@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BECMI Encounter Generator</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="layout">
+    <header class="hero">
+      <h1>BECMI Encounter Generator</h1>
+      <p>Generer encounters fra Rules Cyclopedia og Creature Catalog.</p>
+    </header>
+
+    <section class="panel controls">
+      <h2>Opsaet Encounter</h2>
+      <div class="form-grid">
+        <label for="sourceFilter">Kilde</label>
+        <select id="sourceFilter">
+          <option value="all">Begge boger</option>
+          <option value="Rules Cyclopedia">Rules Cyclopedia</option>
+          <option value="Creature Catalog">Creature Catalog</option>
+        </select>
+
+        <label for="categoryFilter">Kategori</label>
+        <select id="categoryFilter"></select>
+
+        <label for="monsterSelect">Monster type</label>
+        <select id="monsterSelect"></select>
+
+        <label for="countInput">Antal monstre</label>
+        <input id="countInput" type="number" min="1" max="5000" step="1" value="1">
+      </div>
+
+      <div class="actions">
+        <button id="generateBtn" type="button">Generer</button>
+        <button id="randomBtn" type="button" class="ghost">Tilfaeldig type</button>
+        <button id="resetBtn" type="button" class="ghost">Nulstil</button>
+        <button id="exportMdBtn" type="button" class="ghost" disabled>Eksporter Markdown</button>
+      </div>
+
+      <p id="statusText" class="status"></p>
+      <div id="errorBox" class="error" style="display:none;"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Encounter</h2>
+      <div id="resultPanel" class="result-empty">Ingen encounter genereret endnu.</div>
+    </section>
+
+    <section class="panel docs">
+      <h2>Datagrundlag</h2>
+      <ul class="flat">
+        <li><strong>Rules Cyclopedia:</strong> udtrukket fra <code>DM Lore/Rules Cyclopedia Opsummering.md</code>.</li>
+        <li><strong>Creature Catalog:</strong> udtrukket fra <code>DM Lore/Creature Catalog Opsummering.md</code>.</li>
+      </ul>
+      <p>Hvis du vil, kan vi lave en anden version med direkte PDF-audit per monster.</p>
+    </section>
+  </main>
+
+  <script src="../becmi-treasure-generator/data.js"></script>
+  <script src="../becmi-treasure-generator/app.js"></script>
+  <script src="data.js"></script>
+  <script src="monster-details.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

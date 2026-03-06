@@ -1,0 +1,106 @@
+﻿Original prompt: Jeg ver godt, det er tosset at bede om, og maaske alt for meget. Men kan vi lave en encounter generator for X antal monstre af en valgt type, og udvalget af monstre skal vaere baade Rules Cyclopedia og Creature Catalogue
+
+## 2026-03-06
+- Oprettet encounter-app skeleton med index.html, styles.css og data.js.
+- Indlaest 228 monsterposter (126 RC + 102 CC) i data.js.
+- Implementeret app.js med:
+  - Kilde- og kategori-filtre
+  - Monster-select
+  - Validering af antal (1-5000)
+  - Encounter-generering for valgt monster + count
+  - XP parsing for faste, interval, plus-format og ukendt/special
+  - Resultatkort med stats og XP-summering
+  - Markdown-eksport af seneste encounter
+  - Nulstil- og random-valg funktioner
+- Opdateret styles.css med stat-grid og XP-panel.
+
+## TODO
+- Browser-smoketest af alle controls og markdown-eksport.
+- Evt. udvide med variabelt encounter-size (fx 2d6) som ekstra mode.
+- Evt. direkte PDF-audit for datavalidering per monster.
+- Tilfoejet HP-generator per individ i encounter:
+  - Parser HD-felter (fx 1, 2+1, 1-1, 1/2, ranges, options)
+  - Ruller konkrete HP per monster og viser liste i UI
+  - Viser HP total/min/max/snit samt manuel afklaringsnote ved specielle HD-formater
+- Udvidet markdown-eksport med HP-sektion og HP per monster.
+- Browser-smoketest gennemfoert:
+  - 7 x Orc => 7 individuelle HP-rul vist
+  - Valideringsfejl ved count=0 virker
+  - Nulstil virker
+  - Markdown eksport virker og indeholder HP-rul
+  - Ingen console-errors
+- Tilfoejet kamptracker per monster med live redigering under spil:
+  - Skade-input per monster
+  - Automatisk beregning af nuvaerende HP (kan gaa under 0)
+  - Status pr. monster: Klar, Saaret, Doed, Ukendt
+  - Notefelt per monster
+  - Samlet tracker-summary: levende/doede/ukendt + HP tilbage/max
+  - Knapper: Nulstil skade, Ryd noter
+- Markdown-eksport udvidet med skade + nuvaerende HP + noter for hvert monster.
+- Browser-testet:
+  - 3x Orc genererer tracker korrekt
+  - Skadeopdatering opdaterer status og summary live
+  - Noter gemmes i encounter-state
+  - Nulstil skade og Ryd noter virker
+  - Eksporteret markdown indeholder tracker-data
+  - Ingen console errors
+- Tilfoejet vaabenmotor for monstre med `damage: by weapon`:
+  - Hver combatant faar automatisk et konkret vaaben + angrebsskade ved generering
+  - Ny tracker-kolonne: `Vaaben / Angrebsskade`
+  - Manuel redigering af baade vaaben-navn og angrebsskade per monster
+  - `Rerul`-knap per monster til nyt tilfaeldigt vaaben
+- Markdown-eksport indeholder nu vaaben + angrebsskade per monster.
+- Browser-testet:
+  - 3x Orc giver 3 konkrete vaabenprofiler
+  - Rerul vaaben virker pr. raekke
+  - Manuel aendring af vaaben/skade gemmes og eksporteres
+  - Ingen console errors
+- Justeret vaabenmodellen for `damage: by weapon`:
+  - Melee og ranged er nu separate slots
+  - Melee rulles altid
+  - Ranged er kun backup og kan vaere tom
+  - Ingen combatants genereres nu med kun ranged-vaaben
+- Browser-testet:
+  - 5x Orc giver altid melee-vaaben
+  - Ranged backup er valgfri og kan tilfoejes med `Rerul ranged`
+  - Markdown-eksport viser melee og ranged separat
+  - Ingen console errors
+- Tilfoejet bognaere monsterdetaljer via ny datafil `monster-details.js`:
+  - Regelsource-detaljer merges ind per monster uden at overskrive encounter-datastrukturen
+  - `Treasure Audit` viser nu tydeligt om treasure type er bogverificeret eller kraever manuel audit
+  - `Save As`, afledte `Saving Throws`, `Intelligens` og `Vaabenmestring` vises i encounter-panelet
+  - Monsterbeskrivelse vises nu som separat sektion, naar brugbar bogtekst er fundet
+- Implementeret intelligens-baseret vaabenmestring i encounter-tracker:
+  - INT 12-15 => Skilled i mindst 1 vaaben
+  - INT 16-17 => Expert i mindst 1 vaaben
+  - INT 18+ => Master i mindst 1 vaaben
+  - Badge vises direkte paa relevant vaabenslot i kamptracker og eksporteres til markdown
+- Datadekning i `monster-details.js`:
+  - RC: partiel bogaudit af treasure types + mange `Save As`/`Intelligens`-felter
+  - CC: beskrivelser for en del monstre, men treasure/save/intelligens er endnu ikke fuldt auditeret
+- Browser-smoketest gennemfoert:
+  - `2 x Orc` viser `Treasure Audit`, `Save As: F1`, saving throws, intelligens og carried treasure pr. individ
+  - `1 x Neanderthal` viser `Master`-mestring ved melee-vaben ud fra INT 19
+  - `1 x Hutaakan` viser beskrivelse fra Creature Catalog-kilden
+  - Ingen console errors
+
+## Kendte begraensninger
+- Ikke alle RC-monstre har endnu en ren, brugbar beskrivelse; nogle OCR-udtraek er for beskidte og undertrykkes derfor.
+- Creature Catalog-data er stadig kun delvist bogauditeret for `Treasure Type`, `Save As` og `Intelligens`.
+- Saving throw-tabeller er implementeret for de centrale klasser/racer, men boer udvides hvis flere sjaeldne `Save As`-formater dukker op i materialet.
+
+## Manuelle bogkorrektioner
+- `Gnoll [RC]` er rettet til `Treasure Type: D,P` og markeret som bogverificeret, saa carried treasure `P` genereres korrekt pr. individ.
+- Tilfoejet sikker override-model for RC-monstre med eksplicit parentetisk treasure split i bogens statlinjer:
+  - Kun hoejkonfidens-tilfaelde fra `RulesCyclopedia-Basic.md` bruges, saa OCR-stoej ikke overskriver data bredt.
+  - Verificerede overrides: `Bugbear`, `Gnoll`, `Goblin`, `Gnome`, `Green Slime`, `Halfling`, `Hobgoblin`, `Kobold`, `Medusa`.
+  - Encounter-UI og markdown viser nu ogsaa `Treasure Split` som separat `Lair` og `Carried`.
+  - `Halfling` har ekstra note om, at lair-type `B` kun gaelder ved wilderness-encounters ifolge RC-noten.
+- Browser-testet efter override-modellen:
+  - `Bugbear` => `P,Q,B` og konkret carried loot fra `P` + `Q`
+  - `Gnome` => `P,C`
+  - `Hobgoblin` => `Q,D`
+  - `Medusa` => `V,F`
+  - `Green Slime` => `P,S,B`
+  - `Halfling` => `P,S,B` med note i UI
+  - Ingen console errors

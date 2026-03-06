@@ -7,12 +7,16 @@
   const $count = document.getElementById("rollCount");
   const $rollBtn = document.getElementById("rollBtn");
   const $resetBtn = document.getElementById("resetBtn");
+  const $exportBtn = document.getElementById("exportMdBtn");
   const $error = document.getElementById("errorBox");
   const $summary = document.getElementById("summary");
   const $results = document.getElementById("results");
   const $notes = document.getElementById("verificationNotes");
   const $checklist = document.getElementById("verificationChecklist");
   const $testStatus = document.getElementById("testStatus");
+  const $exportStatus = document.getElementById("exportStatus");
+
+  let lastBundle = null;
 
   function randomInt(rng, min, max) {
     return Math.floor(rng() * (max - min + 1)) + min;
@@ -574,6 +578,104 @@
     $error.style.display = msg ? "block" : "none";
   }
 
+  function setExportStatus(msg, isError = false) {
+    $exportStatus.textContent = msg || "";
+    if (!msg) {
+      $exportStatus.className = "status";
+      return;
+    }
+    $exportStatus.className = isError ? "status fail" : "status ok";
+  }
+
+  function mdSectionList(items, toLine) {
+    if (!items || items.length === 0) return "- Ingen";
+    return items.map((it) => `- ${toLine(it)}`).join("\n");
+  }
+
+  function bundleToMarkdown(bundle) {
+    const t = bundle.total;
+    const ts = new Date().toLocaleString("da-DK");
+    const lines = [];
+    lines.push(`# BECMI Treasure Resultat`);
+    lines.push("");
+    lines.push(`- Genereret: ${ts}`);
+    lines.push(`- Treasure type: ${bundle.type}`);
+    lines.push(`- Antal rul: ${bundle.count}`);
+    lines.push("");
+    lines.push("## Samlet");
+    lines.push("");
+    lines.push("### Mønter");
+    lines.push(`- CP: ${t.coins.cp}`);
+    lines.push(`- SP: ${t.coins.sp}`);
+    lines.push(`- EP: ${t.coins.ep}`);
+    lines.push(`- GP: ${t.coins.gp}`);
+    lines.push(`- PP: ${t.coins.pp}`);
+    lines.push("");
+    lines.push(`- Gems (gp): ${t.gemsValue}`);
+    lines.push(`- Jewelry (gp): ${t.jewelryValue}`);
+    lines.push(`- Special Treasure (gp): ${t.specialValue}`);
+    lines.push(`- Magic Items: ${t.magicItemCount}`);
+    lines.push(`- Våben-kategorier i magic: ${t.weaponMagicCount}`);
+    lines.push(`- Total gp-equivalent: ${t.gpEquivalent.toFixed(2)}`);
+    lines.push("");
+    lines.push("## Per-rul");
+    lines.push("");
+
+    bundle.rolls.forEach((roll, idx) => {
+      lines.push(`### Rul #${idx + 1} (${roll.kind})`);
+      lines.push("");
+      lines.push("#### Mønter");
+      lines.push(`- CP: ${roll.coins.cp}`);
+      lines.push(`- SP: ${roll.coins.sp}`);
+      lines.push(`- EP: ${roll.coins.ep}`);
+      lines.push(`- GP: ${roll.coins.gp}`);
+      lines.push(`- PP: ${roll.coins.pp}`);
+      lines.push("");
+      lines.push("#### Gems");
+      lines.push(mdSectionList(roll.gems, (g) => `${g.name} - ${g.valueGp} gp${g.note ? ` (${g.note})` : ""}`));
+      lines.push("");
+      lines.push("#### Jewelry");
+      lines.push(mdSectionList(roll.jewelry, (j) => `${j.name} - ${j.valueGp} gp`));
+      lines.push("");
+      lines.push("#### Special");
+      lines.push(mdSectionList(roll.special, (s) => `${s.name} - ${s.valueGp || 0} gp${s.enc ? `, ${s.enc} en` : ""}`));
+      lines.push("");
+      lines.push("#### Magic");
+      lines.push(mdSectionList(roll.magicItems, (m) => `${magicCategoryLabel(m.category)}: ${m.label}`));
+      lines.push("");
+      lines.push(`- Rul gp-equivalent: ${roll.gpEquivalent.toFixed(2)}`);
+      lines.push("");
+    });
+
+    return `${lines.join("\n")}\n`;
+  }
+
+  function downloadMarkdown(content, fileName) {
+    const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function onExportMarkdown() {
+    setError("");
+    if (!lastBundle) {
+      setExportStatus("Ingen resultat at eksportere endnu.", true);
+      return;
+    }
+    const now = new Date();
+    const stamp = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}-${String(now.getHours()).padStart(2, "0")}${String(now.getMinutes()).padStart(2, "0")}`;
+    const fileName = `becmi-treasure-${lastBundle.type}-${lastBundle.count}-${stamp}.md`;
+    const markdown = bundleToMarkdown(lastBundle);
+    downloadMarkdown(markdown, fileName);
+    setExportStatus(`Eksporteret: ${fileName}`);
+  }
+
   function makeSeqRng(sequence) {
     let i = 0;
     return () => {
@@ -632,10 +734,13 @@
 
   function onRoll() {
     setError("");
+    setExportStatus("");
     try {
       const type = $type.value;
       const count = Number($count.value);
       const bundle = rollTreasureType(type, count, Math.random);
+      lastBundle = bundle;
+      $exportBtn.disabled = false;
       renderSummary(bundle);
       renderResults(bundle);
     } catch (err) {
@@ -645,18 +750,38 @@
 
   function onReset() {
     setError("");
+    setExportStatus("");
     $summary.innerHTML = "";
     $results.innerHTML = "";
     $count.value = "1";
     $type.selectedIndex = 0;
+    lastBundle = null;
+    $exportBtn.disabled = true;
   }
 
   function bootstrap() {
+    if (
+      !$type ||
+      !$count ||
+      !$rollBtn ||
+      !$resetBtn ||
+      !$exportBtn ||
+      !$summary ||
+      !$results ||
+      !$notes ||
+      !$checklist ||
+      !$testStatus ||
+      !$exportStatus
+    ) {
+      return;
+    }
     initTypeOptions();
     renderNotes();
     renderChecklist();
     $rollBtn.addEventListener("click", onRoll);
     $resetBtn.addEventListener("click", onReset);
+    $exportBtn.addEventListener("click", onExportMarkdown);
+    $exportBtn.disabled = true;
     try {
       runInternalTests();
       $testStatus.textContent = "Interne tests: OK";

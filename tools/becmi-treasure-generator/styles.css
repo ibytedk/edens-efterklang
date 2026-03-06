@@ -1,15 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap");
+
 :root {
-  --bg: #f8f6f1;
-  --surface: #fffdf8;
-  --surface-2: #f2eee5;
-  --ink: #1f1c17;
-  --muted: #6b645a;
-  --line: #d9d0c2;
-  --accent: #a53d1f;
-  --accent-2: #2e6e62;
-  --good: #1f6b2a;
-  --bad: #972a1f;
-  --shadow: 0 8px 20px rgba(31, 28, 23, 0.08);
+  --wood-1: #7b4f24;
+  --wood-2: #5c3918;
+  --wood-3: #3f230f;
+  --gold-1: #f5d37b;
+  --gold-2: #d4a742;
+  --gold-3: #9d7224;
+  --paper-1: #f2e2ba;
+  --paper-2: #ddc791;
+  --paper-3: #cab074;
+  --ink: #241a0b;
+  --ink-soft: #4e3a1e;
+  --ok: #1b7d41;
+  --fail: #9d2c1f;
+  --pixel-shadow: 0 0 0 2px #2b1708, 0 0 0 4px #5c3417, 0 6px 0 4px #2b1708;
 }
 
 * {
@@ -18,18 +23,43 @@
 
 html,
 body {
+  min-height: 100%;
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", "Trebuchet MS", Tahoma, sans-serif;
+}
+
+body {
+  font-family: "VT323", "Courier New", monospace;
   color: var(--ink);
+  font-size: 1.75rem;
+  line-height: 1.08;
   background:
-    radial-gradient(1200px 500px at 10% -20%, #f4ead7 0%, transparent 70%),
-    radial-gradient(1200px 700px at 90% -10%, #e8f0eb 0%, transparent 70%),
-    var(--bg);
+    linear-gradient(90deg, rgba(48, 24, 8, 0.42) 0 2px, transparent 2px 100%),
+    repeating-linear-gradient(
+      0deg,
+      #4f2f13 0 16px,
+      #5a3515 16px 32px,
+      #6b401b 32px 48px,
+      #593514 48px 64px
+    );
+  background-size: 64px 64px, 100% 64px;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255, 245, 210, 0) 0 2px,
+      rgba(255, 245, 210, 0.04) 2px 4px
+    );
 }
 
 .layout {
-  max-width: 1080px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
   display: grid;
@@ -37,179 +67,234 @@ body {
 }
 
 .hero {
-  background: linear-gradient(120deg, #2b2620, #4d3d2b);
-  color: #f7f1e6;
-  border-radius: 12px;
-  padding: 1.2rem;
-  box-shadow: var(--shadow);
+  padding: 1.1rem 1rem 1rem;
+  color: #ffeec8;
+  border: 3px solid var(--gold-2);
+  border-radius: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 220, 130, 0.08), transparent 55%),
+    linear-gradient(135deg, #43260f, #5e3716 60%, #3a200d);
+  box-shadow: var(--pixel-shadow);
 }
 
 .hero h1 {
-  margin: 0 0 0.4rem;
-  font-size: 1.6rem;
+  margin: 0 0 0.7rem;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  line-height: 1.35;
+  color: var(--gold-1);
+  text-shadow: 2px 2px 0 #3f2008;
 }
 
 .hero p {
   margin: 0;
-  color: #efe6d9;
+  color: #ffe6b0;
 }
 
 .panel {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: var(--shadow);
+  background:
+    linear-gradient(180deg, rgba(255, 241, 194, 0.86), rgba(227, 199, 135, 0.93)),
+    repeating-linear-gradient(45deg, rgba(120, 80, 30, 0.04) 0 2px, transparent 2px 4px);
+  border: 3px solid var(--gold-3);
+  border-radius: 0;
+  padding: 0.9rem;
+  box-shadow: var(--pixel-shadow);
 }
 
 .panel h2,
-.panel h3 {
+.panel h3,
+.panel h4,
+.panel h5 {
   margin-top: 0;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  color: #5a3914;
+  line-height: 1.35;
+}
+
+.panel h2 {
+  font-size: clamp(0.74rem, 1.8vw, 0.92rem);
+}
+
+.panel h3 {
+  font-size: clamp(0.62rem, 1.4vw, 0.75rem);
 }
 
 .controls .form-grid {
   display: grid;
-  grid-template-columns: 180px minmax(0, 320px);
-  gap: 0.6rem 0.8rem;
+  grid-template-columns: 220px minmax(0, 360px);
+  gap: 0.45rem 0.9rem;
   align-items: center;
 }
 
 label {
-  color: var(--muted);
-  font-weight: 600;
+  color: var(--ink-soft);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: clamp(0.55rem, 1.2vw, 0.66rem);
 }
 
 select,
 input[type="number"],
 button {
   font: inherit;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-  padding: 0.55rem 0.65rem;
-  background: #fff;
+  border-radius: 0;
+  border: 2px solid #5a3714;
+  padding: 0.45rem 0.55rem;
   color: var(--ink);
+}
+
+select,
+input[type="number"] {
+  background:
+    linear-gradient(180deg, #f7ebcb, #e4cd98);
+  box-shadow: inset 0 0 0 2px #b99351;
 }
 
 button {
   cursor: pointer;
-  border-color: #8f341c;
-  background: linear-gradient(180deg, #c84a26, var(--accent));
-  color: #fff;
-  font-weight: 700;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.55rem;
+  line-height: 1.4;
+  color: #2f1c08;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background:
+    linear-gradient(180deg, #f9de90, #d19f39);
+  box-shadow: 0 0 0 2px #5a3714, inset 0 0 0 1px #ffe8a7;
 }
 
 button:hover {
-  filter: brightness(1.05);
+  filter: brightness(1.06);
+}
+
+button:active {
+  transform: translateY(2px);
 }
 
 button.ghost {
-  background: var(--surface-2);
-  color: var(--ink);
-  border-color: var(--line);
+  background:
+    linear-gradient(180deg, #e8d2a3, #cbad70);
 }
 
 .actions {
   margin-top: 0.8rem;
   display: flex;
-  gap: 0.6rem;
+  gap: 0.65rem;
   flex-wrap: wrap;
 }
 
 .status {
   margin: 0.8rem 0 0;
-  color: var(--muted);
+  color: var(--ink-soft);
+  font-size: 1.45rem;
 }
 
 .ok {
-  color: var(--good);
+  color: var(--ok);
   font-weight: 700;
 }
 
 .fail {
-  color: var(--bad);
+  color: var(--fail);
   font-weight: 700;
 }
 
 .error {
   margin-top: 0.8rem;
-  background: #fde8e6;
-  color: #7e2219;
-  border: 1px solid #e8a9a0;
-  border-radius: 8px;
-  padding: 0.6rem 0.7rem;
+  background: #f8d3be;
+  color: #7f1f16;
+  border: 2px solid #a53b2d;
+  border-radius: 0;
+  padding: 0.45rem 0.6rem;
 }
 
 .summary p {
-  margin: 0.35rem 0;
+  margin: 0.4rem 0;
 }
 
 .grand-total {
   margin-top: 0.8rem;
-  padding-top: 0.7rem;
-  border-top: 1px dashed var(--line);
+  padding-top: 0.65rem;
+  border-top: 2px dashed #8a6327;
 }
 
 .results {
   display: grid;
-  gap: 0.8rem;
+  gap: 0.9rem;
 }
 
 .roll-card {
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 0.8rem;
-  background: #fff;
+  border: 3px solid #8f6224;
+  border-radius: 0;
+  padding: 0.75rem;
+  background:
+    linear-gradient(180deg, rgba(247, 235, 203, 0.95), rgba(222, 198, 140, 0.95));
+  box-shadow: inset 0 0 0 2px #caa25b;
 }
 
 .roll-card h4 {
-  margin: 0 0 0.6rem;
-  color: #3b3228;
+  margin: 0 0 0.55rem;
+  color: #59360f;
 }
 
 .columns {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.7rem;
+  gap: 0.55rem;
 }
 
 .columns section {
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.55rem;
+  background:
+    linear-gradient(180deg, rgba(252, 243, 221, 0.96), rgba(230, 208, 159, 0.94));
+  border: 2px solid #8b6023;
+  border-radius: 0;
+  padding: 0.5rem;
 }
 
 .columns h5 {
-  margin: 0 0 0.4rem;
-  font-size: 0.95rem;
+  margin: 0 0 0.35rem;
+  font-size: 0.63rem;
+  color: #5a3c18;
 }
 
 .roll-total {
   margin: 0.7rem 0 0;
-  color: #493f33;
+  color: #4a3114;
 }
 
 .flat {
   margin: 0;
-  padding-left: 1.2rem;
+  padding-left: 1.1rem;
+}
+
+.flat li::marker {
+  color: #7e5620;
 }
 
 .docs {
-  background: linear-gradient(180deg, #fffefb, #f9f6ef);
+  background:
+    linear-gradient(180deg, rgba(250, 236, 196, 0.97), rgba(227, 199, 135, 0.97));
 }
 
-@media (max-width: 900px) {
+@media (max-width: 980px) {
+  body {
+    font-size: 1.6rem;
+  }
+
   .columns {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 700px) {
   .controls .form-grid {
     grid-template-columns: 1fr;
   }
 
   .columns {
     grid-template-columns: 1fr;
+  }
+
+  button {
+    width: 100%;
   }
 }

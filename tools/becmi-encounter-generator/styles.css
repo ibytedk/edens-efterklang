@@ -1,0 +1,515 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap");
+
+:root {
+  --wood-1: #7b4f24;
+  --wood-2: #5c3918;
+  --gold-1: #f5d37b;
+  --gold-2: #d4a742;
+  --gold-3: #9d7224;
+  --paper-1: #f2e2ba;
+  --paper-2: #ddc791;
+  --ink: #241a0b;
+  --ink-soft: #4e3a1e;
+  --ok: #1b7d41;
+  --fail: #9d2c1f;
+  --pixel-shadow: 0 0 0 2px #2b1708, 0 0 0 4px #5c3417, 0 6px 0 4px #2b1708;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: "VT323", "Courier New", monospace;
+  color: var(--ink);
+  font-size: 1.75rem;
+  background:
+    linear-gradient(90deg, rgba(48, 24, 8, 0.42) 0 2px, transparent 2px 100%),
+    repeating-linear-gradient(
+      0deg,
+      #4f2f13 0 16px,
+      #5a3515 16px 32px,
+      #6b401b 32px 48px,
+      #593514 48px 64px
+    );
+  background-size: 64px 64px, 100% 64px;
+}
+
+.layout {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.hero {
+  padding: 1.1rem 1rem 1rem;
+  color: #ffeec8;
+  border: 3px solid var(--gold-2);
+  background: linear-gradient(135deg, #43260f, #5e3716 60%, #3a200d);
+  box-shadow: var(--pixel-shadow);
+}
+
+.hero h1 {
+  margin: 0 0 0.7rem;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: clamp(1rem, 2.1vw, 1.28rem);
+  line-height: 1.35;
+  color: var(--gold-1);
+}
+
+.hero p {
+  margin: 0;
+}
+
+.panel {
+  background: linear-gradient(180deg, rgba(250, 236, 196, 0.97), rgba(227, 199, 135, 0.97));
+  border: 3px solid var(--gold-3);
+  padding: 0.9rem;
+  box-shadow: var(--pixel-shadow);
+}
+
+.panel h2,
+.panel h3 {
+  margin-top: 0;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  color: #5a3914;
+  line-height: 1.35;
+}
+
+.panel h2 {
+  font-size: clamp(0.72rem, 1.8vw, 0.9rem);
+}
+
+.controls .form-grid {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 390px);
+  gap: 0.45rem 0.9rem;
+  align-items: center;
+}
+
+label {
+  color: var(--ink-soft);
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: clamp(0.52rem, 1.15vw, 0.63rem);
+}
+
+select,
+input[type="number"],
+button {
+  font: inherit;
+  border: 2px solid #5a3714;
+  padding: 0.45rem 0.55rem;
+  border-radius: 0;
+  color: var(--ink);
+}
+
+select,
+input[type="number"] {
+  background: linear-gradient(180deg, #f7ebcb, #e4cd98);
+  box-shadow: inset 0 0 0 2px #b99351;
+}
+
+button {
+  cursor: pointer;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.52rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #f9de90, #d19f39);
+  box-shadow: 0 0 0 2px #5a3714, inset 0 0 0 1px #ffe8a7;
+}
+
+button:hover {
+  filter: brightness(1.06);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+button.ghost {
+  background: linear-gradient(180deg, #e8d2a3, #cbad70);
+}
+
+.actions {
+  margin-top: 0.8rem;
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.status {
+  margin: 0.8rem 0 0;
+  color: var(--ink-soft);
+}
+
+.status.ok {
+  color: var(--ok);
+}
+
+.status.fail {
+  color: var(--fail);
+}
+
+.error {
+  margin-top: 0.8rem;
+  background: #f8d3be;
+  color: #7f1f16;
+  border: 2px solid #a53b2d;
+  padding: 0.45rem 0.6rem;
+}
+
+.result-empty {
+  color: #4e3a1e;
+}
+
+.encounter-card {
+  border: 3px solid #8f6224;
+  background: linear-gradient(180deg, rgba(247, 235, 203, 0.95), rgba(222, 198, 140, 0.95));
+  box-shadow: inset 0 0 0 2px #caa25b;
+  padding: 0.75rem;
+}
+
+.encounter-card h3 {
+  margin: 0 0 0.5rem;
+}
+
+.encounter-meta,
+.encounter-stats {
+  margin: 0.35rem 0 0.75rem;
+}
+
+.encounter-meta p {
+  margin: 0.2rem 0;
+}
+
+.treasure-note {
+  color: #6c4708;
+  font-size: 0.9em;
+}
+
+.audit-badge {
+  display: inline-block;
+  padding: 0.1rem 0.35rem;
+  border: 2px solid #7d5a1b;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.38rem;
+  line-height: 1.5;
+}
+
+.audit-badge-ok {
+  background: #d9efb7;
+  color: #1e5b17;
+}
+
+.audit-badge-warn {
+  background: #f5e1a8;
+  color: #6c4708;
+}
+
+.audit-badge-fail {
+  background: #efc0af;
+  color: #7e251a;
+}
+
+.encounter-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.45rem;
+}
+
+.stat-block {
+  border: 2px solid #8b6427;
+  background: linear-gradient(180deg, rgba(250, 239, 210, 0.95), rgba(228, 206, 154, 0.95));
+  padding: 0.4rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.stat-block strong {
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.5rem;
+  color: #5a3914;
+}
+
+.save-throw-text {
+  font-size: 0.88em;
+  line-height: 1.15;
+}
+
+.detail-box {
+  margin-top: 0.65rem;
+  border: 2px solid #8b6427;
+  background: linear-gradient(180deg, rgba(248, 232, 191, 0.96), rgba(220, 186, 117, 0.96));
+  padding: 0.5rem 0.6rem;
+}
+
+.detail-box h4 {
+  margin: 0 0 0.4rem;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.52rem;
+  color: #5a3914;
+}
+
+.detail-box p {
+  margin: 0.25rem 0;
+}
+
+.detail-source {
+  color: #5f421b;
+  font-size: 0.9em;
+}
+
+.xp-box {
+  margin-top: 0.65rem;
+  border: 2px solid #8b6427;
+  background: linear-gradient(180deg, rgba(248, 232, 191, 0.96), rgba(220, 186, 117, 0.96));
+  padding: 0.5rem 0.6rem;
+}
+
+.hp-box {
+  margin-top: 0.65rem;
+  border: 2px solid #8b6427;
+  background: linear-gradient(180deg, rgba(248, 232, 191, 0.96), rgba(220, 186, 117, 0.96));
+  padding: 0.5rem 0.6rem;
+}
+
+.hp-box h4 {
+  margin: 0 0 0.4rem;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.52rem;
+  color: #5a3914;
+}
+
+.hp-box p {
+  margin: 0.2rem 0;
+}
+
+.hp-note {
+  color: #5f421b;
+}
+
+.hp-formula {
+  color: #5f421b;
+  font-size: 0.95em;
+}
+
+.hp-roll-list {
+  margin: 0.45rem 0 0;
+  padding-left: 1.2rem;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.hp-roll-list li {
+  margin: 0.12rem 0;
+}
+
+.tracker-box {
+  margin-top: 0.65rem;
+  border: 2px solid #8b6427;
+  background: linear-gradient(180deg, rgba(248, 232, 191, 0.96), rgba(220, 186, 117, 0.96));
+  padding: 0.5rem 0.6rem;
+}
+
+.tracker-box h4 {
+  margin: 0 0 0.45rem;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.52rem;
+  color: #5a3914;
+}
+
+.tracker-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.45rem;
+}
+
+.tracker-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.45rem;
+}
+
+.tracker-mini-btn {
+  font-size: 0.44rem;
+  padding: 0.3rem 0.45rem;
+}
+
+.tracker-table-wrap {
+  overflow: auto;
+}
+
+.tracker-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1380px;
+}
+
+.tracker-table th,
+.tracker-table td {
+  border: 2px solid #8b6427;
+  padding: 0.25rem 0.35rem;
+  vertical-align: top;
+}
+
+.tracker-table th {
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.45rem;
+  color: #5a3914;
+  background: linear-gradient(180deg, rgba(241, 214, 153, 0.98), rgba(217, 176, 92, 0.98));
+}
+
+.tracker-table td {
+  background: rgba(247, 235, 203, 0.62);
+}
+
+.tracker-damage-input {
+  width: 88px;
+}
+
+.tracker-weapon-cell {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr);
+  gap: 0.22rem;
+}
+
+.tracker-mastery-badge {
+  justify-self: start;
+  padding: 0.08rem 0.3rem;
+  border: 2px solid #7d5a1b;
+  background: #f5e1a8;
+  color: #6c4708;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.35rem;
+  line-height: 1.4;
+}
+
+.tracker-melee-weapon-input,
+.tracker-melee-damage-input,
+.tracker-ranged-weapon-input,
+.tracker-ranged-damage-input {
+  width: 100%;
+  border: 2px solid #5a3714;
+  background: linear-gradient(180deg, #f7ebcb, #e4cd98);
+  box-shadow: inset 0 0 0 2px #b99351;
+  color: var(--ink);
+  font: inherit;
+  padding: 0.2rem 0.25rem;
+}
+
+.tracker-row-btn {
+  font-size: 0.4rem;
+  padding: 0.2rem 0.3rem;
+  justify-self: start;
+}
+
+.tracker-treasure-cell {
+  min-width: 240px;
+}
+
+.tracker-treasure-summary {
+  margin: 0 0 0.25rem;
+}
+
+.tracker-treasure-details {
+  margin-top: 0.25rem;
+}
+
+.tracker-treasure-details summary {
+  cursor: pointer;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.4rem;
+  color: #5a3914;
+}
+
+.tracker-treasure-details .flat {
+  margin-top: 0.35rem;
+}
+
+.tracker-treasure-empty {
+  color: #5f421b;
+}
+
+.tracker-note-input {
+  width: 100%;
+  min-height: 2.2rem;
+  resize: vertical;
+  border: 2px solid #5a3714;
+  background: linear-gradient(180deg, #f7ebcb, #e4cd98);
+  box-shadow: inset 0 0 0 2px #b99351;
+  color: var(--ink);
+  font: inherit;
+  padding: 0.3rem;
+}
+
+.tracker-current,
+.tracker-status {
+  font-weight: 700;
+}
+
+.tracker-status-healthy {
+  color: #1b7d41;
+}
+
+.tracker-status-wounded {
+  color: #8a5b0a;
+}
+
+.tracker-status-dead {
+  color: #9d2c1f;
+}
+
+.tracker-status-unknown {
+  color: #5f421b;
+}
+
+.xp-box p {
+  margin: 0.2rem 0;
+}
+
+.xp-note {
+  color: #5f421b;
+}
+
+.flat {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.flat li::marker {
+  color: #7e5620;
+}
+
+code {
+  font-family: "Courier New", monospace;
+}
+
+@media (max-width: 980px) {
+  .controls .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  body {
+    font-size: 1.56rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}
