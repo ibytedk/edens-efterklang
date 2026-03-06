@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BECMI Treasure Table Generator (A-V)</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="layout">
+    <header class="hero">
+      <h1>BECMI Treasure Table Generator</h1>
+      <p>Treasure in Lairs (A-O) og Treasure Carried (P-V), med konkrete resultater.</p>
+    </header>
+
+    <section class="panel controls">
+      <h2>Rul Treasure Type</h2>
+      <div class="form-grid">
+        <label for="treasureType">Treasure type</label>
+        <select id="treasureType"></select>
+
+        <label for="rollCount">Antal rul</label>
+        <input id="rollCount" type="number" min="1" max="500" step="1" value="1">
+      </div>
+      <div class="actions">
+        <button id="rollBtn" type="button">Rul</button>
+        <button id="resetBtn" type="button" class="ghost">Nulstil</button>
+      </div>
+      <p id="testStatus" class="status">Interne tests afventer...</p>
+      <div id="errorBox" class="error" style="display:none;"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Samlet</h2>
+      <div id="summary" class="summary"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Per-rul log</h2>
+      <div id="results" class="results"></div>
+    </section>
+
+    <section class="panel docs">
+      <h2>Dokumentation</h2>
+      <p>Dataverifikation mod Rules Cyclopedia tabeller (facit).</p>
+      <h3>A-V verifikationscheckliste</h3>
+      <ul id="verificationChecklist" class="flat"></ul>
+      <h3>Afvigelser og fortolkninger</h3>
+      <ul id="verificationNotes" class="flat"></ul>
+    </section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

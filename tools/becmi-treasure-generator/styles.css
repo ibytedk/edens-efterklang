@@ -1,0 +1,215 @@
+:root {
+  --bg: #f8f6f1;
+  --surface: #fffdf8;
+  --surface-2: #f2eee5;
+  --ink: #1f1c17;
+  --muted: #6b645a;
+  --line: #d9d0c2;
+  --accent: #a53d1f;
+  --accent-2: #2e6e62;
+  --good: #1f6b2a;
+  --bad: #972a1f;
+  --shadow: 0 8px 20px rgba(31, 28, 23, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", "Trebuchet MS", Tahoma, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 500px at 10% -20%, #f4ead7 0%, transparent 70%),
+    radial-gradient(1200px 700px at 90% -10%, #e8f0eb 0%, transparent 70%),
+    var(--bg);
+}
+
+.layout {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.hero {
+  background: linear-gradient(120deg, #2b2620, #4d3d2b);
+  color: #f7f1e6;
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: var(--shadow);
+}
+
+.hero h1 {
+  margin: 0 0 0.4rem;
+  font-size: 1.6rem;
+}
+
+.hero p {
+  margin: 0;
+  color: #efe6d9;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: var(--shadow);
+}
+
+.panel h2,
+.panel h3 {
+  margin-top: 0;
+}
+
+.controls .form-grid {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 320px);
+  gap: 0.6rem 0.8rem;
+  align-items: center;
+}
+
+label {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+select,
+input[type="number"],
+button {
+  font: inherit;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  padding: 0.55rem 0.65rem;
+  background: #fff;
+  color: var(--ink);
+}
+
+button {
+  cursor: pointer;
+  border-color: #8f341c;
+  background: linear-gradient(180deg, #c84a26, var(--accent));
+  color: #fff;
+  font-weight: 700;
+}
+
+button:hover {
+  filter: brightness(1.05);
+}
+
+button.ghost {
+  background: var(--surface-2);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.actions {
+  margin-top: 0.8rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.status {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+}
+
+.ok {
+  color: var(--good);
+  font-weight: 700;
+}
+
+.fail {
+  color: var(--bad);
+  font-weight: 700;
+}
+
+.error {
+  margin-top: 0.8rem;
+  background: #fde8e6;
+  color: #7e2219;
+  border: 1px solid #e8a9a0;
+  border-radius: 8px;
+  padding: 0.6rem 0.7rem;
+}
+
+.summary p {
+  margin: 0.35rem 0;
+}
+
+.grand-total {
+  margin-top: 0.8rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--line);
+}
+
+.results {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.roll-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.8rem;
+  background: #fff;
+}
+
+.roll-card h4 {
+  margin: 0 0 0.6rem;
+  color: #3b3228;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.columns section {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.55rem;
+}
+
+.columns h5 {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+}
+
+.roll-total {
+  margin: 0.7rem 0 0;
+  color: #493f33;
+}
+
+.flat {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.docs {
+  background: linear-gradient(180deg, #fffefb, #f9f6ef);
+}
+
+@media (max-width: 900px) {
+  .columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .controls .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}
