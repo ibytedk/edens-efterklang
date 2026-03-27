@@ -43,7 +43,7 @@
         multiply: op && op !== "+" ? opValue : 1,
       };
     }
-    throw new Error(`Ugyldigt rollExpr: ${expr}`);
+    throw new Error(`Invalid rollExpr: ${expr}`);
   }
 
   function rollExpr(expr, rng) {
@@ -62,7 +62,7 @@
   function rollRange(table, rng) {
     const r = rollD100(rng);
     const hit = table.find((entry) => r >= entry.min && r <= entry.max);
-    if (!hit) throw new Error(`Ingen range-match for rul ${r}`);
+    if (!hit) throw new Error(`No range match for roll ${r}`);
     return hit;
   }
 
@@ -97,7 +97,7 @@
       .forEach((type) => {
         const li = document.createElement("li");
         const ok = DATA.verificationChecklist[type];
-        li.textContent = `${type}: ${ok ? "Verificeret mod PDF" : "Mangler verifikation"}`;
+        li.textContent = `${type}: ${ok ? "Verified against PDF" : "Verification missing"}`;
         $checklist.appendChild(li);
       });
   }
@@ -363,7 +363,7 @@
     if (category === "missileWeapon") return generateMissileWeaponOrMissile(rng);
     if (category === "sword") return generateSword(rng);
     if (category === "miscWeapon") return generateMiscWeapon(rng);
-    throw new Error(`Ukendt magic-kategori: ${category}`);
+    throw new Error(`Unknown magic category: ${category}`);
   }
 
   function magicCategoryLabel(category) {
@@ -391,7 +391,7 @@
         };
       }
     }
-    throw new Error("Kunne ikke vælge gyldig magic-kategori.");
+    throw new Error("Could not choose a valid magic category.");
   }
 
   function resolveFixedKind(kind, rng, excludeCategories) {
@@ -472,7 +472,7 @@
 
   function rollOneType(type, rng) {
     const def = DATA.lairTypes[type] || DATA.carriedTypes[type];
-    if (!def) throw new Error(`Ukendt treasure type: ${type}`);
+    if (!def) throw new Error(`Unknown treasure type: ${type}`);
     const coins = rollCoins(def.part1 || {}, rng);
     const p2 = rollPart2(def.part2 || {}, rng);
     const gemValue = p2.gems.reduce((s, g) => s + g.valueGp, 0);
@@ -494,9 +494,9 @@
   }
 
   function rollTreasureType(type, count, rng = Math.random) {
-    if (!/^[A-V]$/.test(type)) throw new Error("Treasure type skal være A-V.");
+    if (!/^[A-V]$/.test(type)) throw new Error("Treasure type must be A-V.");
     if (!Number.isInteger(count) || count < 1 || count > 500) {
-      throw new Error("Antal rul skal være et helt tal mellem 1 og 500.");
+      throw new Error("Number of rolls must be an integer between 1 and 500.");
     }
 
     const rolls = [];
@@ -530,41 +530,41 @@
   }
 
   function fmtNumber(v) {
-    return Number(v).toLocaleString("da-DK");
+    return Number(v).toLocaleString("en-GB");
   }
 
   function renderSummary(bundle) {
     const t = bundle.total;
     const coinLines = COINS.map((c) => `<li><strong>${c.toUpperCase()}</strong>: ${fmtNumber(t.coins[c])}</li>`).join("");
     $summary.innerHTML = `
-      <h3>Samlet resultat (${bundle.count} rul af type ${bundle.type})</h3>
+      <h3>Summary (${bundle.count} rolls of type ${bundle.type})</h3>
       <ul class=\"flat\">${coinLines}</ul>
       <p><strong>Gems (gp):</strong> ${fmtNumber(t.gemsValue)}</p>
       <p><strong>Jewelry (gp):</strong> ${fmtNumber(t.jewelryValue)}</p>
       <p><strong>Special Treasure (gp):</strong> ${fmtNumber(t.specialValue)}</p>
-      <p><strong>Magic Items:</strong> ${fmtNumber(t.magicItemCount)} (heraf våben-kategorier: ${fmtNumber(t.weaponMagicCount)})</p>
+      <p><strong>Magic Items:</strong> ${fmtNumber(t.magicItemCount)} (weapon categories included: ${fmtNumber(t.weaponMagicCount)})</p>
       <p class=\"grand-total\"><strong>Total gp-equivalent:</strong> ${fmtNumber(t.gpEquivalent.toFixed(2))}</p>
     `;
   }
 
   function renderRoll(roll, idx) {
     const coinLines = COINS.map((c) => `<li>${c.toUpperCase()}: ${fmtNumber(roll.coins[c])}</li>`).join("");
-    const gems = roll.gems.map((g) => `<li>${g.name} — ${fmtNumber(g.valueGp)} gp${g.note ? ` (${g.note})` : ""}</li>`).join("");
-    const jewelry = roll.jewelry.map((j) => `<li>${j.name} — ${fmtNumber(j.valueGp)} gp</li>`).join("");
-    const special = roll.special.map((s) => `<li>${s.name} — ${fmtNumber(s.valueGp || 0)} gp${s.enc ? `, ${fmtNumber(s.enc)} en` : ""}</li>`).join("");
+    const gems = roll.gems.map((g) => `<li>${g.name} - ${fmtNumber(g.valueGp)} gp${g.note ? ` (${g.note})` : ""}</li>`).join("");
+    const jewelry = roll.jewelry.map((j) => `<li>${j.name} - ${fmtNumber(j.valueGp)} gp</li>`).join("");
+    const special = roll.special.map((s) => `<li>${s.name} - ${fmtNumber(s.valueGp || 0)} gp${s.enc ? `, ${fmtNumber(s.enc)} en` : ""}</li>`).join("");
     const magic = roll.magicItems.map((m) => `<li><strong>${magicCategoryLabel(m.category)}:</strong> ${m.label}</li>`).join("");
 
     return `
       <article class=\"roll-card\">
-        <h4>Rul #${idx + 1} (${roll.kind})</h4>
+        <h4>Roll #${idx + 1} (${roll.kind})</h4>
         <div class=\"columns\">
-          <section><h5>Mønter</h5><ul class=\"flat\">${coinLines || "<li>Ingen</li>"}</ul></section>
-          <section><h5>Gems</h5><ul class=\"flat\">${gems || "<li>Ingen</li>"}</ul></section>
-          <section><h5>Jewelry</h5><ul class=\"flat\">${jewelry || "<li>Ingen</li>"}</ul></section>
-          <section><h5>Special</h5><ul class=\"flat\">${special || "<li>Ingen</li>"}</ul></section>
-          <section><h5>Magic</h5><ul class=\"flat\">${magic || "<li>Ingen</li>"}</ul></section>
+          <section><h5>Coins</h5><ul class="flat">${coinLines || "<li>None</li>"}</ul></section>
+          <section><h5>Gems</h5><ul class="flat">${gems || "<li>None</li>"}</ul></section>
+          <section><h5>Jewelry</h5><ul class="flat">${jewelry || "<li>None</li>"}</ul></section>
+          <section><h5>Special</h5><ul class="flat">${special || "<li>None</li>"}</ul></section>
+          <section><h5>Magic</h5><ul class="flat">${magic || "<li>None</li>"}</ul></section>
         </div>
-        <p class=\"roll-total\"><strong>Rul gp-equivalent:</strong> ${fmtNumber(roll.gpEquivalent.toFixed(2))}</p>
+        <p class=\"roll-total\"><strong>Roll gp equivalent:</strong> ${fmtNumber(roll.gpEquivalent.toFixed(2))}</p>
       </article>
     `;
   }
@@ -588,23 +588,23 @@
   }
 
   function mdSectionList(items, toLine) {
-    if (!items || items.length === 0) return "- Ingen";
+    if (!items || items.length === 0) return "- None";
     return items.map((it) => `- ${toLine(it)}`).join("\n");
   }
 
   function bundleToMarkdown(bundle) {
     const t = bundle.total;
-    const ts = new Date().toLocaleString("da-DK");
+    const ts = new Date().toLocaleString("en-GB");
     const lines = [];
-    lines.push(`# BECMI Treasure Resultat`);
+    lines.push(`# BECMI Treasure Result`);
     lines.push("");
-    lines.push(`- Genereret: ${ts}`);
+    lines.push(`- Generated: ${ts}`);
     lines.push(`- Treasure type: ${bundle.type}`);
-    lines.push(`- Antal rul: ${bundle.count}`);
+    lines.push(`- Roll count: ${bundle.count}`);
     lines.push("");
-    lines.push("## Samlet");
+    lines.push("## Summary");
     lines.push("");
-    lines.push("### Mønter");
+    lines.push("### Coins");
     lines.push(`- CP: ${t.coins.cp}`);
     lines.push(`- SP: ${t.coins.sp}`);
     lines.push(`- EP: ${t.coins.ep}`);
@@ -615,16 +615,16 @@
     lines.push(`- Jewelry (gp): ${t.jewelryValue}`);
     lines.push(`- Special Treasure (gp): ${t.specialValue}`);
     lines.push(`- Magic Items: ${t.magicItemCount}`);
-    lines.push(`- Våben-kategorier i magic: ${t.weaponMagicCount}`);
+    lines.push(`- Weapon-category magic items: ${t.weaponMagicCount}`);
     lines.push(`- Total gp-equivalent: ${t.gpEquivalent.toFixed(2)}`);
     lines.push("");
-    lines.push("## Per-rul");
+    lines.push("## Per-roll");
     lines.push("");
 
     bundle.rolls.forEach((roll, idx) => {
-      lines.push(`### Rul #${idx + 1} (${roll.kind})`);
+      lines.push(`### Roll #${idx + 1} (${roll.kind})`);
       lines.push("");
-      lines.push("#### Mønter");
+      lines.push("#### Coins");
       lines.push(`- CP: ${roll.coins.cp}`);
       lines.push(`- SP: ${roll.coins.sp}`);
       lines.push(`- EP: ${roll.coins.ep}`);
@@ -643,7 +643,7 @@
       lines.push("#### Magic");
       lines.push(mdSectionList(roll.magicItems, (m) => `${magicCategoryLabel(m.category)}: ${m.label}`));
       lines.push("");
-      lines.push(`- Rul gp-equivalent: ${roll.gpEquivalent.toFixed(2)}`);
+      lines.push(`- Roll gp equivalent: ${roll.gpEquivalent.toFixed(2)}`);
       lines.push("");
     });
 
@@ -665,7 +665,7 @@
   function onExportMarkdown() {
     setError("");
     if (!lastBundle) {
-      setExportStatus("Ingen resultat at eksportere endnu.", true);
+      setExportStatus("No result to export yet.", true);
       return;
     }
     const now = new Date();
@@ -673,7 +673,7 @@
     const fileName = `becmi-treasure-${lastBundle.type}-${lastBundle.count}-${stamp}.md`;
     const markdown = bundleToMarkdown(lastBundle);
     downloadMarkdown(markdown, fileName);
-    setExportStatus(`Eksporteret: ${fileName}`);
+    setExportStatus(`Exported: ${fileName}`);
   }
 
   function makeSeqRng(sequence) {
@@ -693,25 +693,25 @@
     ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V"].forEach((type) => {
       const rng = makeSeqRng([0.0, 0.19, 0.42, 0.73, 0.99]);
       const result = rollTreasureType(type, 1, rng);
-      assert(result.rolls.length === 1, `Type ${type}: enkelt rul`);
+      assert(result.rolls.length === 1, `Type ${type}: single roll`);
     });
 
     const rngA = makeSeqRng([0.0, 0.1, 0.2, 0.3, 0.4]);
     const a = rollTreasureType("A", 1, rngA);
-    assert(a.rolls.length === 1, "Type A: antal rul");
-    assert(a.rolls[0].coins.cp % 1000 === 0, "Type A: cp skal skaleres i tusinder");
+    assert(a.rolls.length === 1, "Type A: roll count");
+    assert(a.rolls[0].coins.cp % 1000 === 0, "Type A: cp must scale by thousands");
 
     const rngP = makeSeqRng([0.0, 0.5, 0.99]);
     const p = rollTreasureType("P", 1, rngP);
-    assert(p.rolls[0].coins.cp <= 24, "Type P: carried cp må ikke være skaleret");
+    assert(p.rolls[0].coins.cp <= 24, "Type P: carried cp must not be scaled");
 
     const rngU = makeSeqRng([0.0]);
     const u = rollTreasureType("U", 5, rngU);
-    assert(u.rolls.length === 5, "Type U: flere rul");
+    assert(u.rolls.length === 5, "Type U: multiple rolls");
 
     const rngHigh = makeSeqRng([0.5]);
     const many = rollTreasureType("J", 500, rngHigh);
-    assert(many.rolls.length === 500, "High count 500 skal virke");
+    assert(many.rolls.length === 500, "High count 500 should work");
 
     const rollMath = makeSeqRng([0.0]);
     assert(rollExpr("2d6+3", rollMath) === 5, "2d6+3 parser");
@@ -724,7 +724,7 @@
     } catch (_e) {
       threw = true;
     }
-    assert(threw, "Invalid count skal fejle");
+    assert(threw, "Invalid count should fail");
 
     return { ok: true };
   }
@@ -744,7 +744,7 @@
       renderSummary(bundle);
       renderResults(bundle);
     } catch (err) {
-      setError(err.message || "Ukendt fejl.");
+      setError(err.message || "Unknown error.");
     }
   }
 
@@ -784,13 +784,14 @@
     $exportBtn.disabled = true;
     try {
       runInternalTests();
-      $testStatus.textContent = "Interne tests: OK";
+      $testStatus.textContent = "Internal tests: OK";
       $testStatus.className = "ok";
     } catch (e) {
-      $testStatus.textContent = `Interne tests: FEJL (${e.message})`;
+      $testStatus.textContent = `Internal tests: FAIL (${e.message})`;
       $testStatus.className = "fail";
     }
   }
 
   bootstrap();
 })();
+

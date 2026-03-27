@@ -24,7 +24,7 @@
     "Rules Cyclopedia::Green Slime": { treasureType: "P,S,B" },
     "Rules Cyclopedia::Halfling": {
       treasureType: "P,S,B",
-      note: "RC-noten siger, at lair-type B kun gaelder ved wilderness-encounters.",
+      note: "RC notes that lair type B only applies to wilderness encounters.",
     },
     "Rules Cyclopedia::Hobgoblin": { treasureType: "Q,D" },
     "Rules Cyclopedia::Kobold": { treasureType: "J,P" },
@@ -32,11 +32,11 @@
   };
   const RANGED_BACKUP_CHANCE = 40;
   const SAVE_THROW_LABELS = [
-    { key: "death", short: "D/G", long: "Doed/Gift" },
-    { key: "wands", short: "W", long: "Tryllestave" },
-    { key: "stone", short: "P", long: "Forstening" },
-    { key: "breath", short: "B", long: "Aande" },
-    { key: "spell", short: "S", long: "Stave/Spells" },
+    { key: "death", short: "D/G", long: "Death/Poison" },
+    { key: "wands", short: "W", long: "Wands" },
+    { key: "stone", short: "P", long: "Petrification" },
+    { key: "breath", short: "B", long: "Breath" },
+    { key: "spell", short: "S", long: "Spells" },
   ];
   const SAVE_THROW_TABLES = {
     normalMan: [
@@ -164,8 +164,8 @@
   function monsterCategory(monster) {
     const explicit = clean(monster.monsterType);
     if (explicit) return explicit;
-    if (monster.source === "Rules Cyclopedia") return "RC (uden kategori)";
-    return "Ukendt";
+    if (monster.source === "Rules Cyclopedia") return "RC (uncategorized)";
+    return "Unknown";
   }
 
   function detailKey(source, name) {
@@ -267,18 +267,18 @@
 
   function renderSaveThrowValues(spec) {
     if (!spec || spec.unsupported) {
-      return { shortText: "Ikke udregnet", detailText: clean(spec && spec.raw) || "Ikke verificeret" };
+      return { shortText: "Not calculated", detailText: clean(spec && spec.raw) || "Not verified" };
     }
 
     const table = SAVE_THROW_TABLES[spec.tableName];
     if (!table) {
-      return { shortText: "Ikke udregnet", detailText: spec.raw };
+      return { shortText: "Not calculated", detailText: spec.raw };
     }
 
     const low = findSaveTableEntry(table, spec.minLevel);
     const high = findSaveTableEntry(table, spec.maxLevel);
     if (!low || !high) {
-      return { shortText: "Ikke udregnet", detailText: spec.raw };
+      return { shortText: "Not calculated", detailText: spec.raw };
     }
 
     const formatValue = (key) => {
@@ -314,11 +314,11 @@
   }
 
   function treasureAuditLabel(status) {
-    if (status === "verified") return "Bogverificeret";
-    if (status === "mismatch") return "Kraever manuel audit";
-    if (status === "needs-manual-audit") return "Kraever manuel audit";
-    if (status === "missing") return "Mangler bogaudit";
-    return "Summary-data";
+    if (status === "verified") return "Book-verified";
+    if (status === "mismatch") return "Needs manual audit";
+    if (status === "needs-manual-audit") return "Needs manual audit";
+    if (status === "missing") return "Missing book audit";
+    return "Summary data";
   }
 
   function sanitizeDescription(value) {
@@ -374,7 +374,7 @@
         : clean(detail.treasureAuditStatus) || (treasureType ? "summary-only" : "missing"),
       treasureNote: manualTreasure ? clean(manualTreasure.note) : "",
       weaponMasteryLevel,
-      weaponMasteryText: weaponMasteryLevel ? `${weaponMasteryLevel} i mindst 1 vaaben` : "",
+      weaponMasteryText: weaponMasteryLevel ? `${weaponMasteryLevel} with at least 1 weapon` : "",
     };
   }
 
@@ -393,7 +393,7 @@
   function showError(message) {
     $errorBox.style.display = "block";
     $errorBox.textContent = message;
-    setStatus("Valideringsfejl", "fail");
+    setStatus("Validation error", "fail");
   }
 
   function hideError() {
@@ -525,7 +525,7 @@
       parts.push(`${aggregate.magicItemCount} magic`);
     }
     if (parts.length === 0) {
-      return "Ingen carried treasure";
+      return "No carried treasure";
     }
     parts.push(`gp-eq ${fmtNumber(aggregate.gpEquivalent.toFixed(2))}`);
     return parts.join(", ");
@@ -543,7 +543,7 @@
         .filter((coin) => bundle.total.coins[coin] > 0)
         .map((coin) => `${fmtNumber(bundle.total.coins[coin])} ${coin}`);
       if (coinParts.length) {
-        lines.push(`Moenter: ${coinParts.join(", ")}`);
+        lines.push(`Coins: ${coinParts.join(", ")}`);
       }
 
       const gemNames = listTreasureNames(bundle, "gems", (gem) => `${gem.name} (${fmtNumber(gem.valueGp)} gp)`);
@@ -568,7 +568,7 @@
     });
 
     if (aggregate.gpEquivalent > 0) {
-      lines.push(`Samlet gp-equivalent: ${fmtNumber(aggregate.gpEquivalent.toFixed(2))}`);
+      lines.push(`Total gp equivalent: ${fmtNumber(aggregate.gpEquivalent.toFixed(2))}`);
     }
 
     return lines;
@@ -579,7 +579,7 @@
       return {
         available: false,
         hasTreasure: false,
-        summaryText: "Treasure engine ikke indlaest",
+        summaryText: "Treasure engine not loaded",
         detailLines: [],
       };
     }
@@ -592,7 +592,7 @@
         specs: [],
         bundles: [],
         aggregate: aggregateTreasureBundles([]),
-        summaryText: "Ingen carried treasure",
+        summaryText: "No carried treasure",
         detailLines: [],
       };
     }
@@ -612,7 +612,7 @@
 
   function formatTreasureSpecList(specs) {
     if (!Array.isArray(specs) || !specs.length) {
-      return "Ingen";
+      return "None";
     }
 
     return specs
@@ -699,7 +699,7 @@
     }
 
     if (lowered.includes("special")) {
-      return { kind: "special", label: raw, note: "HD er markeret som Special" };
+      return { kind: "special", label: raw, note: "HD is marked as Special" };
     }
 
     if (lowered.includes("som levende")) {
@@ -814,7 +814,7 @@
 
   function rollSingleMonsterHp(spec) {
     if (spec.kind === "special" || spec.kind === "unknown") {
-      return { hp: null, formula: spec.label || "-", note: spec.note || "Ukendt HD" };
+      return { hp: null, formula: spec.label || "-", note: spec.note || "Unknown HD" };
     }
 
     if (spec.kind === "fixed") {
@@ -891,6 +891,7 @@
       const loadout = rollCombatantLoadout(weaponModel);
       return {
         index: roll.index,
+        initiative: null,
         maxHp: Number.isFinite(roll.hp) ? roll.hp : null,
         formula: roll.formula,
         rollNote: roll.note || "",
@@ -905,6 +906,14 @@
         weaponMasteryLevel: monster.weaponMasteryLevel || "",
         weaponMasterySlot: monster.weaponMasteryLevel && weaponModel.byWeapon ? "melee" : "",
       };
+    });
+  }
+
+  function sortCombatantsForDisplay(combatants) {
+    return [...combatants].sort((left, right) => {
+      const leftInitiative = Number.isFinite(left.initiative) ? left.initiative : Number.NEGATIVE_INFINITY;
+      const rightInitiative = Number.isFinite(right.initiative) ? right.initiative : Number.NEGATIVE_INFINITY;
+      return rightInitiative - leftInitiative || left.index - right.index;
     });
   }
 
@@ -952,15 +961,15 @@
   function combatantState(combatant) {
     const currentHp = computeCurrentHp(combatant);
     if (currentHp == null) {
-      return { currentText: "?", statusText: "Ukendt", statusClass: "tracker-status-unknown" };
+      return { currentText: "?", statusText: "Unknown", statusClass: "tracker-status-unknown" };
     }
     if (currentHp <= 0) {
-      return { currentText: String(currentHp), statusText: "Doed", statusClass: "tracker-status-dead" };
+      return { currentText: String(currentHp), statusText: "Dead", statusClass: "tracker-status-dead" };
     }
     if (currentHp <= Math.ceil(combatant.maxHp / 2)) {
-      return { currentText: String(currentHp), statusText: "Saaret", statusClass: "tracker-status-wounded" };
+      return { currentText: String(currentHp), statusText: "Wounded", statusClass: "tracker-status-wounded" };
     }
-    return { currentText: String(currentHp), statusText: "Klar", statusClass: "tracker-status-healthy" };
+    return { currentText: String(currentHp), statusText: "Ready", statusClass: "tracker-status-healthy" };
   }
 
   function parseXpValue(xpText) {
@@ -973,11 +982,11 @@
       .replaceAll("–", "-");
 
     if (!normalized || normalized === "-" || normalized === "nil") {
-      return { kind: "unknown", label: raw || "-", note: "Ingen standard XP-vardi" };
+      return { kind: "unknown", label: raw || "-", note: "No standard XP value" };
     }
 
     if (normalized === "var" || normalized === "var." || normalized === "spec") {
-      return { kind: "unknown", label: raw, note: "XP afhaenger af specialregel" };
+      return { kind: "unknown", label: raw, note: "XP depends on a special rule" };
     }
 
     if (/^\d+$/.test(normalized)) {
@@ -987,7 +996,7 @@
 
     if (/^\d+\+$/.test(normalized)) {
       const min = Number.parseInt(normalized.slice(0, -1), 10);
-      return { kind: "plus", label: raw, perMonsterMin: min, note: "Aaben overgraense (+)" };
+      return { kind: "plus", label: raw, perMonsterMin: min, note: "Open upper bound (+)" };
     }
 
     if (/^\d+-\d+$/.test(normalized)) {
@@ -1005,7 +1014,7 @@
       }
     }
 
-    return { kind: "unknown", label: raw, note: "Kunne ikke parse XP-format" };
+    return { kind: "unknown", label: raw, note: "Could not parse XP format" };
   }
 
   function xpSummary(parsedXp, count) {
@@ -1022,9 +1031,9 @@
       const totalMax = parsedXp.perMonsterMax * count;
       const totalAvg = parsedXp.perMonsterAvg * count;
       return {
-        perMonsterText: `${parsedXp.perMonsterMin}-${parsedXp.perMonsterMax} (snit ${parsedXp.perMonsterAvg})`,
-        totalText: `${totalMin}-${totalMax} (snit ${totalAvg})`,
-        note: "XP er interval og vises som min-max plus snit.",
+        perMonsterText: `${parsedXp.perMonsterMin}-${parsedXp.perMonsterMax} (avg ${parsedXp.perMonsterAvg})`,
+        totalText: `${totalMin}-${totalMax} (avg ${totalAvg})`,
+        note: "XP is a range and is shown as min-max plus average.",
       };
     }
 
@@ -1033,14 +1042,14 @@
       return {
         perMonsterText: `${parsedXp.perMonsterMin}+`,
         totalText: `${minTotal}+`,
-        note: "XP har aaben overgraense (+).",
+        note: "XP has an open upper bound (+).",
       };
     }
 
     return {
-      perMonsterText: parsedXp.label || "Ukendt",
-      totalText: "Ukendt",
-      note: parsedXp.note || "XP skal afklares manuelt.",
+      perMonsterText: parsedXp.label || "Unknown",
+      totalText: "Unknown",
+      note: parsedXp.note || "XP must be clarified manually.",
     };
   }
 
@@ -1061,7 +1070,7 @@
     $categoryFilter.innerHTML = "";
     const allOption = document.createElement("option");
     allOption.value = "all";
-    allOption.textContent = "Alle kategorier";
+    allOption.textContent = "All categories";
     $categoryFilter.appendChild(allOption);
 
     categories.forEach((category) => {
@@ -1100,13 +1109,13 @@
     $randomBtn.disabled = disabled;
 
     if (disabled) {
-      setStatus("Ingen monstre matcher dit filter.", "fail");
+      setStatus("No monsters match the current filter.", "fail");
     } else {
       const detailNote =
         MONSTER_DETAIL_META.rcDetailCount || MONSTER_DETAIL_META.ccDescriptionCount
-          ? ` RC-detaljer: ${MONSTER_DETAIL_META.rcDetailCount || 0}, CC-beskrivelser: ${MONSTER_DETAIL_META.ccDescriptionCount || 0}.`
+          ? ` RC details: ${MONSTER_DETAIL_META.rcDetailCount || 0}, CC descriptions: ${MONSTER_DETAIL_META.ccDescriptionCount || 0}.`
           : "";
-      setStatus(`${visibleMonsters.length} monster-typer i udvalget.${detailNote}`, "");
+      setStatus(`${visibleMonsters.length} monster types in the selection.${detailNote}`, "");
     }
   }
 
@@ -1122,13 +1131,13 @@
   function validateCountInput() {
     const count = parsePositiveInt($countInput.value);
     if (count == null) {
-      throw new Error("Antal monstre skal vaere et helt tal.");
+      throw new Error("Number of monsters must be an integer.");
     }
     if (count < 1) {
-      throw new Error("Antal monstre skal vaere mindst 1.");
+      throw new Error("Number of monsters must be at least 1.");
     }
     if (count > MAX_COUNT) {
-      throw new Error(`Antal monstre maa hoejst vaere ${MAX_COUNT}.`);
+      throw new Error(`Number of monsters may not exceed ${MAX_COUNT}.`);
     }
     return count;
   }
@@ -1164,16 +1173,16 @@
     if (summary.rollableCount > 0) {
       summaryLines.push(`<p><strong>HP total:</strong> ${summary.total}</p>`);
       summaryLines.push(`<p><strong>HP min/max:</strong> ${summary.min} / ${summary.max}</p>`);
-      summaryLines.push(`<p><strong>HP snit:</strong> ${summary.avg}</p>`);
+      summaryLines.push(`<p><strong>HP average:</strong> ${summary.avg}</p>`);
       summaryLines.push(
-        `<p><strong>Rullede:</strong> ${summary.rollableCount} af ${summary.count}</p>`
+        `<p><strong>Rolled:</strong> ${summary.rollableCount} of ${summary.count}</p>`
       );
     } else {
-      summaryLines.push("<p><strong>HP:</strong> Kunne ikke rulles automatisk for denne HD.</p>");
+      summaryLines.push("<p><strong>HP:</strong> Could not be rolled automatically for this HD.</p>");
     }
 
     if (summary.unresolvedCount > 0) {
-      summaryLines.push(`<p class="hp-note">${summary.unresolvedCount} monster(e) kraever manuel HP-afklaring.</p>`);
+      summaryLines.push(`<p class="hp-note">${summary.unresolvedCount} monster(s) require manual HP clarification.</p>`);
     }
 
     if (hpData.spec.note) {
@@ -1189,7 +1198,7 @@
       .join("");
 
     const overflow = hiddenCount > 0
-      ? `<p class="hp-note">Viser foerste ${MAX_HP_LIST_DISPLAY} HP-rul. ${hiddenCount} er skjult i UI, men med i markdown.</p>`
+      ? `<p class="hp-note">Showing the first ${MAX_HP_LIST_DISPLAY} HP rolls. ${hiddenCount} are hidden in the UI, but included in markdown.</p>`
       : "";
 
     return `
@@ -1205,7 +1214,7 @@
   function renderCarriedTreasureCell(combatant) {
     const treasure = combatant.carriedTreasure;
     if (!treasure) {
-      return `<div class="tracker-treasure-empty">Ingen carried treasure</div>`;
+      return `<div class="tracker-treasure-empty">No carried treasure</div>`;
     }
 
     if (!treasure.available) {
@@ -1228,9 +1237,9 @@
           class="tracker-row-btn"
           data-action="reroll-treasure"
           data-combatant-index="${combatant.index}"
-        >Rerul loot</button>
+        >Reroll loot</button>
         <details class="tracker-treasure-details">
-          <summary>Detaljer</summary>
+          <summary>Details</summary>
           <ul class="flat">${detailItems}</ul>
         </details>
       </div>
@@ -1247,11 +1256,14 @@
     if (!combatants.length) return "";
 
     const summary = summarizeCombatants(combatants);
-    const rowsToShow = combatants.slice(0, MAX_TRACKER_UI_ROWS);
-    const hiddenCount = combatants.length - rowsToShow.length;
+    const sortedCombatants = sortCombatantsForDisplay(combatants);
+    const rowsToShow = sortedCombatants.slice(0, MAX_TRACKER_UI_ROWS);
+    const hiddenCount = sortedCombatants.length - rowsToShow.length;
+    const initiativeRolled = combatants.some((combatant) => Number.isFinite(combatant.initiative));
 
     const rows = rowsToShow
       .map((combatant) => {
+        const initiativeText = Number.isFinite(combatant.initiative) ? String(combatant.initiative) : "-";
         const maxHpText = Number.isFinite(combatant.maxHp) ? String(combatant.maxHp) : "?";
         const state = combatantState(combatant);
         const noteValue = escapeHtml(combatant.note || "");
@@ -1259,6 +1271,7 @@
         return `
           <tr data-combatant-row="${combatant.index}">
             <td>#${combatant.index}</td>
+            <td class="tracker-initiative-cell"><span class="tracker-initiative">${initiativeText}</span></td>
             <td>${maxHpText} <span class="hp-formula">[${escapeHtml(combatant.formula)}]</span>${rollNote}</td>
             <td>
               <div class="tracker-weapon-cell">
@@ -1268,17 +1281,17 @@
                   type="text"
                   value="${escapeHtml(combatant.meleeWeapon || "-")}"
                   data-combatant-index="${combatant.index}"
-                  placeholder="Melee vaaben"
+                  placeholder="Melee weapon"
                 >
                 <input
                   class="tracker-melee-damage-input"
                   type="text"
                   value="${escapeHtml(combatant.meleeDamage || "-")}"
                   data-combatant-index="${combatant.index}"
-                  placeholder="Melee skade"
+                  placeholder="Melee damage"
                 >
                 ${combatant.canRerollWeapon
-                  ? `<button type="button" class="tracker-row-btn" data-action="reroll-melee" data-combatant-index="${combatant.index}">Rerul melee</button>`
+                  ? `<button type="button" class="tracker-row-btn" data-action="reroll-melee" data-combatant-index="${combatant.index}">Reroll melee</button>`
                   : ""
                 }
               </div>
@@ -1291,17 +1304,17 @@
                   type="text"
                   value="${escapeHtml(combatant.rangedWeapon || "")}"
                   data-combatant-index="${combatant.index}"
-                  placeholder="Ranged vaaben"
+                  placeholder="Ranged weapon"
                 >
                 <input
                   class="tracker-ranged-damage-input"
                   type="text"
                   value="${escapeHtml(combatant.rangedDamage || "")}"
                   data-combatant-index="${combatant.index}"
-                  placeholder="Ranged skade"
+                  placeholder="Ranged damage"
                 >
                 ${combatant.canRerollWeapon
-                  ? `<button type="button" class="tracker-row-btn" data-action="reroll-ranged" data-combatant-index="${combatant.index}">Rerul ranged</button>`
+                  ? `<button type="button" class="tracker-row-btn" data-action="reroll-ranged" data-combatant-index="${combatant.index}">Reroll ranged</button>`
                   : ""
                 }
               </div>
@@ -1336,7 +1349,7 @@
                 class="tracker-note-input"
                 rows="2"
                 data-combatant-index="${combatant.index}"
-                placeholder="Noter..."
+                placeholder="Notes..."
               >${noteValue}</textarea>
             </td>
           </tr>
@@ -1345,36 +1358,38 @@
       .join("");
 
     const hiddenNotice = hiddenCount > 0
-      ? `<p class="hp-note">Viser foerste ${MAX_TRACKER_UI_ROWS} monstre i tracker. ${hiddenCount} er skjult i UI.</p>`
+      ? `<p class="hp-note">Showing the first ${MAX_TRACKER_UI_ROWS} monsters in the tracker${initiativeRolled ? ", sorted by initiative" : ""}. ${hiddenCount} are hidden in the UI.</p>`
       : "";
 
     return `
       <div class="tracker-box" data-combat-tracker>
-        <h4>Kamptracker</h4>
+        <h4>Combat Tracker</h4>
         <div class="tracker-summary">
-          <span><strong>Levende:</strong> <span data-tracker-role="alive">${summary.alive}</span></span>
-          <span><strong>Doede:</strong> <span data-tracker-role="down">${summary.down}</span></span>
-          <span><strong>Ukendt HP:</strong> <span data-tracker-role="unknown">${summary.unknown}</span></span>
-          <span><strong>HP tilbage:</strong> <span data-tracker-role="total-current">${summary.totalCurrent}</span></span>
-          <span><strong>HP max:</strong> <span data-tracker-role="total-max">${summary.totalMax}</span></span>
+          <span><strong>Alive:</strong> <span data-tracker-role="alive">${summary.alive}</span></span>
+          <span><strong>Dead:</strong> <span data-tracker-role="down">${summary.down}</span></span>
+          <span><strong>Unknown HP:</strong> <span data-tracker-role="unknown">${summary.unknown}</span></span>
+          <span><strong>HP Remaining:</strong> <span data-tracker-role="total-current">${summary.totalCurrent}</span></span>
+          <span><strong>HP Max:</strong> <span data-tracker-role="total-max">${summary.totalMax}</span></span>
         </div>
         <div class="tracker-actions">
-          <button type="button" class="tracker-mini-btn" data-action="reset-damage">Nulstil skade</button>
-          <button type="button" class="tracker-mini-btn ghost" data-action="clear-notes">Ryd noter</button>
+          <button type="button" class="tracker-mini-btn" data-action="roll-initiative">Roll Initiative</button>
+          <button type="button" class="tracker-mini-btn" data-action="reset-damage">Reset Damage</button>
+          <button type="button" class="tracker-mini-btn ghost" data-action="clear-notes">Clear Notes</button>
         </div>
         <div class="tracker-table-wrap">
           <table class="tracker-table">
             <thead>
               <tr>
                 <th>Monster</th>
+                <th>Init</th>
                 <th>Max HP</th>
                 <th>Melee</th>
                 <th>Ranged</th>
-                <th>Baerer paa</th>
-                <th>Skade</th>
-                <th>Nu HP</th>
+                <th>Carrying</th>
+                <th>Damage</th>
+                <th>Current HP</th>
                 <th>Status</th>
-                <th>Noter</th>
+                <th>Notes</th>
               </tr>
             </thead>
             <tbody>
@@ -1436,14 +1451,14 @@
   function renderDescriptionBox(monster) {
     const body = monster.description
       ? `<p>${escapeHtml(monster.description)}</p>`
-      : "<p>Ingen brugbar bogbeskrivelse indlaest for dette monster endnu.</p>";
+      : "<p>No usable book description has been loaded for this monster yet.</p>";
     const source = monster.detailSource
-      ? `<p class="detail-source"><strong>Detailkilde:</strong> ${escapeHtml(monster.detailSource)}</p>`
+      ? `<p class="detail-source"><strong>Detail Source:</strong> ${escapeHtml(monster.detailSource)}</p>`
       : "";
 
     return `
       <div class="detail-box">
-        <h4>Beskrivelse</h4>
+        <h4>Description</h4>
         ${body}
         ${source}
       </div>
@@ -1454,7 +1469,7 @@
     const monster = encounter.monster;
     const treasureText = monster.treasureType && monster.treasureType.toLowerCase() !== "nil"
       ? monster.treasureType
-      : "Ingen/ukendt";
+      : "None/unknown";
     const treasureSplitText = describeTreasureSplit(monster.treasureType);
 
     const categoryText = monster.category || "-";
@@ -1464,8 +1479,8 @@
       <article class="encounter-card">
         <h3>${escapeHtml(`${encounter.count} x ${monster.name}`)}</h3>
         <div class="encounter-meta">
-          <p><strong>Kilde:</strong> ${escapeHtml(monster.source)} (${escapeHtml(sourceLabel)})</p>
-          <p><strong>Kategori:</strong> ${escapeHtml(categoryText)}</p>
+          <p><strong>Source:</strong> ${escapeHtml(monster.source)} (${escapeHtml(sourceLabel)})</p>
+          <p><strong>Category:</strong> ${escapeHtml(categoryText)}</p>
           <p><strong>Treasure Type:</strong> ${escapeHtml(treasureText)}</p>
           ${treasureSplitText ? `<p><strong>Treasure Split:</strong> ${escapeHtml(treasureSplitText)}</p>` : ""}
           <p><strong>Treasure Audit:</strong> ${renderAuditBadge(monster.treasureAuditStatus)}</p>
@@ -1479,10 +1494,10 @@
           <div class="stat-block"><strong>Attacks</strong><span>${escapeHtml(monster.attacks || "-")}</span></div>
           <div class="stat-block"><strong>Damage</strong><span>${escapeHtml(monster.damage || "-")}</span></div>
           <div class="stat-block"><strong>Morale</strong><span>${escapeHtml(monster.morale || "-")}</span></div>
-          <div class="stat-block"><strong>Save As</strong><span>${escapeHtml(monster.saveAs || "Ikke verificeret")}</span></div>
-          <div class="stat-block"><strong>Saving Throws</strong><span class="save-throw-text">${escapeHtml(monster.savingThrows.detailText || "Ikke verificeret")}</span></div>
-          <div class="stat-block"><strong>Intelligens</strong><span>${escapeHtml(monster.intelligence || "Ikke verificeret")}</span></div>
-          <div class="stat-block"><strong>Vaabenmestring</strong><span>${escapeHtml(monster.weaponMasteryText || "-")}</span></div>
+          <div class="stat-block"><strong>Save As</strong><span>${escapeHtml(monster.saveAs || "Not verified")}</span></div>
+          <div class="stat-block"><strong>Saving Throws</strong><span class="save-throw-text">${escapeHtml(monster.savingThrows.detailText || "Not verified")}</span></div>
+          <div class="stat-block"><strong>Intelligence</strong><span>${escapeHtml(monster.intelligence || "Not verified")}</span></div>
+          <div class="stat-block"><strong>Weapon Mastery</strong><span>${escapeHtml(monster.weaponMasteryText || "-")}</span></div>
         </div>
 
         ${renderDescriptionBox(monster)}
@@ -1521,16 +1536,16 @@
     const generatedAtIso = encounter.generatedAt.toISOString();
     const treasureText = monster.treasureType && monster.treasureType.toLowerCase() !== "nil"
       ? monster.treasureType
-      : "Ingen/ukendt";
+      : "None/unknown";
     const treasureSplitText = describeTreasureSplit(monster.treasureType);
 
     lines.push("# BECMI Encounter");
     lines.push("");
-    lines.push(`- Genereret: ${generatedAtIso}`);
-    lines.push(`- Kilde: ${monster.source}`);
+    lines.push(`- Generated: ${generatedAtIso}`);
+    lines.push(`- Source: ${monster.source}`);
     lines.push(`- Monster: ${monster.name}`);
-    lines.push(`- Antal: ${encounter.count}`);
-    lines.push(`- Kategori: ${monster.category || "-"}`);
+    lines.push(`- Count: ${encounter.count}`);
+    lines.push(`- Category: ${monster.category || "-"}`);
     lines.push(`- Treasure Type: ${treasureText}`);
     if (treasureSplitText) {
       lines.push(`- Treasure split: ${treasureSplitText}`);
@@ -1540,7 +1555,7 @@
       lines.push(`- Treasure note: ${monster.treasureNote}`);
     }
     if (monster.detailSource) {
-      lines.push(`- Detailkilde: ${monster.detailSource}`);
+      lines.push(`- Detail Source: ${monster.detailSource}`);
     }
     lines.push("");
 
@@ -1552,15 +1567,15 @@
     lines.push(`- Attacks: ${monster.attacks || "-"}`);
     lines.push(`- Damage: ${monster.damage || "-"}`);
     lines.push(`- Morale: ${monster.morale || "-"}`);
-    lines.push(`- Save As: ${monster.saveAs || "Ikke verificeret"}`);
-    lines.push(`- Saving Throws: ${monster.savingThrows.detailText || "Ikke verificeret"}`);
-    lines.push(`- Intelligens: ${monster.intelligence || "Ikke verificeret"}`);
-    lines.push(`- Vaabenmestring: ${monster.weaponMasteryText || "-"}`);
+    lines.push(`- Save As: ${monster.saveAs || "Not verified"}`);
+    lines.push(`- Saving Throws: ${monster.savingThrows.detailText || "Not verified"}`);
+    lines.push(`- Intelligence: ${monster.intelligence || "Not verified"}`);
+    lines.push(`- Weapon Mastery: ${monster.weaponMasteryText || "-"}`);
     lines.push("");
 
-    lines.push("## Beskrivelse");
+    lines.push("## Description");
     lines.push("");
-    lines.push(monster.description || "Ingen brugbar bogbeskrivelse indlaest for dette monster endnu.");
+    lines.push(monster.description || "No usable book description has been loaded for this monster yet.");
     lines.push("");
 
     lines.push("## Hit Points");
@@ -1570,13 +1585,13 @@
     if (hpSummary.rollableCount > 0) {
       lines.push(`- HP total: ${hpSummary.total}`);
       lines.push(`- HP min/max: ${hpSummary.min} / ${hpSummary.max}`);
-      lines.push(`- HP snit: ${hpSummary.avg}`);
-      lines.push(`- Rullede: ${hpSummary.rollableCount} af ${hpSummary.count}`);
+      lines.push(`- HP average: ${hpSummary.avg}`);
+      lines.push(`- Rolled: ${hpSummary.rollableCount} of ${hpSummary.count}`);
     } else {
-      lines.push("- HP: Kunne ikke rulles automatisk for denne HD.");
+      lines.push("- HP: Could not be rolled automatically for this HD.");
     }
     if (hpSummary.unresolvedCount > 0) {
-      lines.push(`- Manuel afklaring: ${hpSummary.unresolvedCount}`);
+      lines.push(`- Manual clarification: ${hpSummary.unresolvedCount}`);
     }
     if (encounter.hp.spec.note) {
       lines.push(`- Note: ${encounter.hp.spec.note}`);
@@ -1585,8 +1600,9 @@
 
     lines.push("### HP per monster");
     lines.push("");
-    const exportCombatants = (encounter.combatants || []).slice(0, MAX_HP_EXPORT_LIST);
+    const exportCombatants = sortCombatantsForDisplay(encounter.combatants || []).slice(0, MAX_HP_EXPORT_LIST);
     exportCombatants.forEach((combatant) => {
+      const initiativeText = Number.isFinite(combatant.initiative) ? String(combatant.initiative) : "-";
       const maxHpText = Number.isFinite(combatant.maxHp) ? String(combatant.maxHp) : "?";
       const currentHp = computeCurrentHp(combatant);
       const currentText = currentHp == null ? "?" : String(currentHp);
@@ -1594,7 +1610,7 @@
       const meleeDamage = combatant.meleeDamage || "-";
       const rangedWeapon = combatant.rangedWeapon || "-";
       const rangedDamage = combatant.rangedDamage || "-";
-      const carriedText = combatant.carriedTreasure ? combatant.carriedTreasure.summaryText : "Ingen carried treasure";
+      const carriedText = combatant.carriedTreasure ? combatant.carriedTreasure.summaryText : "No carried treasure";
       const carriedDetails = combatant.carriedTreasure && combatant.carriedTreasure.detailLines.length
         ? ` | Loot: ${combatant.carriedTreasure.detailLines.join(" ; ")}`
         : "";
@@ -1602,12 +1618,12 @@
       const rollNote = combatant.rollNote ? ` | Roll-note: ${combatant.rollNote}` : "";
       const note = combatant.note ? ` | Note: ${combatant.note.replaceAll("\n", " ")}` : "";
       lines.push(
-        `- #${combatant.index}: Max ${maxHpText}, Melee ${meleeWeapon} (${meleeDamage}), Ranged ${rangedWeapon} (${rangedDamage}), Carry ${carriedText}, Skade ${combatant.damageTaken}, Nu ${currentText} [${combatant.formula}]${mastery}${rollNote}${carriedDetails}${note}`
+        `- #${combatant.index}: Init ${initiativeText}, Max ${maxHpText}, Melee ${meleeWeapon} (${meleeDamage}), Ranged ${rangedWeapon} (${rangedDamage}), Carried ${carriedText}, Damage ${combatant.damageTaken}, Current ${currentText} [${combatant.formula}]${mastery}${rollNote}${carriedDetails}${note}`
       );
     });
     if ((encounter.combatants || []).length > exportCombatants.length) {
       lines.push(
-        `- ... (${(encounter.combatants || []).length - exportCombatants.length} raekker udeladt i markdown for storrelse)`
+        `- ... (${(encounter.combatants || []).length - exportCombatants.length} rows omitted from markdown for size)`
       );
     }
     lines.push("");
@@ -1621,7 +1637,7 @@
     }
     lines.push("");
 
-    lines.push("## Datagrundlag");
+    lines.push("## Data Sources");
     lines.push("");
     lines.push("- Rules Cyclopedia Opsummering.md");
     lines.push("- Creature Catalog Opsummering.md");
@@ -1646,14 +1662,14 @@
     document.body.removeChild(a);
 
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-    setStatus(`Markdown eksporteret: ${filename}`, "ok");
+    setStatus(`Markdown exported: ${filename}`, "ok");
   }
 
   function getCombatantByDomIndex(indexText) {
     if (!lastEncounter || !Array.isArray(lastEncounter.combatants)) return null;
     const index = parsePositiveInt(indexText);
     if (index == null || index < 1) return null;
-    return lastEncounter.combatants[index - 1] || null;
+    return lastEncounter.combatants.find((combatant) => combatant.index === index) || null;
   }
 
   function handleTrackerInput(target) {
@@ -1720,19 +1736,28 @@
     const action = target.dataset.action;
     if (!action) return;
 
+    if (action === "roll-initiative") {
+      lastEncounter.combatants.forEach((combatant) => {
+        combatant.initiative = rollDice(1, 6);
+      });
+      renderEncounter(lastEncounter);
+      setStatus("Initiative rolled for all monsters. Tracker sorted highest first.", "ok");
+      return;
+    }
+
     if (action === "reroll-melee") {
       const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
       if (!combatant) return;
       const model = lastEncounter.weaponModel || createWeaponModel(lastEncounter.monster || {});
       if (!model.byWeapon) {
-        setStatus("Dette monster bruger ikke 'by weapon'-skade.", "fail");
+        setStatus("This monster does not use 'by weapon' damage.", "fail");
         return;
       }
       const rerolled = rollCombatantLoadout(model);
       combatant.meleeWeapon = rerolled.meleeWeapon;
       combatant.meleeDamage = rerolled.meleeDamage;
       renderEncounter(lastEncounter);
-      setStatus(`Melee-vaaben rerullet for #${combatant.index}.`, "ok");
+      setStatus(`Melee weapon rerolled for #${combatant.index}.`, "ok");
       return;
     }
 
@@ -1741,14 +1766,14 @@
       if (!combatant) return;
       const model = lastEncounter.weaponModel || createWeaponModel(lastEncounter.monster || {});
       if (!model.byWeapon) {
-        setStatus("Dette monster bruger ikke 'by weapon'-skade.", "fail");
+        setStatus("This monster does not use 'by weapon' damage.", "fail");
         return;
       }
       const rerolledRanged = pickRangedWeaponProfile();
       combatant.rangedWeapon = rerolledRanged.name;
       combatant.rangedDamage = formatWeaponDamage(rerolledRanged.damage, model.suffix);
       renderEncounter(lastEncounter);
-      setStatus(`Ranged-vaaben sat for #${combatant.index}.`, "ok");
+      setStatus(`Ranged weapon set for #${combatant.index}.`, "ok");
       return;
     }
 
@@ -1757,7 +1782,7 @@
       if (!combatant) return;
       combatant.carriedTreasure = createCarriedTreasure(lastEncounter.monster.treasureType);
       renderEncounter(lastEncounter);
-      setStatus(`Carried treasure rerullet for #${combatant.index}.`, "ok");
+      setStatus(`Carried treasure rerolled for #${combatant.index}.`, "ok");
       return;
     }
 
@@ -1766,7 +1791,7 @@
         combatant.damageTaken = 0;
       });
       renderEncounter(lastEncounter);
-      setStatus("Skade nulstillet for alle monstre i trackeren.", "ok");
+      setStatus("Damage reset for all monsters in the tracker.", "ok");
       return;
     }
 
@@ -1775,7 +1800,7 @@
         combatant.note = "";
       });
       renderEncounter(lastEncounter);
-      setStatus("Noter ryddet for alle monstre i trackeren.", "ok");
+      setStatus("Notes cleared for all monsters in the tracker.", "ok");
     }
   }
 
@@ -1784,7 +1809,7 @@
 
     const monster = getSelectedMonster();
     if (!monster) {
-      showError("Vaelg et monster foerst.");
+      showError("Choose a monster first.");
       return;
     }
 
@@ -1800,29 +1825,29 @@
     lastEncounter = encounter;
     renderEncounter(encounter);
     $exportMdBtn.disabled = false;
-    setStatus(`Encounter genereret: ${count} x ${monster.name} (HP rullet).`, "ok");
+    setStatus(`Encounter generated: ${count} x ${monster.name} (HP rolled).`, "ok");
   }
 
   function handleRandomMonster() {
     hideError();
     if (!visibleMonsters.length) {
-      showError("Ingen monstre matcher dit nuvaerende filter.");
+      showError("No monsters match your current filter.");
       return;
     }
 
     const randomIndex = randomInt(0, visibleMonsters.length - 1);
     $monsterSelect.value = String(randomIndex);
     const monster = visibleMonsters[randomIndex];
-    setStatus(`Tilfaeldig valgt: ${monster.name}.`, "ok");
+    setStatus(`Randomly selected: ${monster.name}.`, "ok");
   }
 
   function handleReset() {
     hideError();
     $countInput.value = "1";
-    $resultPanel.innerHTML = "<div class=\"result-empty\">Ingen encounter genereret endnu.</div>";
+    $resultPanel.innerHTML = "<div class=\"result-empty\">No encounter generated yet.</div>";
     $exportMdBtn.disabled = true;
     lastEncounter = null;
-    setStatus("Nulstillet.", "");
+    setStatus("Reset.", "");
   }
 
   function refreshFiltersAndMonsters() {
@@ -1846,7 +1871,7 @@
     $resetBtn.addEventListener("click", handleReset);
     $exportMdBtn.addEventListener("click", () => {
       if (!lastEncounter) {
-        showError("Der er ikke noget encounter at eksportere endnu.");
+        showError("There is no encounter to export yet.");
         return;
       }
       hideError();
@@ -1874,7 +1899,7 @@
 
   function init() {
     if (!monsters.length) {
-      showError("Monsterdata kunne ikke indlaeses.");
+      showError("Monster data could not be loaded.");
       $generateBtn.disabled = true;
       $randomBtn.disabled = true;
       return;
@@ -1882,7 +1907,7 @@
 
     refreshFiltersAndMonsters();
     wireEvents();
-    setStatus(`Klar. ${monsters.length} monsterposter indlaest.`, "ok");
+    setStatus(`Ready. ${monsters.length} monster records loaded.`, "ok");
   }
 
   init();

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="da">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,34 +11,34 @@
   <main class="layout">
     <header class="hero">
       <h1>BECMI Encounter Generator</h1>
-      <p>Generer encounters fra Rules Cyclopedia og Creature Catalog.</p>
+      <p>Generate encounters from Rules Cyclopedia and Creature Catalog.</p>
     </header>
 
     <section class="panel controls">
-      <h2>Opsaet Encounter</h2>
+      <h2>Set Up Encounter</h2>
       <div class="form-grid">
-        <label for="sourceFilter">Kilde</label>
+        <label for="sourceFilter">Source</label>
         <select id="sourceFilter">
-          <option value="all">Begge boger</option>
+          <option value="all">Both books</option>
           <option value="Rules Cyclopedia">Rules Cyclopedia</option>
           <option value="Creature Catalog">Creature Catalog</option>
         </select>
 
-        <label for="categoryFilter">Kategori</label>
+        <label for="categoryFilter">Category</label>
         <select id="categoryFilter"></select>
 
-        <label for="monsterSelect">Monster type</label>
+        <label for="monsterSelect">Monster Type</label>
         <select id="monsterSelect"></select>
 
-        <label for="countInput">Antal monstre</label>
+        <label for="countInput">Number of Monsters</label>
         <input id="countInput" type="number" min="1" max="5000" step="1" value="1">
       </div>
 
       <div class="actions">
-        <button id="generateBtn" type="button">Generer</button>
-        <button id="randomBtn" type="button" class="ghost">Tilfaeldig type</button>
-        <button id="resetBtn" type="button" class="ghost">Nulstil</button>
-        <button id="exportMdBtn" type="button" class="ghost" disabled>Eksporter Markdown</button>
+        <button id="generateBtn" type="button">Generate</button>
+        <button id="randomBtn" type="button" class="ghost">Random Type</button>
+        <button id="resetBtn" type="button" class="ghost">Reset</button>
+        <button id="exportMdBtn" type="button" class="ghost" disabled>Export Markdown</button>
       </div>
 
       <p id="statusText" class="status"></p>
@@ -47,21 +47,21 @@
 
     <section class="panel">
       <h2>Encounter</h2>
-      <div id="resultPanel" class="result-empty">Ingen encounter genereret endnu.</div>
+      <div id="resultPanel" class="result-empty">No encounter generated yet.</div>
     </section>
 
     <section class="panel docs">
-      <h2>Datagrundlag</h2>
+      <h2>Data Sources</h2>
       <ul class="flat">
-        <li><strong>Rules Cyclopedia:</strong> udtrukket fra <code>DM Lore/Rules Cyclopedia Opsummering.md</code>.</li>
-        <li><strong>Creature Catalog:</strong> udtrukket fra <code>DM Lore/Creature Catalog Opsummering.md</code>.</li>
+        <li><strong>Rules Cyclopedia:</strong> extracted from <code>DM Lore/Rules Cyclopedia Opsummering.md</code>.</li>
+        <li><strong>Creature Catalog:</strong> extracted from <code>DM Lore/Creature Catalog Opsummering.md</code>.</li>
       </ul>
-      <p>Hvis du vil, kan vi lave en anden version med direkte PDF-audit per monster.</p>
+      <p>If needed, we can build another version with direct PDF audit per monster.</p>
     </section>
   </main>
 
-  <script src="../becmi-treasure-generator/data.js"></script>
-  <script src="../becmi-treasure-generator/app.js"></script>
+  <script src="../becmi-treasure-generator/data.js?v=20260306-en"></script>
+  <script src="../becmi-treasure-generator/app.js?v=20260306-en"></script>
   <script src="data.js"></script>
   <script src="monster-details.js"></script>
   <script src="app.js"></script>

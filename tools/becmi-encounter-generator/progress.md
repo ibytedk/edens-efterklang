@@ -104,3 +104,11 @@
   - `Green Slime` => `P,S,B`
   - `Halfling` => `P,S,B` med note i UI
   - Ingen console errors
+- Hele encounter-generatorens brugerflade er oversat til engelsk:
+  - `index.html` labels, knapper, paneloverskrifter og docs-sektion er nu engelske
+  - `app.js` statusbeskeder, fejltekster, tracker-labels, audit-labels og markdown-eksport er nu engelske
+  - Fallback-tekster som `No encounter generated yet`, `No carried treasure`, `Not verified` osv. er gjort konsistente
+- Browser-smoketest efter sprogomlaegning:
+  - `Bugbear [RC]` viser engelsk UI i encounter-panelet
+  - `Goblin [RC]` eksporterer markdown med engelsk status og engelsk UI-flow
+  - Ingen console errors

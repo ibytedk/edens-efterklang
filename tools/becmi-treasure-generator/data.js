@@ -10,18 +10,18 @@
 
   const data = {
     metadata: {
-      source: "Rules Cyclopedia (Basic PDF), treasure-tabeller side 225 i bogen",
+      source: "Rules Cyclopedia (Basic PDF), treasure tables on book page 225",
       generatedAt: "2026-03-06",
     },
     verificationNotes: [
-      "Treasure Types A-O og P-V er verificeret mod PDF-tabellen (side 225 i bogen).",
-      "Carried Part 2: S,T gems er 5% for præcis 1 gem (ikke 1d2).",
-      "Lair Type B magic: '10% 1 sword, miscellaneous weapon, or armor' tolkes som 1d3 mellem de tre kategorier.",
-      "Lair Type F magic: '30% 1 potion, 1 scroll, +3 any but weapons' fortolkes som 3 Any-rul med udelukkelse af missile/sword/misc weapon.",
-      "Special treasure er transskriberet fra Special Treasure Value Table; for poster med '/stick', '/vial', '/bottle' bruges basisresultat pr. enhed.",
-      "Spice, rare: total gp beregnes som (4d4) gange encumbrance (en).",
-      "Carried U/V 'Special: Any 1' fortolkes som 1 rul pa Special Treasure Value Table.",
-      "Magic item generation bruger Main Table + subtables (inkl. våben-subtables 7-9, sword intelligence og weapon modifiers) for konkrete resultater.",
+      "Treasure Types A-O and P-V are verified against the PDF table (book page 225).",
+      "Carried Part 2: S,T gems are 5% for exactly 1 gem (not 1d2).",
+      "Lair Type B magic: '10% 1 sword, miscellaneous weapon, or armor' is interpreted as 1d3 between the three categories.",
+      "Lair Type F magic: '30% 1 potion, 1 scroll, +3 any but weapons' is interpreted as 3 Any rolls excluding missile/sword/misc weapon.",
+      "Special treasure is transcribed from the Special Treasure Value Table; for entries with '/stick', '/vial', '/bottle', the base result is used per unit.",
+      "Spice, rare: total gp is calculated as (4d4) times encumbrance (en).",
+      "Carried U/V 'Special: Any 1' is interpreted as 1 roll on the Special Treasure Value Table.",
+      "Magic item generation uses the Main Table + subtables (including weapon subtables 7-9, sword intelligence, and weapon modifiers) for concrete results.",
     ],
     verificationChecklist: {
       A: true,

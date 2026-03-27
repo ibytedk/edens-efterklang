@@ -43,7 +43,7 @@ body {
 }
 
 .layout {
-  max-width: 1180px;
+  max-width: 90vw;
   margin: 0 auto;
   padding: 1rem;
   display: grid;
@@ -356,7 +356,7 @@ button.ghost {
 .tracker-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1380px;
+  min-width: 1460px;
 }
 
 .tracker-table th,
@@ -379,6 +379,19 @@ button.ghost {
 
 .tracker-damage-input {
   width: 88px;
+}
+
+.tracker-initiative-cell {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tracker-initiative {
+  display: inline-block;
+  min-width: 2ch;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 0.46rem;
+  color: #5a3914;
 }
 
 .tracker-weapon-cell {
