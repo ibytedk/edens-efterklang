@@ -1,0 +1,59 @@
+{
+  "updatedAt": "2026-03-31T06:34:15.525Z",
+  "state": "finished",
+  "totalPending": 209,
+  "selectedCount": 8,
+  "completed": 0,
+  "failed": 8,
+  "current": null,
+  "errors": [
+    {
+      "slug": "rules-cyclopedia--bugbear",
+      "name": "Bugbear",
+      "message": "Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project",
+      "screenshotPath": "J:\\Shared drives\\Edens Efterklang\\output\\chatgpt-miniatures\\errors\\rules-cyclopedia--bugbear-error.png"
+    },
+    {
+      "slug": "rules-cyclopedia--caecilia",
+      "name": "Caecilia",
+      "message": "Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project",
+      "screenshotPath": "J:\\Shared drives\\Edens Efterklang\\output\\chatgpt-miniatures\\errors\\rules-cyclopedia--caecilia-error.png"
+    },
+    {
+      "slug": "rules-cyclopedia--centipede-giant",
+      "name": "Centipede, Giant",
+      "message": "Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project",
+      "screenshotPath": "J:\\Shared drives\\Edens Efterklang\\output\\chatgpt-miniatures\\errors\\rules-cyclopedia--centipede-giant-error.png"
+    },
+    {
+      "slug": "rules-cyclopedia--chimera",
+      "name": "Chimera",
+      "message": "Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project",
+      "screenshotPath": "J:\\Shared drives\\Edens Efterklang\\output\\chatgpt-miniatures\\errors\\rules-cyclopedia--chimera-error.png"
+    },
+    {
+      "slug": "rules-cyclopedia--cockatrice",
+      "name": "Cockatrice",
+      "message": "Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project",
+      "screenshotPath": "J:\\Shared drives\\Edens Efterklang\\output\\chatgpt-miniatures\\errors\\rules-cyclopedia--cockatrice-error.png"
+    },
+    {
+      "slug": "rules-cyclopedia--crab-giant",
+      "name": "Crab, Giant",
+      "message": "Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project",
+      "screenshotPath": "J:\\Shared drives\\Edens Efterklang\\output\\chatgpt-miniatures\\errors\\rules-cyclopedia--crab-giant-error.png"
+    },
+    {
+      "slug": "rules-cyclopedia--crocodile-normal",
+      "name": "Crocodile, Normal",
+      "message": "Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project",
+      "screenshotPath": "J:\\Shared drives\\Edens Efterklang\\output\\chatgpt-miniatures\\errors\\rules-cyclopedia--crocodile-normal-error.png"
+    },
+    {
+      "slug": "rules-cyclopedia--crocodile-large",
+      "name": "Crocodile, Large",
+      "message": "Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project",
+      "screenshotPath": "J:\\Shared drives\\Edens Efterklang\\output\\chatgpt-miniatures\\errors\\rules-cyclopedia--crocodile-large-error.png"
+    }
+  ]
+}

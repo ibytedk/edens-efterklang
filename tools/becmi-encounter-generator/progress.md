@@ -86,6 +86,7 @@
 
 ## Kendte begraensninger
 - Ikke alle RC-monstre har endnu en ren, brugbar beskrivelse; nogle OCR-udtraek er for beskidte og undertrykkes derfor.
+- Nogle PDF-udtraek har stadig mindre OCR-stoej i stavning eller tegnsaetning, selv naar selve monsterafsnittet er korrekt fundet.
 - Creature Catalog-data er stadig kun delvist bogauditeret for `Treasure Type`, `Save As` og `Intelligens`.
 - Saving throw-tabeller er implementeret for de centrale klasser/racer, men boer udvides hvis flere sjaeldne `Save As`-formater dukker op i materialet.
 
@@ -112,3 +113,36 @@
   - `Bugbear [RC]` viser engelsk UI i encounter-panelet
   - `Goblin [RC]` eksporterer markdown med engelsk status og engelsk UI-flow
   - Ingen console errors
+- Beskrivelseslaget er udvidet:
+  - Appen viser nu baade brugbar bogtekst og en tydeligt maerket `Quick Profile` fallback, saa alle monstre har en laesbar beskrivelse
+  - OCR-tunge detailtekster filtreres fra i stedet for at blive vist råt
+- Monster art er gjort klar i encounter-generatoren:
+  - Nyt panel viser forventet lokal asset-sti under `assets/monster-art/`
+  - Registrerede billeder fra `monster-art.js` bliver vist direkte i encounter-kortet uden 404-stoej
+- `Download Art Prompt` henter prompt for det aktuelle monster
+- `Export Art Batch` eksporterer JSONL-prompts for hele den aktuelle filtermaengde, klar til batch-koersel mod den lokale image CLI
+- PDF-baseret beskrivelsesregenerering er tilfoejet:
+  - Nyt script `regenerate_monster_details.py` henter beskrivelser direkte fra `RulesCyclopedia-Basic.pdf` og `DMR2_Creature_Catalog_(Basic).pdf`
+  - `monster-details.js` er regenereret med 175 PDF-udtraek (94 RC + 81 Creature Catalog) og udvidet til 215 detailposter i alt
+  - Regenererede poster faar `sourceRef` til PDF-filen og `sourcePage` til den fundne side
+  - Spot-checks af `Goblin`, `Hydra`, `Treant`, `Thunderhead`, `Kara-Kara`, `Tortle` og `Magen` gav brugbare bognaere beskrivelser
+## 2026-04-08
+- Tilfoejet `Reaction Roll`-panel til encounter-generatoren:
+  - 2d6-reaction rul med manuel modifier
+  - Historik over reaction-rul
+  - Resultatbands i UI for `Attacks`, `Aggressive`, `Cautious`, `Neutral`, `Friendly`
+- Tilfoejet morale-system i kamptrackeren:
+  - Morale-score input og `Check morale`-knap paa hver monsterraekke
+  - `Check Group Morale`-knap for overlevende monstre
+  - Morale-log med baade manuelle og automatiske checks
+- Auto-morale er nu koblet til skadeflowet i tracker:
+  - Ved foerste skade
+  - Ved kvart HP eller mindre
+  - Ved foerste registrerede død
+  - Naar halvdelen af de trackede monstre er nede
+- `Reset Damage` nulstiller nu ogsaa encounterets morale-trigger-state, saa auto-checks kan koeres igen i samme encounter.
+- Reaction-rul er rettet, saa tabelmodifiers nu baeres videre korrekt til naeste rul:
+  - `Aggressive` giver auto carry-over `-4`
+  - `Neutral` giver auto carry-over `+4`
+  - `Cautious`, `Attacks` og `Friendly` nulstiller carry-over
+  - Det manuelle reaction-felt accepterer nu ogsaa negative modifiers

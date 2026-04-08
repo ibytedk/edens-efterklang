@@ -8,11 +8,15 @@
   const MAX_HP_EXPORT_LIST = 2000;
   const MAX_TRACKER_UI_ROWS = 300;
   const COINS = ["cp", "sp", "ep", "gp", "pp"];
+  const ART_EXPORT_OUTPUT_DIR = "output/imagegen/becmi-encounter-generator";
   const MONSTER_DETAILS = typeof window.BECMI_ENCOUNTER_DETAILS === "object" && window.BECMI_ENCOUNTER_DETAILS
     ? window.BECMI_ENCOUNTER_DETAILS
     : {};
   const MONSTER_DETAIL_META = typeof window.BECMI_ENCOUNTER_DETAIL_META === "object" && window.BECMI_ENCOUNTER_DETAIL_META
     ? window.BECMI_ENCOUNTER_DETAIL_META
+    : {};
+  const MONSTER_ART = typeof window.BECMI_ENCOUNTER_ART === "object" && window.BECMI_ENCOUNTER_ART
+    ? window.BECMI_ENCOUNTER_ART
     : {};
   const TREASURE_ROLLER = typeof window.rollTreasureType === "function" ? window.rollTreasureType : null;
   const CARRIED_TREASURE_TYPES = new Set(["P", "Q", "R", "S", "T", "U", "V"]);
@@ -135,6 +139,7 @@
   const $randomBtn = document.getElementById("randomBtn");
   const $resetBtn = document.getElementById("resetBtn");
   const $exportMdBtn = document.getElementById("exportMdBtn");
+  const $exportArtBatchBtn = document.getElementById("exportArtBatchBtn");
   const $statusText = document.getElementById("statusText");
   const $errorBox = document.getElementById("errorBox");
   const $resultPanel = document.getElementById("resultPanel");
@@ -159,6 +164,24 @@
     if (source === "Rules Cyclopedia") return "RC";
     if (source === "Creature Catalog") return "CC";
     return source;
+  }
+
+  function normalizeInlineText(value) {
+    return clean(value)
+      .replace(/<br\s*\/?>/gi, " ")
+      .replace(/<\/?[^>]+>/g, " ")
+      .replace(/[•]/g, " ")
+      .replace(/â€”/g, " - ")
+      .replace(/â€“/g, "-")
+      .replace(/â†’/g, " to ")
+      .replace(/Ã—/g, "x")
+      .replace(/Â/g, "")
+      .replace(/[_~`]+/g, " ")
+      .replace(/\s+/g, " ")
+      .replace(/\s+([,.;:!?])/g, "$1")
+      .replace(/([(\[])\s+/g, "$1")
+      .replace(/\s+([)\]])/g, "$1")
+      .trim();
   }
 
   function monsterCategory(monster) {
@@ -322,15 +345,184 @@
   }
 
   function sanitizeDescription(value) {
-    return clean(value)
+    return normalizeInlineText(value)
       .replaceAll(" .", ".")
       .replaceAll(" ,", ",")
       .replaceAll(" ;", ";")
       .replaceAll(" :", ":");
   }
 
+  function takeLeadingSentences(text, sentenceCount = 6, maxLength = 1200) {
+    const compact = sanitizeDescription(text);
+    const sentences = compact.match(/[^.!?]+[.!?]?/g) || [];
+    let picked = sentences.slice(0, sentenceCount).join(" ").trim();
+    if (!picked) {
+      picked = compact;
+    }
+    if (picked.length < compact.length && picked.length + 16 < maxLength) {
+      picked = compact;
+    }
+    if (picked.length > maxLength) {
+      const clipped = picked.slice(0, maxLength).trim();
+      const sentenceBoundary = Math.max(clipped.lastIndexOf(". "), clipped.lastIndexOf("! "), clipped.lastIndexOf("? "));
+      const phraseBoundary = Math.max(clipped.lastIndexOf("; "), clipped.lastIndexOf(", "));
+      const boundary = sentenceBoundary >= Math.floor(maxLength * 0.65)
+        ? sentenceBoundary + 1
+        : phraseBoundary >= Math.floor(maxLength * 0.75)
+          ? phraseBoundary
+          : clipped.length;
+      return `${clipped.slice(0, boundary).trim()}...`;
+    }
+    return picked;
+  }
+
+  function stripLeadingMonsterLabels(text) {
+    return sanitizeDescription(text).replace(
+      /^((?:[A-Z][A-Za-z-]+(?:\s+[A-Z][A-Za-z-]+)*\s*\([^)]+\)\.\s*){1,2})/,
+      ""
+    ).trim();
+  }
+
+  function looksSuspiciousOcrDescription(text) {
+    const compact = sanitizeDescription(text);
+    if (!compact || compact.length < 48) return true;
+    if (compact.length < 80 && compact.split(/\s+/).length < 12) return true;
+
+    const suspiciousTokens = compact.match(/\b(?:Tcmun|Tcrr\w*|c\.r\w+|ld6|ldlO|Id\d)\b/gi) || [];
+    if (suspiciousTokens.length >= 3) return true;
+
+    const brokenWords = compact.match(/[A-Za-z]\.[A-Za-z]/g) || [];
+    return brokenWords.length >= 4;
+  }
+
+  function getUsableBookDescription(detail) {
+    const raw = sanitizeDescription(detail && detail.description);
+    if (!raw) return "";
+
+    const stripped = stripLeadingMonsterLabels(raw) || raw;
+    const candidate = takeLeadingSentences(stripped, 6, 1200);
+    return looksSuspiciousOcrDescription(candidate) ? "" : candidate;
+  }
+
+  function cleanCategoryLabel(category, source) {
+    const value = clean(category);
+    if (!value || /uncategorized/i.test(value)) {
+      return source === "Rules Cyclopedia" ? "Rules Cyclopedia monster" : "fantasy monster";
+    }
+    return value;
+  }
+
+  function joinHumanList(values) {
+    const items = values.filter(Boolean);
+    if (!items.length) return "";
+    if (items.length === 1) return items[0];
+    if (items.length === 2) return `${items[0]} and ${items[1]}`;
+    return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
+  }
+
+  function buildDerivedSummary(monster) {
+    const lines = [];
+    const categoryLabel = cleanCategoryLabel(monster.category, monster.source);
+    lines.push(`${monster.name} is presented here as a ${categoryLabel.toLowerCase()} from ${monster.source}.`);
+
+    const combatProfile = [
+      monster.hd ? `${monster.hd} HD` : "",
+      monster.ac ? `AC ${monster.ac}` : "",
+      monster.move ? `move ${monster.move}` : "",
+      monster.attacks ? `attacks ${monster.attacks}` : "",
+      monster.damage ? `damage ${monster.damage}` : "",
+      monster.morale ? `morale ${monster.morale}` : "",
+    ].filter(Boolean);
+    if (combatProfile.length) {
+      lines.push(`Quick DM profile: ${joinHumanList(combatProfile)}.`);
+    }
+
+    const secondaryCues = [
+      monster.saveAs ? `saves as ${monster.saveAs}` : "",
+      monster.intelligence ? `Int ${monster.intelligence}` : "",
+      monster.weaponMasteryText || "",
+      monster.xp ? `${monster.xp} XP` : "",
+    ].filter(Boolean);
+    if (secondaryCues.length) {
+      lines.push(`Secondary cues: ${joinHumanList(secondaryCues)}.`);
+    }
+
+    if (monster.monsterType) {
+      lines.push(`Encounter type: ${monster.monsterType}.`);
+    }
+
+    if (monster.treasureType && monster.treasureType.toLowerCase() !== "nil") {
+      lines.push(`Treasure type ${monster.treasureType}.`);
+    }
+
+    return lines.join(" ");
+  }
+
+  function buildMonsterArtSlug(monster) {
+    return `${slugify(monster.source)}--${slugify(monster.name)}`;
+  }
+
+  function buildMonsterArtAssetPath(monster) {
+    return `assets/monster-art/${buildMonsterArtSlug(monster)}.png`;
+  }
+
+  function buildMonsterArtSpec(monster) {
+    const descriptionCue = monster.bookDescription || monster.derivedSummary || `${monster.name} monster reference`;
+    return {
+      prompt: `Full-body reference illustration of ${monster.name} from ${monster.source}. ${descriptionCue}`,
+      use_case: "stylized-concept",
+      subject: `${monster.name}; ${cleanCategoryLabel(monster.category, monster.source)}`,
+      scene: "single-creature monster plate for a tabletop encounter generator",
+      style: "old-school dark-fantasy bestiary illustration, painterly ink-and-gouache texture, grounded anatomy",
+      composition: "one creature only, centered full body, readable silhouette, slight 3/4 view, enough negative space for UI cropping",
+      lighting: "moody natural light with clear readable forms",
+      palette: "earth, bone, moss, rust, charcoal, ember accents",
+      constraints: `no text, no watermark, no border, no extra creatures, no duplicate limbs, no cropped head. Stats cue: AC ${monster.ac || "-"}, HD ${monster.hd || "-"}, Move ${monster.move || "-"}, Attacks ${monster.attacks || "-"}, Damage ${monster.damage || "-"}, Morale ${monster.morale || "-"}.`,
+      negative: "blurry anatomy, duplicate heads, duplicate arms, modern props, comedic cartoon tone, oversaturated neon",
+    };
+  }
+
+  function formatMonsterArtSpec(spec) {
+    return [
+      `Use case: ${spec.use_case}`,
+      `Subject: ${spec.subject}`,
+      `Scene: ${spec.scene}`,
+      `Primary request: ${spec.prompt}`,
+      `Style: ${spec.style}`,
+      `Composition: ${spec.composition}`,
+      `Lighting: ${spec.lighting}`,
+      `Palette: ${spec.palette}`,
+      `Constraints: ${spec.constraints}`,
+      `Avoid: ${spec.negative}`,
+    ].join("\n");
+  }
+
+  function buildMonsterArtBatchJob(monster) {
+    const spec = buildMonsterArtSpec(monster);
+    return {
+      source: monster.source,
+      monster_name: monster.name,
+      asset_path: monster.artAssetPath,
+      prompt: spec.prompt,
+      out: buildMonsterArtSlug(monster),
+      use_case: spec.use_case,
+      subject: spec.subject,
+      scene: spec.scene,
+      style: spec.style,
+      composition: spec.composition,
+      lighting: spec.lighting,
+      palette: spec.palette,
+      constraints: spec.constraints,
+      negative: spec.negative,
+      size: "1024x1024",
+      quality: "low",
+      output_format: "png",
+    };
+  }
+
   function normalizeMonster(raw) {
     const detail = MONSTER_DETAILS[detailKey(raw.source, raw.name)] || {};
+    const artRecord = MONSTER_ART[detailKey(raw.source, raw.name)] || {};
     const manualTreasure = VERIFIED_TREASURE_OVERRIDES[detailKey(raw.source, raw.name)] || null;
     const rawTreasureType = clean(raw.treasureType);
     const bookTreasureType = clean(detail.normalizedBookTreasureType);
@@ -347,8 +539,7 @@
     const weaponMasteryLevel = usesWeaponAttacks(raw.attacks, raw.damage)
       ? deriveWeaponMasteryLevel(intelligenceScore)
       : "";
-
-    return {
+    const normalized = {
       source: clean(raw.source),
       name: clean(raw.name),
       ac: clean(raw.ac),
@@ -366,7 +557,7 @@
       savingThrows,
       intelligence,
       intelligenceScore,
-      description: sanitizeDescription(detail.description),
+      bookDescription: getUsableBookDescription(detail),
       detailSource: clean(detail.sourceRef),
       detailStatus: clean(detail.detailStatus),
       treasureAuditStatus: manualTreasure
@@ -375,6 +566,17 @@
       treasureNote: manualTreasure ? clean(manualTreasure.note) : "",
       weaponMasteryLevel,
       weaponMasteryText: weaponMasteryLevel ? `${weaponMasteryLevel} with at least 1 weapon` : "",
+    };
+    const derivedSummary = buildDerivedSummary(normalized);
+    const artSpec = buildMonsterArtSpec({ ...normalized, derivedSummary });
+
+    return {
+      ...normalized,
+      derivedSummary,
+      description: normalized.bookDescription || derivedSummary,
+      artAssetPath: clean(artRecord.path) || buildMonsterArtAssetPath(normalized),
+      artRegistered: Boolean(clean(artRecord.path)),
+      artPrompt: formatMonsterArtSpec(artSpec),
     };
   }
 
@@ -886,9 +1088,418 @@
     return parsed;
   }
 
+  function parseMoraleScore(value) {
+    const raw = clean(value);
+    const normalized = raw
+      .toLowerCase()
+      .replaceAll("—", "-")
+      .replaceAll("–", "-")
+      .replaceAll("−", "-");
+
+    if (
+      !normalized
+      || normalized === "-"
+      || normalized === "n/a"
+      || normalized === "na"
+      || normalized === "var"
+      || normalized === "spec"
+    ) {
+      return { raw: raw || "-", score: null };
+    }
+
+    const match = normalized.match(/\d+/);
+    if (!match) {
+      return { raw: raw || "-", score: null };
+    }
+
+    const score = Number.parseInt(match[0], 10);
+    if (!Number.isFinite(score) || Number.isNaN(score) || score < 2 || score > 12) {
+      return { raw: raw || "-", score: null };
+    }
+
+    return { raw: raw || String(score), score };
+  }
+
+  function normalizeMoraleScore(value) {
+    if (value == null || String(value).trim() === "") return null;
+    const parsed = Number.parseInt(String(value), 10);
+    if (!Number.isFinite(parsed) || Number.isNaN(parsed)) return null;
+    return Math.max(2, Math.min(12, parsed));
+  }
+
+  function normalizeReactionModifier(value) {
+    if (value == null || String(value).trim() === "") return 0;
+    const parsed = Number.parseInt(String(value), 10);
+    if (!Number.isFinite(parsed) || Number.isNaN(parsed)) return 0;
+    return parsed;
+  }
+
+  function createReactionState() {
+    return {
+      modifier: 0,
+      carryModifier: 0,
+      history: [],
+    };
+  }
+
+  function createEncounterMoraleState() {
+    return {
+      history: [],
+      firstDeathTriggered: false,
+      halfForceTriggered: false,
+    };
+  }
+
+  function trimHistory(history, limit = 10) {
+    if (!Array.isArray(history)) return [];
+    if (history.length <= limit) return history;
+    history.length = limit;
+    return history;
+  }
+
+  function ensureEncounterState(encounter) {
+    if (!encounter) return;
+
+    if (!encounter.reaction) {
+      encounter.reaction = createReactionState();
+    }
+
+    if (!encounter.morale) {
+      encounter.morale = createEncounterMoraleState();
+    }
+
+    (encounter.combatants || []).forEach((combatant) => {
+      if (!Object.prototype.hasOwnProperty.call(combatant, "moraleScore")) {
+        const parsedMorale = parseMoraleScore(combatant.moraleRaw || encounter.monster?.morale);
+        combatant.moraleScore = parsedMorale.score;
+        combatant.moraleRaw = parsedMorale.raw;
+      }
+
+      if (!combatant.moraleTriggers) {
+        combatant.moraleTriggers = {
+          firstHit: false,
+          quarter: false,
+        };
+      }
+
+      if (!Object.prototype.hasOwnProperty.call(combatant, "moraleLastCheck")) {
+        combatant.moraleLastCheck = null;
+      }
+    });
+  }
+
+  function moraleOutcomeClass(outcome) {
+    if (outcome === "hold") return "tracker-morale-hold";
+    if (outcome === "break") return "tracker-morale-break";
+    return "tracker-morale-unknown";
+  }
+
+  function moraleOutcomeWord(outcome) {
+    if (outcome === "hold") return "Held";
+    if (outcome === "break") return "Broke";
+    return "Needs score";
+  }
+
+  function describeMoraleCheckForUi(check) {
+    if (!check) {
+      return {
+        text: "Not checked",
+        detail: "",
+        className: "tracker-morale-pending",
+      };
+    }
+
+    if (check.outcome === "unknown") {
+      return {
+        text: "Set morale score",
+        detail: check.reason || "",
+        className: "tracker-morale-unknown",
+      };
+    }
+
+    if (check.auto) {
+      return {
+        text: `${moraleOutcomeWord(check.outcome)} automatically`,
+        detail: `${check.reason} (Morale ${check.score})`,
+        className: moraleOutcomeClass(check.outcome),
+      };
+    }
+
+    return {
+      text: `${moraleOutcomeWord(check.outcome)} (${check.rawRoll} vs ${check.score})`,
+      detail: check.reason || "",
+      className: moraleOutcomeClass(check.outcome),
+    };
+  }
+
+  function describeMoraleCheckForLog(entry) {
+    if (!entry) return "No morale result";
+    if (entry.outcome === "unknown") return "Needs morale score";
+    if (entry.auto) return `${moraleOutcomeWord(entry.outcome)} automatically (Morale ${entry.score})`;
+    return `${moraleOutcomeWord(entry.outcome)} on ${entry.rawRoll} vs ${entry.score}`;
+  }
+
+  function formatCombatantMoraleForExport(combatant) {
+    const base = Number.isFinite(combatant.moraleScore)
+      ? String(combatant.moraleScore)
+      : combatant.moraleRaw || "manual";
+    if (!combatant.moraleLastCheck) {
+      return `${base}; not checked`;
+    }
+    return `${base}; ${describeMoraleCheckForLog(combatant.moraleLastCheck)}`;
+  }
+
+  function resetCombatantMoraleState(combatant) {
+    combatant.moraleLastCheck = null;
+    combatant.moraleTriggers = {
+      firstHit: false,
+      quarter: false,
+    };
+  }
+
+  function reactionOutcome(total) {
+    const band = Math.max(2, Math.min(12, total));
+
+    if (band <= 3) {
+      return {
+        label: "Attacks",
+        detail: "Immediate hostility. No parley without leverage.",
+        nextModifier: 0,
+      };
+    }
+
+    if (band <= 6) {
+      return {
+        label: "Aggressive",
+        detail: "Hostile posture. Roll again in one round at -4.",
+        nextModifier: -4,
+      };
+    }
+
+    if (band <= 9) {
+      return {
+        label: "Cautious",
+        detail: "Stands off. Roll again in one round.",
+        nextModifier: 0,
+      };
+    }
+
+    if (band <= 11) {
+      return {
+        label: "Neutral",
+        detail: "Open to words. Roll again in one round at +4.",
+        nextModifier: 4,
+      };
+    }
+
+    return {
+      label: "Friendly",
+      detail: "Friendly or helpful unless provoked.",
+      nextModifier: 0,
+    };
+  }
+
+  function describeReactionModifierBreakdown(entry) {
+    const parts = [];
+    if (entry.baseModifier) {
+      parts.push(`base ${formatSignedNumber(entry.baseModifier)}`);
+    }
+    if (entry.carryModifier) {
+      parts.push(`carry ${formatSignedNumber(entry.carryModifier)}`);
+    }
+    return parts.length ? ` (${parts.join(", ")})` : "";
+  }
+
+  function rollReaction(encounter) {
+    ensureEncounterState(encounter);
+    const baseModifier = normalizeReactionModifier(encounter.reaction.modifier);
+    const carryModifier = normalizeReactionModifier(encounter.reaction.carryModifier);
+    const modifier = baseModifier + carryModifier;
+    const rawRoll = rollDice(2, 6);
+    const total = rawRoll + modifier;
+    const outcome = reactionOutcome(total);
+    const entry = {
+      rawRoll,
+      baseModifier,
+      carryModifier,
+      modifier,
+      total,
+      label: outcome.label,
+      detail: outcome.detail,
+      nextModifier: outcome.nextModifier,
+    };
+
+    encounter.reaction.carryModifier = outcome.nextModifier;
+    encounter.reaction.history.unshift(entry);
+    trimHistory(encounter.reaction.history, 8);
+    return entry;
+  }
+
+  function resolveMoraleCheck(combatant, reason, sharedRoll = null) {
+    const score = normalizeMoraleScore(combatant.moraleScore);
+
+    if (score == null) {
+      return {
+        combatantIndex: combatant.index,
+        reason,
+        score: null,
+        rawRoll: null,
+        outcome: "unknown",
+        auto: false,
+      };
+    }
+
+    if (score <= 2) {
+      return {
+        combatantIndex: combatant.index,
+        reason,
+        score,
+        rawRoll: null,
+        outcome: "break",
+        auto: true,
+      };
+    }
+
+    if (score >= 12) {
+      return {
+        combatantIndex: combatant.index,
+        reason,
+        score,
+        rawRoll: null,
+        outcome: "hold",
+        auto: true,
+      };
+    }
+
+    const rawRoll = Number.isFinite(sharedRoll) ? sharedRoll : rollDice(2, 6);
+    return {
+      combatantIndex: combatant.index,
+      reason,
+      score,
+      rawRoll,
+      outcome: rawRoll <= score ? "hold" : "break",
+      auto: false,
+    };
+  }
+
+  function applySingleMoraleCheck(encounter, combatant, reason) {
+    ensureEncounterState(encounter);
+    const result = resolveMoraleCheck(combatant, reason);
+    combatant.moraleLastCheck = result;
+    encounter.morale.history.unshift({
+      kind: "single",
+      combatantIndex: combatant.index,
+      ...result,
+    });
+    trimHistory(encounter.morale.history, 12);
+    return result;
+  }
+
+  function eligibleMoraleCombatants(encounter) {
+    return (encounter.combatants || []).filter((combatant) => {
+      const currentHp = computeCurrentHp(combatant);
+      return currentHp == null || currentHp > 0;
+    });
+  }
+
+  function applyGroupMoraleCheck(encounter, reason) {
+    ensureEncounterState(encounter);
+    const targets = eligibleMoraleCombatants(encounter);
+    if (!targets.length) return null;
+
+    const requiresRoll = targets.some((combatant) => {
+      const score = normalizeMoraleScore(combatant.moraleScore);
+      return Number.isFinite(score) && score > 2 && score < 12;
+    });
+    const sharedRoll = requiresRoll ? rollDice(2, 6) : null;
+
+    const results = targets.map((combatant) => {
+      const result = resolveMoraleCheck(combatant, reason, sharedRoll);
+      combatant.moraleLastCheck = result;
+      return result;
+    });
+
+    encounter.morale.history.unshift({
+      kind: "group",
+      reason,
+      sharedRoll,
+      results,
+    });
+    trimHistory(encounter.morale.history, 12);
+
+    return {
+      reason,
+      sharedRoll,
+      results,
+    };
+  }
+
+  function formatGroupMoraleSummary(groupResult) {
+    if (!groupResult) return "No morale targets remained.";
+    const rollText = Number.isFinite(groupResult.sharedRoll)
+      ? `shared 2d6 ${groupResult.sharedRoll}`
+      : "automatic morale";
+    return `${groupResult.reason}: ${rollText} for ${groupResult.results.length} monster(s).`;
+  }
+
+  function evaluateMoraleTriggers(encounter, combatant) {
+    ensureEncounterState(encounter);
+    const messages = [];
+    const currentHp = computeCurrentHp(combatant);
+
+    if (combatant.damageTaken > 0 && !combatant.moraleTriggers.firstHit) {
+      combatant.moraleTriggers.firstHit = true;
+      if (currentHp == null || currentHp > 0) {
+        const result = applySingleMoraleCheck(encounter, combatant, "First hit");
+        messages.push(`#${combatant.index}: ${describeMoraleCheckForLog(result)}`);
+      }
+    }
+
+    if (
+      Number.isFinite(combatant.maxHp)
+      && currentHp != null
+      && currentHp > 0
+      && currentHp <= Math.ceil(combatant.maxHp / 4)
+      && !combatant.moraleTriggers.quarter
+    ) {
+      combatant.moraleTriggers.quarter = true;
+      const result = applySingleMoraleCheck(encounter, combatant, "Quarter HP");
+      messages.push(`#${combatant.index}: ${describeMoraleCheckForLog(result)}`);
+    }
+
+    const summary = summarizeCombatants(encounter.combatants || []);
+    let groupReason = "";
+
+    if (!encounter.morale.firstDeathTriggered && summary.down >= 1) {
+      encounter.morale.firstDeathTriggered = true;
+      groupReason = "First death on either side";
+    }
+
+    if (
+      !encounter.morale.halfForceTriggered
+      && summary.rollableCount > 0
+      && summary.down >= Math.ceil(summary.rollableCount / 2)
+    ) {
+      encounter.morale.halfForceTriggered = true;
+      groupReason = groupReason
+        ? `${groupReason}; half the monsters are down`
+        : "Half the monsters are down";
+    }
+
+    if (groupReason) {
+      const groupResult = applyGroupMoraleCheck(encounter, groupReason);
+      if (groupResult) {
+        messages.push(formatGroupMoraleSummary(groupResult));
+      }
+    }
+
+    return messages;
+  }
+
   function buildCombatantsFromRolls(rolls, weaponModel, monster) {
     return rolls.map((roll) => {
       const loadout = rollCombatantLoadout(weaponModel);
+      const parsedMorale = parseMoraleScore(monster.morale);
       return {
         index: roll.index,
         initiative: null,
@@ -905,6 +1516,13 @@
         carriedTreasure: createCarriedTreasure(monster.treasureType),
         weaponMasteryLevel: monster.weaponMasteryLevel || "",
         weaponMasterySlot: monster.weaponMasteryLevel && weaponModel.byWeapon ? "melee" : "",
+        moraleScore: parsedMorale.score,
+        moraleRaw: parsedMorale.raw,
+        moraleLastCheck: null,
+        moraleTriggers: {
+          firstHit: false,
+          quarter: false,
+        },
       };
     });
   }
@@ -1107,6 +1725,7 @@
     $monsterSelect.disabled = disabled;
     $generateBtn.disabled = disabled;
     $randomBtn.disabled = disabled;
+    $exportArtBatchBtn.disabled = disabled;
 
     if (disabled) {
       setStatus("No monsters match the current filter.", "fail");
@@ -1158,6 +1777,8 @@
       hp,
       combatants,
       weaponModel,
+      reaction: createReactionState(),
+      morale: createEncounterMoraleState(),
     };
   }
 
@@ -1251,7 +1872,114 @@
     return `<span class="tracker-mastery-badge">${escapeHtml(combatant.weaponMasteryLevel)}</span>`;
   }
 
+  function renderReactionBox(encounter) {
+    ensureEncounterState(encounter);
+    const reaction = encounter.reaction;
+    const modifierText = reaction.modifier || 0;
+    const carryModifier = normalizeReactionModifier(reaction.carryModifier);
+    const historyItems = reaction.history.length
+      ? reaction.history.map((entry) => {
+        const modifier = entry.modifier ? ` ${formatSignedNumber(entry.modifier)}` : "";
+        const breakdown = describeReactionModifierBreakdown(entry);
+        const nextCarry = entry.nextModifier
+          ? ` Next roll carries ${formatSignedNumber(entry.nextModifier)}.`
+          : "";
+        return `<li><strong>${escapeHtml(entry.label)}</strong> - 2d6 ${entry.rawRoll}${escapeHtml(modifier)} = ${entry.total}${escapeHtml(breakdown)}. ${escapeHtml(entry.detail)}${escapeHtml(nextCarry)}</li>`;
+      }).join("")
+      : "<li>No reaction roll recorded yet.</li>";
+
+    return `
+      <div class="tracker-event-box">
+        <h5>Reaction Roll</h5>
+        <div class="tracker-inline-controls">
+          <label class="tracker-inline-label">
+            Situational modifier
+            <input
+              class="tracker-mini-input tracker-reaction-modifier-input"
+              type="number"
+              step="1"
+              value="${escapeHtml(String(modifierText))}"
+              data-role="reaction-modifier"
+            >
+          </label>
+          <button type="button" class="tracker-mini-btn" data-action="roll-reaction">Roll Reaction</button>
+          <button type="button" class="tracker-mini-btn ghost" data-action="clear-reaction">Clear</button>
+        </div>
+        <p class="tracker-reaction-carry">Current carry-over: <strong>${escapeHtml(formatSignedNumber(carryModifier) || "0")}</strong></p>
+        <ul class="tracker-history-list">${historyItems}</ul>
+      </div>
+    `;
+  }
+
+  function renderMoraleLog(encounter) {
+    ensureEncounterState(encounter);
+    const historyItems = encounter.morale.history.length
+      ? encounter.morale.history.map((entry) => {
+        if (entry.kind === "group") {
+          const rollText = Number.isFinite(entry.sharedRoll)
+            ? `Shared roll ${entry.sharedRoll}`
+            : "Automatic morale";
+          const resultsText = entry.results
+            .map((result) => `#${result.combatantIndex} ${describeMoraleCheckForLog(result).toLowerCase()}`)
+            .join("; ");
+          return `<li><strong>${escapeHtml(entry.reason)}</strong> - ${escapeHtml(rollText)}. ${escapeHtml(resultsText)}</li>`;
+        }
+
+        return `<li><strong>#${entry.combatantIndex}</strong> - ${escapeHtml(entry.reason)}: ${escapeHtml(describeMoraleCheckForLog(entry))}</li>`;
+      }).join("")
+      : "<li>No morale checks recorded yet.</li>";
+
+    return `
+      <div class="tracker-event-box">
+        <h5>Morale Log</h5>
+        <div class="tracker-inline-controls">
+          <button type="button" class="tracker-mini-btn" data-action="check-group-morale">Check Group Morale</button>
+          <button type="button" class="tracker-mini-btn ghost" data-action="clear-morale-log">Clear Log</button>
+        </div>
+        <ul class="tracker-history-list">${historyItems}</ul>
+      </div>
+    `;
+  }
+
+  function renderMoraleCell(combatant) {
+    const moraleState = describeMoraleCheckForUi(combatant.moraleLastCheck);
+    const moraleValue = Number.isFinite(combatant.moraleScore) ? String(combatant.moraleScore) : "";
+    const rawText = combatant.moraleRaw && combatant.moraleRaw !== "-"
+      ? combatant.moraleRaw
+      : "manual";
+
+    return `
+      <div class="tracker-morale-cell">
+        <div class="tracker-morale-controls">
+          <input
+            class="tracker-mini-input tracker-morale-score-input"
+            type="number"
+            min="2"
+            max="12"
+            step="1"
+            value="${escapeHtml(moraleValue)}"
+            data-combatant-index="${combatant.index}"
+            placeholder="2-12"
+          >
+          <button type="button" class="tracker-row-btn" data-action="check-morale" data-combatant-index="${combatant.index}">Check morale</button>
+        </div>
+        <div class="tracker-morale-meta">Base: ${escapeHtml(rawText)}</div>
+        <div
+          class="tracker-morale-result ${moraleState.className}"
+          data-role="morale-result"
+          data-combatant-index="${combatant.index}"
+        >${escapeHtml(moraleState.text)}</div>
+        <div
+          class="tracker-morale-detail"
+          data-role="morale-detail"
+          data-combatant-index="${combatant.index}"
+        >${escapeHtml(moraleState.detail)}</div>
+      </div>
+    `;
+  }
+
   function renderCombatTracker(encounter) {
+    ensureEncounterState(encounter);
     const combatants = encounter.combatants || [];
     if (!combatants.length) return "";
 
@@ -1344,6 +2072,7 @@
                 data-combatant-index="${combatant.index}"
               >${state.statusText}</span>
             </td>
+            <td>${renderMoraleCell(combatant)}</td>
             <td>
               <textarea
                 class="tracker-note-input"
@@ -1376,6 +2105,10 @@
           <button type="button" class="tracker-mini-btn" data-action="reset-damage">Reset Damage</button>
           <button type="button" class="tracker-mini-btn ghost" data-action="clear-notes">Clear Notes</button>
         </div>
+        <div class="tracker-event-grid">
+          ${renderReactionBox(encounter)}
+          ${renderMoraleLog(encounter)}
+        </div>
         <div class="tracker-table-wrap">
           <table class="tracker-table">
             <thead>
@@ -1389,6 +2122,7 @@
                 <th>Damage</th>
                 <th>Current HP</th>
                 <th>Status</th>
+                <th>Morale</th>
                 <th>Notes</th>
               </tr>
             </thead>
@@ -1403,19 +2137,38 @@
   }
 
   function updateCombatantRowInDom(combatant) {
+    const state = combatantState(combatant);
     const currentEl = $resultPanel.querySelector(
       `[data-role="current-hp"][data-combatant-index="${combatant.index}"]`
     );
     const statusEl = $resultPanel.querySelector(
       `[data-role="status-text"][data-combatant-index="${combatant.index}"]`
     );
-    if (!currentEl || !statusEl) return;
+    const moraleEl = $resultPanel.querySelector(
+      `[data-role="morale-result"][data-combatant-index="${combatant.index}"]`
+    );
+    const moraleDetailEl = $resultPanel.querySelector(
+      `[data-role="morale-detail"][data-combatant-index="${combatant.index}"]`
+    );
 
-    const state = combatantState(combatant);
-    currentEl.textContent = state.currentText;
-    currentEl.className = `tracker-current ${state.statusClass}`;
-    statusEl.textContent = state.statusText;
-    statusEl.className = `tracker-status ${state.statusClass}`;
+    if (currentEl) {
+      currentEl.textContent = state.currentText;
+      currentEl.className = `tracker-current ${state.statusClass}`;
+    }
+
+    if (statusEl) {
+      statusEl.textContent = state.statusText;
+      statusEl.className = `tracker-status ${state.statusClass}`;
+    }
+
+    if (moraleEl) {
+      const moraleState = describeMoraleCheckForUi(combatant.moraleLastCheck);
+      moraleEl.textContent = moraleState.text;
+      moraleEl.className = `tracker-morale-result ${moraleState.className}`;
+      if (moraleDetailEl) {
+        moraleDetailEl.textContent = moraleState.detail;
+      }
+    }
   }
 
   function refreshTrackerSummaryInDom(encounter) {
@@ -1449,23 +2202,96 @@
   }
 
   function renderDescriptionBox(monster) {
-    const body = monster.description
-      ? `<p>${escapeHtml(monster.description)}</p>`
-      : "<p>No usable book description has been loaded for this monster yet.</p>";
-    const source = monster.detailSource
-      ? `<p class="detail-source"><strong>Detail Source:</strong> ${escapeHtml(monster.detailSource)}</p>`
+    const bookSection = monster.bookDescription
+      ? `
+        <div class="detail-section">
+          <h5>Book Description</h5>
+          <p>${escapeHtml(monster.bookDescription)}</p>
+          ${monster.detailSource
+            ? `<p class="detail-source"><strong>Detail Source:</strong> ${escapeHtml(monster.detailSource)}</p>`
+            : ""}
+        </div>
+      `
       : "";
+    const showQuickSummaryOpen = !monster.bookDescription || monster.bookDescription.length < 360;
+    const quickProfileTitle = monster.bookDescription ? "Quick Summary" : "Quick Profile";
+    const quickProfileSection = monster.bookDescription && !showQuickSummaryOpen
+      ? `
+        <details class="detail-summary-details">
+          <summary>${escapeHtml(quickProfileTitle)}</summary>
+          <p>${escapeHtml(monster.derivedSummary || "No quick profile available.")}</p>
+        </details>
+      `
+      : `
+        <div class="detail-section">
+          <h5>${escapeHtml(quickProfileTitle)}</h5>
+          <p>${escapeHtml(monster.derivedSummary || "No quick profile available.")}</p>
+        </div>
+      `;
 
     return `
       <div class="detail-box">
         <h4>Description</h4>
-        ${body}
-        ${source}
+        ${bookSection}
+        ${quickProfileSection}
+      </div>
+    `;
+  }
+
+  function renderArtBox(monster) {
+    if (!monster.artRegistered) {
+      return `
+        <div class="art-box art-box-compact">
+          <h4>Monster Art</h4>
+          <p class="art-note">No local art is registered for this monster yet.</p>
+          <p class="art-note"><strong>Expected file:</strong> <code>${escapeHtml(monster.artAssetPath)}</code></p>
+          <div class="art-actions">
+            <button type="button" class="tracker-mini-btn" data-action="download-art-prompt">Download Art Prompt</button>
+          </div>
+          <details class="art-prompt-details">
+            <summary>Show art prompt</summary>
+            <pre class="art-prompt-text">${escapeHtml(monster.artPrompt)}</pre>
+          </details>
+        </div>
+      `;
+    }
+
+    const artVisual = monster.artRegistered
+      ? `
+        <img
+          class="monster-art"
+          src="${escapeHtml(monster.artAssetPath)}"
+          alt="${escapeHtml(`${monster.name} reference art`)}"
+          loading="lazy"
+        >
+      `
+      : "";
+
+    return `
+      <div class="art-box">
+        <h4>Monster Art</h4>
+        <div class="art-layout">
+          <div class="art-frame" data-loaded="${monster.artRegistered ? "true" : "false"}">
+            ${artVisual}
+          </div>
+          <div class="art-meta">
+            <p><strong>Local asset:</strong> <code>${escapeHtml(monster.artAssetPath)}</code></p>
+            <p class="art-note">Use <strong>Export Art Batch</strong> to create JSONL prompts for the currently visible monster selection, then register finished files in <code>monster-art.js</code>.</p>
+            <div class="art-actions">
+              <button type="button" class="tracker-mini-btn" data-action="download-art-prompt">Download Art Prompt</button>
+            </div>
+            <details class="art-prompt-details">
+              <summary>Show art prompt</summary>
+              <pre class="art-prompt-text">${escapeHtml(monster.artPrompt)}</pre>
+            </details>
+          </div>
+        </div>
       </div>
     `;
   }
 
   function renderEncounter(encounter) {
+    ensureEncounterState(encounter);
     const monster = encounter.monster;
     const treasureText = monster.treasureType && monster.treasureType.toLowerCase() !== "nil"
       ? monster.treasureType
@@ -1501,6 +2327,7 @@
         </div>
 
         ${renderDescriptionBox(monster)}
+        ${renderArtBox(monster)}
         ${renderHpBox(encounter)}
         ${renderCombatTracker(encounter)}
 
@@ -1530,7 +2357,45 @@
     )}${pad(date.getMinutes())}`;
   }
 
+  function downloadTextFile(filename, content, mimeType = "text/plain;charset=utf-8") {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function buildArtBatchJsonl(monsterList) {
+    return monsterList
+      .map((monster) => JSON.stringify(buildMonsterArtBatchJob(monster)))
+      .join("\n");
+  }
+
+  function downloadArtBatch(monsterList) {
+    const stamp = stampForFile(new Date());
+    const sourcePart = slugify($sourceFilter.value === "all" ? "all-sources" : $sourceFilter.value) || "all-sources";
+    const categoryPart = slugify($categoryFilter.value === "all" ? "all-categories" : $categoryFilter.value) || "all-categories";
+    const filename = `becmi-monster-art-batch-${sourcePart}-${categoryPart}-${monsterList.length}-${stamp}.jsonl`;
+    const content = buildArtBatchJsonl(monsterList);
+
+    downloadTextFile(filename, content, "application/x-ndjson;charset=utf-8");
+    setStatus(`Art batch exported for ${monsterList.length} monster types. Output dir hint: ${ART_EXPORT_OUTPUT_DIR}`, "ok");
+  }
+
+  function downloadMonsterArtPrompt(monster) {
+    const filename = `becmi-monster-art-prompt-${buildMonsterArtSlug(monster)}.txt`;
+    downloadTextFile(filename, monster.artPrompt);
+    setStatus(`Art prompt downloaded for ${monster.name}.`, "ok");
+  }
+
   function buildMarkdown(encounter) {
+    ensureEncounterState(encounter);
     const monster = encounter.monster;
     const lines = [];
     const generatedAtIso = encounter.generatedAt.toISOString();
@@ -1575,7 +2440,24 @@
 
     lines.push("## Description");
     lines.push("");
-    lines.push(monster.description || "No usable book description has been loaded for this monster yet.");
+    if (monster.bookDescription) {
+      lines.push("### Book Description");
+      lines.push("");
+      lines.push(monster.bookDescription);
+      lines.push("");
+    }
+    lines.push(`### ${monster.bookDescription ? "Quick Summary" : "Quick Profile"}`);
+    lines.push("");
+    lines.push(monster.derivedSummary || "No quick profile available.");
+    lines.push("");
+
+    lines.push("## Art");
+    lines.push("");
+    lines.push(`- Local asset path: ${monster.artAssetPath}`);
+    lines.push("");
+    lines.push("```text");
+    lines.push(monster.artPrompt);
+    lines.push("```");
     lines.push("");
 
     lines.push("## Hit Points");
@@ -1615,10 +2497,11 @@
         ? ` | Loot: ${combatant.carriedTreasure.detailLines.join(" ; ")}`
         : "";
       const mastery = combatant.weaponMasteryLevel ? ` | Mastery ${combatant.weaponMasteryLevel}` : "";
+      const morale = ` | Morale ${formatCombatantMoraleForExport(combatant)}`;
       const rollNote = combatant.rollNote ? ` | Roll-note: ${combatant.rollNote}` : "";
       const note = combatant.note ? ` | Note: ${combatant.note.replaceAll("\n", " ")}` : "";
       lines.push(
-        `- #${combatant.index}: Init ${initiativeText}, Max ${maxHpText}, Melee ${meleeWeapon} (${meleeDamage}), Ranged ${rangedWeapon} (${rangedDamage}), Carried ${carriedText}, Damage ${combatant.damageTaken}, Current ${currentText} [${combatant.formula}]${mastery}${rollNote}${carriedDetails}${note}`
+        `- #${combatant.index}: Init ${initiativeText}, Max ${maxHpText}, Melee ${meleeWeapon} (${meleeDamage}), Ranged ${rangedWeapon} (${rangedDamage}), Carried ${carriedText}, Damage ${combatant.damageTaken}, Current ${currentText} [${combatant.formula}]${mastery}${morale}${rollNote}${carriedDetails}${note}`
       );
     });
     if ((encounter.combatants || []).length > exportCombatants.length) {
@@ -1627,6 +2510,48 @@
       );
     }
     lines.push("");
+
+    lines.push("## Reaction and Morale");
+    lines.push("");
+    if (encounter.reaction?.history?.length) {
+      lines.push("### Reaction history");
+      lines.push("");
+      encounter.reaction.history.forEach((entry) => {
+        const modifier = entry.modifier ? ` ${formatSignedNumber(entry.modifier)}` : "";
+        const breakdown = describeReactionModifierBreakdown(entry);
+        const nextCarry = entry.nextModifier
+          ? ` Next roll carries ${formatSignedNumber(entry.nextModifier)}.`
+          : "";
+        lines.push(`- ${entry.label}: 2d6 ${entry.rawRoll}${modifier} = ${entry.total}${breakdown}. ${entry.detail}${nextCarry}`);
+      });
+      lines.push("");
+    } else {
+      lines.push("- No reaction roll recorded.");
+      lines.push("");
+    }
+
+    if (encounter.morale?.history?.length) {
+      lines.push("### Morale log");
+      lines.push("");
+      encounter.morale.history.forEach((entry) => {
+        if (entry.kind === "group") {
+          const rollText = Number.isFinite(entry.sharedRoll)
+            ? `shared roll ${entry.sharedRoll}`
+            : "automatic morale";
+          const resultsText = entry.results
+            .map((result) => `#${result.combatantIndex} ${describeMoraleCheckForLog(result).toLowerCase()}`)
+            .join("; ");
+          lines.push(`- ${entry.reason}: ${rollText}. ${resultsText}`);
+          return;
+        }
+
+        lines.push(`- #${entry.combatantIndex} ${entry.reason}: ${describeMoraleCheckForLog(entry)}`);
+      });
+      lines.push("");
+    } else {
+      lines.push("- No morale checks recorded.");
+      lines.push("");
+    }
 
     lines.push("## XP");
     lines.push("");
@@ -1651,17 +2576,7 @@
     const filename = `becmi-encounter-${slug}-${encounter.count}-${stamp}.md`;
     const content = buildMarkdown(encounter);
 
-    const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    downloadTextFile(filename, content, "text/markdown;charset=utf-8");
     setStatus(`Markdown exported: ${filename}`, "ok");
   }
 
@@ -1674,6 +2589,11 @@
 
   function handleTrackerInput(target) {
     if (!lastEncounter) return;
+
+    if (target.classList.contains("tracker-reaction-modifier-input")) {
+      lastEncounter.reaction.modifier = normalizeReactionModifier(target.value);
+      return;
+    }
 
     if (target.classList.contains("tracker-melee-weapon-input")) {
       const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
@@ -1712,6 +2632,14 @@
       return;
     }
 
+    if (target.classList.contains("tracker-morale-score-input")) {
+      const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
+      if (!combatant) return;
+      combatant.moraleScore = normalizeMoraleScore(target.value);
+      updateCombatantRowInDom(combatant);
+      return;
+    }
+
     if (target.classList.contains("tracker-note-input")) {
       const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
       if (!combatant) return;
@@ -1721,12 +2649,34 @@
 
   function handleTrackerChange(target) {
     if (!lastEncounter) return;
+
+    if (target.classList.contains("tracker-reaction-modifier-input")) {
+      lastEncounter.reaction.modifier = normalizeReactionModifier(target.value);
+      target.value = String(lastEncounter.reaction.modifier);
+      return;
+    }
+
+    if (target.classList.contains("tracker-morale-score-input")) {
+      const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
+      if (!combatant) return;
+      combatant.moraleScore = normalizeMoraleScore(target.value);
+      target.value = combatant.moraleScore == null ? "" : String(combatant.moraleScore);
+      updateCombatantRowInDom(combatant);
+      return;
+    }
+
     if (!target.classList.contains("tracker-damage-input")) return;
 
     const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
     if (!combatant) return;
     combatant.damageTaken = normalizeDamageValue(target.value);
     target.value = String(combatant.damageTaken);
+    const messages = evaluateMoraleTriggers(lastEncounter, combatant);
+    if (messages.length) {
+      renderEncounter(lastEncounter);
+      setStatus(`Auto morale: ${messages.join(" | ")}`, "ok");
+      return;
+    }
     updateCombatantRowInDom(combatant);
     refreshTrackerSummaryInDom(lastEncounter);
   }
@@ -1735,6 +2685,28 @@
     if (!lastEncounter) return;
     const action = target.dataset.action;
     if (!action) return;
+
+    if (action === "download-art-prompt") {
+      downloadMonsterArtPrompt(lastEncounter.monster);
+      return;
+    }
+
+    if (action === "roll-reaction") {
+      const result = rollReaction(lastEncounter);
+      renderEncounter(lastEncounter);
+      const carryText = result.nextModifier
+        ? ` Next roll carries ${formatSignedNumber(result.nextModifier)}.`
+        : "";
+      setStatus(`Reaction rolled: ${result.label} on 2d6 ${result.rawRoll}${result.modifier ? ` ${formatSignedNumber(result.modifier)}` : ""} = ${result.total}.${carryText}`, "ok");
+      return;
+    }
+
+    if (action === "clear-reaction") {
+      lastEncounter.reaction = createReactionState();
+      renderEncounter(lastEncounter);
+      setStatus("Reaction history cleared.", "ok");
+      return;
+    }
 
     if (action === "roll-initiative") {
       lastEncounter.combatants.forEach((combatant) => {
@@ -1789,9 +2761,11 @@
     if (action === "reset-damage") {
       lastEncounter.combatants.forEach((combatant) => {
         combatant.damageTaken = 0;
+        resetCombatantMoraleState(combatant);
       });
+      lastEncounter.morale = createEncounterMoraleState();
       renderEncounter(lastEncounter);
-      setStatus("Damage reset for all monsters in the tracker.", "ok");
+      setStatus("Damage and auto-morale state reset for all monsters in the tracker.", "ok");
       return;
     }
 
@@ -1801,6 +2775,36 @@
       });
       renderEncounter(lastEncounter);
       setStatus("Notes cleared for all monsters in the tracker.", "ok");
+      return;
+    }
+
+    if (action === "check-morale") {
+      const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
+      if (!combatant) return;
+      const result = applySingleMoraleCheck(lastEncounter, combatant, "Manual check");
+      renderEncounter(lastEncounter);
+      setStatus(`Morale for #${combatant.index}: ${describeMoraleCheckForLog(result)}.`, result.outcome === "break" ? "fail" : "ok");
+      return;
+    }
+
+    if (action === "check-group-morale") {
+      const groupResult = applyGroupMoraleCheck(lastEncounter, "Manual group check");
+      renderEncounter(lastEncounter);
+      if (!groupResult) {
+        setStatus("No living monsters remained for a group morale check.", "fail");
+        return;
+      }
+      setStatus(formatGroupMoraleSummary(groupResult), "ok");
+      return;
+    }
+
+    if (action === "clear-morale-log") {
+      lastEncounter.morale.history = [];
+      lastEncounter.combatants.forEach((combatant) => {
+        combatant.moraleLastCheck = null;
+      });
+      renderEncounter(lastEncounter);
+      setStatus("Morale log cleared. Trigger flags remain armed from current damage.", "ok");
     }
   }
 
@@ -1877,6 +2881,14 @@
       hideError();
       downloadMarkdown(lastEncounter);
     });
+    $exportArtBatchBtn.addEventListener("click", () => {
+      if (!visibleMonsters.length) {
+        showError("No monsters match your current filter.");
+        return;
+      }
+      hideError();
+      downloadArtBatch(visibleMonsters);
+    });
 
     $countInput.addEventListener("input", () => {
       hideError();
@@ -1902,6 +2914,7 @@
       showError("Monster data could not be loaded.");
       $generateBtn.disabled = true;
       $randomBtn.disabled = true;
+      $exportArtBatchBtn.disabled = true;
       return;
     }
 

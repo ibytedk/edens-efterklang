@@ -1,0 +1,4 @@
+interface:
+  display_name: "C&C Miniature Generator"
+  short_description: "Generate and save miniature images"
+  default_prompt: "Use $chatgpt-c-c-miniature-generator to generate and save a Creatures & Chronicles miniature image from the ChatGPT project."

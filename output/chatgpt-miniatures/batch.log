@@ -1,0 +1,97 @@
+[2026-03-30T18:13:51.029Z] Launching browser. headless=false. Items selected=1.
+[2026-03-30T18:13:52.796Z] Generating rules-cyclopedia--bat-normal
+[2026-03-30T18:14:26.712Z] Failed rules-cyclopedia--bat-normal: TimeoutError: locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('textbox', { name: /New chat in C&C/i }).first() to be visible[22m
+
+[2026-03-30T18:14:28.031Z] Finished batch. completed=0, failed=1
+[2026-03-30T18:15:27.235Z] Launching browser. headless=false. Items selected=1.
+[2026-03-30T18:15:29.157Z] Generating rules-cyclopedia--bat-normal
+[2026-03-30T18:15:33.407Z] Failed rules-cyclopedia--bat-normal: Error: Project page did not load correctly. Current URL: https://chatgpt.com/
+[2026-03-30T18:15:33.629Z] Finished batch. completed=0, failed=1
+[2026-03-30T21:08:29.493Z] Launching browser. headless=true. Items selected=1.
+[2026-03-30T21:08:32.907Z] Generating rules-cyclopedia--chimera
+[2026-03-30T21:12:18.721Z] Failed rules-cyclopedia--chimera: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-30T21:12:19.899Z] Finished batch. completed=0, failed=1
+[2026-03-30T22:03:37.287Z] Launching browser. headless=true. Items selected=8.
+[2026-03-30T22:03:38.798Z] Generating rules-cyclopedia--bugbear
+[2026-03-30T22:07:24.604Z] Failed rules-cyclopedia--bugbear: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-30T22:07:25.815Z] Generating rules-cyclopedia--caecilia
+[2026-03-30T22:11:11.453Z] Failed rules-cyclopedia--caecilia: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-30T22:11:12.605Z] Generating rules-cyclopedia--centipede-giant
+[2026-03-30T22:14:58.176Z] Failed rules-cyclopedia--centipede-giant: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-30T22:14:59.116Z] Generating rules-cyclopedia--chimera
+[2026-03-30T22:18:44.708Z] Failed rules-cyclopedia--chimera: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-30T22:18:45.185Z] Generating rules-cyclopedia--cockatrice
+[2026-03-30T22:22:30.823Z] Failed rules-cyclopedia--cockatrice: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-30T22:22:31.976Z] Generating rules-cyclopedia--crab-giant
+[2026-03-30T22:26:17.551Z] Failed rules-cyclopedia--crab-giant: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-30T22:26:18.489Z] Generating rules-cyclopedia--crocodile-normal
+[2026-03-31T00:03:18.101Z] Launching browser. headless=false. Items selected=8.
+[2026-03-31T00:03:20.353Z] Generating rules-cyclopedia--bugbear
+[2026-03-31T00:06:40.136Z] Failed rules-cyclopedia--bugbear: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T00:06:41.119Z] Generating rules-cyclopedia--caecilia
+[2026-03-31T00:10:26.716Z] Failed rules-cyclopedia--caecilia: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T00:10:27.752Z] Generating rules-cyclopedia--centipede-giant
+[2026-03-31T00:14:13.451Z] Failed rules-cyclopedia--centipede-giant: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T00:14:14.555Z] Generating rules-cyclopedia--chimera
+[2026-03-31T00:18:00.768Z] Failed rules-cyclopedia--chimera: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T00:18:01.745Z] Generating rules-cyclopedia--cockatrice
+[2026-03-31T00:21:47.873Z] Failed rules-cyclopedia--cockatrice: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T00:21:48.813Z] Generating rules-cyclopedia--crab-giant
+[2026-03-31T00:25:34.961Z] Failed rules-cyclopedia--crab-giant: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T00:25:35.915Z] Generating rules-cyclopedia--crocodile-normal
+[2026-03-31T00:29:21.487Z] Failed rules-cyclopedia--crocodile-normal: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T00:29:22.538Z] Generating rules-cyclopedia--crocodile-large
+[2026-03-31T01:02:35.685Z] Launching browser. headless=false. Items selected=1.
+[2026-03-31T01:02:37.940Z] Generating rules-cyclopedia--bugbear
+[2026-03-31T01:02:44.073Z] Launching browser. headless=true. Items selected=8.
+[2026-03-31T01:02:45.280Z] Generating rules-cyclopedia--bugbear
+[2026-03-31T01:05:57.131Z] Failed rules-cyclopedia--bugbear: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T01:05:58.402Z] Finished batch. completed=0, failed=1
+[2026-03-31T01:06:31.450Z] Failed rules-cyclopedia--bugbear: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T01:06:32.648Z] Generating rules-cyclopedia--caecilia
+[2026-03-31T01:10:18.761Z] Failed rules-cyclopedia--caecilia: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T01:10:19.708Z] Generating rules-cyclopedia--centipede-giant
+[2026-03-31T01:14:05.810Z] Failed rules-cyclopedia--centipede-giant: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T01:14:06.843Z] Generating rules-cyclopedia--chimera
+[2026-03-31T01:17:53.009Z] Failed rules-cyclopedia--chimera: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T01:17:54.090Z] Generating rules-cyclopedia--cockatrice
+[2026-03-31T01:21:40.247Z] Failed rules-cyclopedia--cockatrice: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T01:21:41.151Z] Generating rules-cyclopedia--crab-giant
+[2026-03-31T01:25:27.356Z] Failed rules-cyclopedia--crab-giant: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T01:25:28.325Z] Generating rules-cyclopedia--crocodile-normal
+[2026-03-31T01:29:14.389Z] Failed rules-cyclopedia--crocodile-normal: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T01:29:15.318Z] Generating rules-cyclopedia--crocodile-large
+[2026-03-31T02:05:17.523Z] Launching browser. headless=false. Items selected=8.
+[2026-03-31T02:05:19.674Z] Generating rules-cyclopedia--bugbear
+[2026-03-31T02:08:39.144Z] Failed rules-cyclopedia--bugbear: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T02:08:40.083Z] Generating rules-cyclopedia--caecilia
+[2026-03-31T02:12:26.432Z] Failed rules-cyclopedia--caecilia: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T02:12:27.404Z] Generating rules-cyclopedia--centipede-giant
+[2026-03-31T02:16:13.629Z] Failed rules-cyclopedia--centipede-giant: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T02:16:14.615Z] Generating rules-cyclopedia--chimera
+[2026-03-31T02:20:00.743Z] Failed rules-cyclopedia--chimera: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T02:20:01.715Z] Generating rules-cyclopedia--cockatrice
+[2026-03-31T02:23:47.827Z] Failed rules-cyclopedia--cockatrice: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T02:23:48.790Z] Generating rules-cyclopedia--crab-giant
+[2026-03-31T02:27:34.814Z] Failed rules-cyclopedia--crab-giant: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T02:27:35.707Z] Generating rules-cyclopedia--crocodile-normal
+[2026-03-31T06:03:57.250Z] Launching browser. headless=true. Items selected=8.
+[2026-03-31T06:03:58.845Z] Generating rules-cyclopedia--bugbear
+[2026-03-31T06:07:45.094Z] Failed rules-cyclopedia--bugbear: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T06:07:46.101Z] Generating rules-cyclopedia--caecilia
+[2026-03-31T06:11:32.193Z] Failed rules-cyclopedia--caecilia: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T06:11:33.613Z] Generating rules-cyclopedia--centipede-giant
+[2026-03-31T06:15:19.935Z] Failed rules-cyclopedia--centipede-giant: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T06:15:20.897Z] Generating rules-cyclopedia--chimera
+[2026-03-31T06:19:07.066Z] Failed rules-cyclopedia--chimera: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T06:19:08.066Z] Generating rules-cyclopedia--cockatrice
+[2026-03-31T06:22:54.150Z] Failed rules-cyclopedia--cockatrice: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T06:22:55.155Z] Generating rules-cyclopedia--crab-giant
+[2026-03-31T06:26:41.205Z] Failed rules-cyclopedia--crab-giant: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T06:26:42.213Z] Generating rules-cyclopedia--crocodile-normal
+[2026-03-31T06:30:28.320Z] Failed rules-cyclopedia--crocodile-normal: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T06:30:29.325Z] Generating rules-cyclopedia--crocodile-large
+[2026-03-31T06:34:14.906Z] Failed rules-cyclopedia--crocodile-large: Error: Project page did not load correctly. Current URL: https://chatgpt.com/g/g-p-695525e12e4481918efda89f0809b1ed-c-c-miniature-figure-generator/project
+[2026-03-31T06:34:16.037Z] Finished batch. completed=0, failed=8
