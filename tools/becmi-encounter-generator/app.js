@@ -1150,6 +1150,17 @@
     };
   }
 
+  function isCombatantMoraleBroken(combatant) {
+    return combatant?.moraleBroken === true;
+  }
+
+  function setCombatantMoraleResult(combatant, result) {
+    combatant.moraleLastCheck = result;
+    if (result?.outcome === "break") {
+      combatant.moraleBroken = true;
+    }
+  }
+
   function trimHistory(history, limit = 10) {
     if (!Array.isArray(history)) return [];
     if (history.length <= limit) return history;
@@ -1185,6 +1196,10 @@
       if (!Object.prototype.hasOwnProperty.call(combatant, "moraleLastCheck")) {
         combatant.moraleLastCheck = null;
       }
+
+      if (!Object.prototype.hasOwnProperty.call(combatant, "moraleBroken")) {
+        combatant.moraleBroken = combatant.moraleLastCheck?.outcome === "break";
+      }
     });
   }
 
@@ -1200,7 +1215,15 @@
     return "Needs score";
   }
 
-  function describeMoraleCheckForUi(check) {
+  function describeMoraleCheckForUi(check, combatant = null) {
+    if (isCombatantMoraleBroken(combatant) && (!check || check.outcome !== "break")) {
+      return {
+        text: "Broken",
+        detail: "Fleeing or surrendering for the rest of this fight",
+        className: "tracker-morale-break",
+      };
+    }
+
     if (!check) {
       return {
         text: "Not checked",
@@ -1218,16 +1241,23 @@
     }
 
     if (check.auto) {
+      const detail = check.outcome === "break"
+        ? `${check.reason} (Morale ${check.score}); broken for rest of fight`
+        : `${check.reason} (Morale ${check.score})`;
       return {
         text: `${moraleOutcomeWord(check.outcome)} automatically`,
-        detail: `${check.reason} (Morale ${check.score})`,
+        detail,
         className: moraleOutcomeClass(check.outcome),
       };
     }
 
+    const detail = check.outcome === "break"
+      ? [check.reason, "broken for rest of fight"].filter(Boolean).join("; ")
+      : check.reason || "";
+
     return {
       text: `${moraleOutcomeWord(check.outcome)} (${check.rawRoll} vs ${check.score})`,
-      detail: check.reason || "",
+      detail,
       className: moraleOutcomeClass(check.outcome),
     };
   }
@@ -1235,8 +1265,9 @@
   function describeMoraleCheckForLog(entry) {
     if (!entry) return "No morale result";
     if (entry.outcome === "unknown") return "Needs morale score";
-    if (entry.auto) return `${moraleOutcomeWord(entry.outcome)} automatically (Morale ${entry.score})`;
-    return `${moraleOutcomeWord(entry.outcome)} on ${entry.rawRoll} vs ${entry.score}`;
+    const suffix = entry.outcome === "break" ? "; broken for rest of fight" : "";
+    if (entry.auto) return `${moraleOutcomeWord(entry.outcome)} automatically (Morale ${entry.score})${suffix}`;
+    return `${moraleOutcomeWord(entry.outcome)} on ${entry.rawRoll} vs ${entry.score}${suffix}`;
   }
 
   function formatCombatantMoraleForExport(combatant) {
@@ -1244,6 +1275,9 @@
       ? String(combatant.moraleScore)
       : combatant.moraleRaw || "manual";
     if (!combatant.moraleLastCheck) {
+      if (isCombatantMoraleBroken(combatant)) {
+        return `${base}; broken for rest of fight`;
+      }
       return `${base}; not checked`;
     }
     return `${base}; ${describeMoraleCheckForLog(combatant.moraleLastCheck)}`;
@@ -1251,6 +1285,7 @@
 
   function resetCombatantMoraleState(combatant) {
     combatant.moraleLastCheck = null;
+    combatant.moraleBroken = false;
     combatant.moraleTriggers = {
       firstHit: false,
       quarter: false,
@@ -1384,8 +1419,10 @@
 
   function applySingleMoraleCheck(encounter, combatant, reason) {
     ensureEncounterState(encounter);
+    if (isCombatantMoraleBroken(combatant)) return null;
+
     const result = resolveMoraleCheck(combatant, reason);
-    combatant.moraleLastCheck = result;
+    setCombatantMoraleResult(combatant, result);
     encounter.morale.history.unshift({
       kind: "single",
       combatantIndex: combatant.index,
@@ -1398,7 +1435,7 @@
   function eligibleMoraleCombatants(encounter) {
     return (encounter.combatants || []).filter((combatant) => {
       const currentHp = computeCurrentHp(combatant);
-      return currentHp == null || currentHp > 0;
+      return !isCombatantMoraleBroken(combatant) && (currentHp == null || currentHp > 0);
     });
   }
 
@@ -1415,7 +1452,7 @@
 
     const results = targets.map((combatant) => {
       const result = resolveMoraleCheck(combatant, reason, sharedRoll);
-      combatant.moraleLastCheck = result;
+      setCombatantMoraleResult(combatant, result);
       return result;
     });
 
@@ -1435,28 +1472,32 @@
   }
 
   function formatGroupMoraleSummary(groupResult) {
-    if (!groupResult) return "No morale targets remained.";
+    if (!groupResult) return "No unbroken morale targets remained.";
     const rollText = Number.isFinite(groupResult.sharedRoll)
       ? `shared 2d6 ${groupResult.sharedRoll}`
       : "automatic morale";
-    return `${groupResult.reason}: ${rollText} for ${groupResult.results.length} monster(s).`;
+    return `${groupResult.reason}: ${rollText} for ${groupResult.results.length} unbroken monster(s).`;
   }
 
   function evaluateMoraleTriggers(encounter, combatant) {
     ensureEncounterState(encounter);
     const messages = [];
     const currentHp = computeCurrentHp(combatant);
+    const canCheckThisCombatant = !isCombatantMoraleBroken(combatant);
 
-    if (combatant.damageTaken > 0 && !combatant.moraleTriggers.firstHit) {
+    if (canCheckThisCombatant && combatant.damageTaken > 0 && !combatant.moraleTriggers.firstHit) {
       combatant.moraleTriggers.firstHit = true;
       if (currentHp == null || currentHp > 0) {
         const result = applySingleMoraleCheck(encounter, combatant, "First hit");
-        messages.push(`#${combatant.index}: ${describeMoraleCheckForLog(result)}`);
+        if (result) {
+          messages.push(`#${combatant.index}: ${describeMoraleCheckForLog(result)}`);
+        }
       }
     }
 
     if (
-      Number.isFinite(combatant.maxHp)
+      canCheckThisCombatant
+      && Number.isFinite(combatant.maxHp)
       && currentHp != null
       && currentHp > 0
       && currentHp <= Math.ceil(combatant.maxHp / 4)
@@ -1464,7 +1505,9 @@
     ) {
       combatant.moraleTriggers.quarter = true;
       const result = applySingleMoraleCheck(encounter, combatant, "Quarter HP");
-      messages.push(`#${combatant.index}: ${describeMoraleCheckForLog(result)}`);
+      if (result) {
+        messages.push(`#${combatant.index}: ${describeMoraleCheckForLog(result)}`);
+      }
     }
 
     const summary = summarizeCombatants(encounter.combatants || []);
@@ -1519,6 +1562,7 @@
         moraleScore: parsedMorale.score,
         moraleRaw: parsedMorale.raw,
         moraleLastCheck: null,
+        moraleBroken: false,
         moraleTriggers: {
           firstHit: false,
           quarter: false,
@@ -1583,6 +1627,9 @@
     }
     if (currentHp <= 0) {
       return { currentText: String(currentHp), statusText: "Dead", statusClass: "tracker-status-dead" };
+    }
+    if (isCombatantMoraleBroken(combatant)) {
+      return { currentText: String(currentHp), statusText: "Broken", statusClass: "tracker-status-broken" };
     }
     if (currentHp <= Math.ceil(combatant.maxHp / 2)) {
       return { currentText: String(currentHp), statusText: "Wounded", statusClass: "tracker-status-wounded" };
@@ -1942,11 +1989,12 @@
   }
 
   function renderMoraleCell(combatant) {
-    const moraleState = describeMoraleCheckForUi(combatant.moraleLastCheck);
+    const moraleState = describeMoraleCheckForUi(combatant.moraleLastCheck, combatant);
     const moraleValue = Number.isFinite(combatant.moraleScore) ? String(combatant.moraleScore) : "";
     const rawText = combatant.moraleRaw && combatant.moraleRaw !== "-"
       ? combatant.moraleRaw
       : "manual";
+    const moraleLocked = isCombatantMoraleBroken(combatant);
 
     return `
       <div class="tracker-morale-cell">
@@ -1961,7 +2009,13 @@
             data-combatant-index="${combatant.index}"
             placeholder="2-12"
           >
-          <button type="button" class="tracker-row-btn" data-action="check-morale" data-combatant-index="${combatant.index}">Check morale</button>
+          <button
+            type="button"
+            class="tracker-row-btn"
+            data-action="check-morale"
+            data-combatant-index="${combatant.index}"
+            ${moraleLocked ? 'disabled title="Broken for the rest of this fight"' : ""}
+          >Check morale</button>
         </div>
         <div class="tracker-morale-meta">Base: ${escapeHtml(rawText)}</div>
         <div
@@ -2162,7 +2216,7 @@
     }
 
     if (moraleEl) {
-      const moraleState = describeMoraleCheckForUi(combatant.moraleLastCheck);
+      const moraleState = describeMoraleCheckForUi(combatant.moraleLastCheck, combatant);
       moraleEl.textContent = moraleState.text;
       moraleEl.className = `tracker-morale-result ${moraleState.className}`;
       if (moraleDetailEl) {
@@ -2781,7 +2835,17 @@
     if (action === "check-morale") {
       const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
       if (!combatant) return;
+      if (isCombatantMoraleBroken(combatant)) {
+        updateCombatantRowInDom(combatant);
+        setStatus(`Morale for #${combatant.index}: already broken for the rest of this fight.`, "fail");
+        return;
+      }
       const result = applySingleMoraleCheck(lastEncounter, combatant, "Manual check");
+      if (!result) {
+        updateCombatantRowInDom(combatant);
+        setStatus(`Morale for #${combatant.index}: already broken for the rest of this fight.`, "fail");
+        return;
+      }
       renderEncounter(lastEncounter);
       setStatus(`Morale for #${combatant.index}: ${describeMoraleCheckForLog(result)}.`, result.outcome === "break" ? "fail" : "ok");
       return;
@@ -2791,7 +2855,7 @@
       const groupResult = applyGroupMoraleCheck(lastEncounter, "Manual group check");
       renderEncounter(lastEncounter);
       if (!groupResult) {
-        setStatus("No living monsters remained for a group morale check.", "fail");
+        setStatus("No living unbroken monsters remained for a group morale check.", "fail");
         return;
       }
       setStatus(formatGroupMoraleSummary(groupResult), "ok");
@@ -2804,7 +2868,7 @@
         combatant.moraleLastCheck = null;
       });
       renderEncounter(lastEncounter);
-      setStatus("Morale log cleared. Trigger flags remain armed from current damage.", "ok");
+      setStatus("Morale log cleared. Broken monsters remain broken for this fight.", "ok");
     }
   }
 

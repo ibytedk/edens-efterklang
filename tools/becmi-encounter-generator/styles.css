@@ -702,6 +702,10 @@ button.ghost {
   color: #8a5b0a;
 }
 
+.tracker-status-broken {
+  color: #9d2c1f;
+}
+
 .tracker-status-dead {
   color: #9d2c1f;
 }

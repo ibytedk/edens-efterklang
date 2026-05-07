@@ -2,6 +2,10 @@
 
 *A Rules Cyclopedia Overlay for Formal Combat, Mounted Contest, and the Holding of Great Tourneys*
 
+**Compatibility Notice:** This is an unofficial tournament supplement for referees using classic fantasy roleplaying rules collected in the Rules Cyclopedia. It is not affiliated with, endorsed by, or sponsored by any owner of the related rules, names, or trademarks.
+
+![Cover art: tournament joust in classic 1980s fantasy boxed-set style](art/tournaments-jousting/ai-clean-print-final/cover-front-art-clean-print-6x9-bleed-300dpi.png)
+
 ---
 
 ## Contents
@@ -20,14 +24,16 @@
 
 ## Using This Book
 
-This manuscript is written as a **Rules Cyclopedia overlay**, not as a replacement combat system. Wherever the Rules Cyclopedia already provides a working procedure, that procedure remains in force. Wherever the Rules Cyclopedia is silent on tournament practice, the new rule is marked **Tournament Extension** and should be read as a compatible addition, not as hidden canon. Within the named tournament events, appendices, and hosting procedures, any scoring, victory, incident, scheduling, or budget method not directly restating an RC rule is likewise a **Tournament Extension**.
+![Chapter art: open tournament book and heraldic banner](art/tournaments-jousting/ai-clean-print-final/chapter-01-using-this-book-clean-print.png)
+
+This book is written as a **Rules Cyclopedia overlay**, not as a replacement combat system. Wherever the Rules Cyclopedia already provides a working procedure, that procedure remains in force. Wherever the Rules Cyclopedia is silent on tournament practice, the new rule is marked **Tournament Extension** and should be read as a compatible addition, not as hidden canon. Within the named tournament events, appendices, and hosting procedures, any scoring, victory, incident, scheduling, or budget method not directly restating an RC rule is likewise a **Tournament Extension**.
 
 ### Source Policy
 
 - Core combat, initiative, morale, attack rolls, movement, encumbrance, and weapon use remain those of the **Rules Cyclopedia** (RC pp. 102-114).
 - Weapon performance remains grounded in **Weapon Mastery** and the normal weapon tables (RC pp. 75-82; pp. 62-69).
 - Mounted handling remains grounded in **Riding**, **Animal Training**, **Veterinary Healing**, barding, and mount load rules (RC pp. 68-70; pp. 82-84; p. 133).
-- Formal bouts default to **Nonlethal Combat** and may escalate into **Death's Door** procedures only when the event turns grave or when a deadly option is declared (RC pp. 266-267).
+- Formal bouts default to **Nonlethal Combat** and may escalate into **Keeping Characters Alive** only when a character is reduced to 0 hp or below, when the event turns grave, or when a deadly option is declared (RC pp. 266-267).
 - Hiring troops, specialists, and support staff uses the RC economy as the price floor and reference scale (RC pp. 132-133).
 
 ### Table Assumptions
@@ -63,6 +69,7 @@ Unless an event explicitly states otherwise, tournament bouts are assumed to be 
 - Real attack rolls are made.
 - Real damage is rolled.
 - Damage is split according to **Nonlethal Combat**: one-quarter actual damage, remainder nonlethal (RC p. 267).
+- Formal arms are assumed to be rebated, blunted, padded, or purpose-built practice weapons suited to nonlethal fighting. They use Nonlethal Combat without the attack penalty for ordinary sharp weapons used nonlethally. If a combatant uses a normal weapon while still trying to deal nonlethal damage, apply the RC **-3 attack penalty** (RC p. 267).
 
 If a bout is declared **deadly**, ignore the formal split and use ordinary RC damage.
 
@@ -126,7 +133,7 @@ If the first festival is being run by a player character, keep it narrow: one ma
 
 ### What Play Looks Like at the Table
 
-In actual use, a tournament bout is simpler than the whole manuscript may first suggest:
+In actual use, a tournament bout is simpler than the whole book may first suggest:
 
 1. The herald states the entrants, event, and victory condition.
 2. The referee checks whether the bout uses **rounds** or **passes**.
@@ -142,6 +149,8 @@ If the players remember only one principle, let it be this: **the Rules Cycloped
 ---
 
 ## Tournament Fundamentals
+
+![Chapter art: marshal's staff, helm, and crossed field wands](art/tournaments-jousting/ai-clean-print-final/chapter-02-tournament-fundamentals-clean-print.png)
 
 This chapter provides the common machinery used by all events in this book.
 
@@ -361,6 +370,8 @@ In any event fought **to touches** rather than to collapse, a **scoring touch** 
 ---
 
 ## Footman Melee
+
+![Chapter art: two foot combatants crossing blades](art/tournaments-jousting/ai-clean-print-final/chapter-03-footman-melee-clean-print.png)
 
 Foot contests are the backbone of every serious tournament. They are cheaper than mounted sport, attract bold men of lesser estate, and give the marshal many chances to test rules, discipline, and crowd control before the lists are opened.
 
@@ -691,6 +702,8 @@ This is the older, harsher form: large bodies of men struggling for glory, priso
 
 ## Mounted Melees
 
+![Chapter art: mounted melee with two riders in heraldic cloth](art/tournaments-jousting/ai-clean-print-final/chapter-04-mounted-melees-clean-print.png)
+
 Mounted tourney combat is not the joust. It is rougher, broader, and often nearer to battlefield work.
 
 ### Shared Mounted Rules
@@ -859,6 +872,8 @@ Roll 1d12 at the start of round 2 and every second round thereafter in a mounted
 ---
 
 ## Jousting
+
+![Chapter art: two riders meeting in the lists](art/tournaments-jousting/ai-clean-print-final/chapter-05-jousting-clean-print.png)
 
 The joust is the flower of mounted display: narrow, exacting, easy for the crowd to understand, and ruinously expensive to host badly.
 
@@ -1153,6 +1168,8 @@ Roll 1d12 before any pass after the first, or when the crowd is riotous, the wea
 
 ## Formats, Prizes, and Honors
 
+![Chapter art: tournament prize, laurel, and purse chest](art/tournaments-jousting/ai-clean-print-final/chapter-06-formats-prizes-honors-clean-print.png)
+
 The event is not finished when the last blow falls. A tournament without orderly advancement, meaningful rewards, and public memory is only a noisy practice day.
 
 ### Tournament Extension: Standard Formats
@@ -1249,6 +1266,8 @@ Formal tourneys sometimes acknowledge controlled ransom, especially in the older
 
 ## Hosting a Tournament
 
+![Chapter art: tournament pavilions and clerk's ledger](art/tournaments-jousting/ai-clean-print-final/chapter-07-hosting-a-tournament-clean-print.png)
+
 To host a tournament is to build a temporary little dominion: one part fairground, one part military camp, one part theatre, one part lawsuit.
 
 ### Tournament Extension: Player Host Procedure
@@ -1343,7 +1362,7 @@ When the host is an NPC or institution, determine the following in order. Choose
 
 Use this only when no player character is directly acting and the table does not want full combat detail.
 
-1. **Find each side's Advantage Score.** Start at 0.
+1. **Find each side's Bout Edge.** Start at 0.
 2. Apply the following modifiers:
    - **+2** if the combatant's normal chance to hit the foe is clearly better by 3 or more attack numbers.
    - **+1** if it is better by 1-2 attack numbers.
@@ -1352,7 +1371,7 @@ Use this only when no player character is directly acting and the table does not
    - **+1** if the combatant has the relevant general skill and the foe does not, most often **Riding** or **Leadership** (RC pp. 82-84).
    - **-1** if lightly wounded, fatigued, or recently unhorsed.
    - **-2** if at half hp or worse, badly shaken, or using damaged gear.
-3. Each side rolls **1d20 + Advantage Score**.
+3. Each side rolls **1d20 + Bout Edge**.
 4. Higher total wins. If tied, roll again or declare the first pass indecisive.
 
 #### Off-Stage Margin Table
@@ -1528,6 +1547,8 @@ Every tournament of note produces side effects. Roll 1d8 after the final day if 
 ---
 ## Scenarios and Themes
 
+![Chapter art: banners, oath, and judgement scales](art/tournaments-jousting/ai-clean-print-final/chapter-08-scenarios-and-themes-clean-print.png)
+
 Each of the following is written to be immediately usable.
 
 ### Feast-Day Lists
@@ -1575,6 +1596,8 @@ Each of the following is written to be immediately usable.
 ---
 ## Referee Appendices
 
+![Chapter art: referee sheets and dice](art/tournaments-jousting/ai-clean-print-final/chapter-09-referee-appendices-clean-print.png)
+
 ### Appendix A: Master Event Generator
 
 Roll 1d8 on each column or choose.
@@ -1601,7 +1624,7 @@ Roll only if:
 - a rider is unhorsed onto hard ground
 - a deadly event is in force
 - actual damage from a single blow equals 25% or more of current hp
-- a character reaches **Death's Door** territory and survives
+- a character reaches 0 hp or below, is saved under **Keeping Characters Alive**, and survives
 
 | 1d10 | Result |
 | --- | --- |
