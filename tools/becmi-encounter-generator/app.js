@@ -7,6 +7,7 @@
   const MAX_HP_LIST_DISPLAY = 300;
   const MAX_HP_EXPORT_LIST = 2000;
   const MAX_TRACKER_UI_ROWS = 300;
+  const TRACKER_COLUMN_COUNT = 11;
   const COINS = ["cp", "sp", "ep", "gp", "pp"];
   const ART_EXPORT_OUTPUT_DIR = "output/imagegen/becmi-encounter-generator";
   const MONSTER_DETAILS = typeof window.BECMI_ENCOUNTER_DETAILS === "object" && window.BECMI_ENCOUNTER_DETAILS
@@ -135,6 +136,7 @@
   const $categoryFilter = document.getElementById("categoryFilter");
   const $monsterSelect = document.getElementById("monsterSelect");
   const $countInput = document.getElementById("countInput");
+  const $hdOverrideInput = document.getElementById("hdOverrideInput");
   const $generateBtn = document.getElementById("generateBtn");
   const $randomBtn = document.getElementById("randomBtn");
   const $resetBtn = document.getElementById("resetBtn");
@@ -1014,6 +1016,146 @@
     return { kind: "unknown", label: raw, note: "Kunne ikke parse HD-format" };
   }
 
+  /**
+   * BECMI monster THAC0 (Rules Cyclopedia): typically 20 minus the creature's Hit Dice count.
+   * Bonus pips on HD (e.g. 2+1) do not change the dice count used here.
+   */
+  function describeThac0FromHdText(hdText) {
+    const spec = parseHdSpec(hdText);
+    if (spec.kind === "dice") {
+      if (!Number.isFinite(spec.diceCount) || spec.diceCount <= 0) {
+        return { display: "—", formula: "20 − HD", note: "Could not derive hit dice count for THAC0." };
+      }
+      const thac0 = 20 - spec.diceCount;
+      return {
+        display: String(thac0),
+        formula: `20 − ${spec.diceCount}`,
+        note: spec.note || "",
+      };
+    }
+    if (spec.kind === "half") {
+      return {
+        display: "20",
+        formula: "20 − 0 (under 1 HD)",
+        note: spec.note || "Less than 1 HD: THAC0 20 is typical.",
+      };
+    }
+    if (spec.kind === "fixed") {
+      return {
+        display: "20",
+        formula: "20 − 0 (fixed HP)",
+        note: spec.note || "",
+      };
+    }
+    if (spec.kind === "range") {
+      const minHd = spec.min;
+      const maxHd = spec.max;
+      const highThac0 = 20 - minHd;
+      const lowThac0 = 20 - maxHd;
+      const display = lowThac0 === highThac0 ? String(lowThac0) : `${lowThac0}–${highThac0}`;
+      return {
+        display,
+        formula: `20 − HD where HD varies ${minHd}–${maxHd}`,
+        note: "THAC0 depends on which HD is rolled for each individual.",
+      };
+    }
+    if (spec.kind === "options") {
+      const thacValues = spec.options
+        .filter((n) => Number.isFinite(n) && n > 0)
+        .map((n) => 20 - n)
+        .sort((a, b) => a - b);
+      if (!thacValues.length) {
+        return { display: "—", formula: "20 − HD", note: "Could not derive THAC0 from HD options." };
+      }
+      const lowT = thacValues[0];
+      const highT = thacValues[thacValues.length - 1];
+      const display = lowT === highT ? String(lowT) : `${lowT}–${highT}`;
+      return {
+        display,
+        formula: "20 − HD (one of several HD options)",
+        note: "THAC0 depends on which HD option is rolled.",
+      };
+    }
+    return {
+      display: "—",
+      formula: "20 − HD",
+      note: spec.note || "Set Effective HD to a value like 2 or 3+1 to compute THAC0.",
+    };
+  }
+
+  function getEffectiveHdForEncounter(monster) {
+    const override = $hdOverrideInput ? clean($hdOverrideInput.value) : "";
+    if (override) return override;
+    return clean(monster && monster.hd) || "";
+  }
+
+  function combatantResolvedHdText(encounter, combatant) {
+    return clean(combatant.hdText) || clean(encounter.effectiveHd || encounter.monster?.hd) || "";
+  }
+
+  /** På HE encounter-kortet: THAC0 følger combatants' aktuelle HD (fx efter ændring i tracker). */
+  function thac0DisplayToNumericBounds(display) {
+    const d = String(display == null ? "" : display).trim();
+    if (!d || d === "—") return null;
+    const rangeMatch = d.match(/^(\d+)[\u2013-](\d+)$/);
+    if (rangeMatch) {
+      const a = Number.parseInt(rangeMatch[1], 10);
+      const b = Number.parseInt(rangeMatch[2], 10);
+      if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
+      return { min: Math.min(a, b), max: Math.max(a, b) };
+    }
+    const single = d.match(/^(-?\d+)$/);
+    if (single) {
+      const v = Number.parseInt(single[1], 10);
+      if (!Number.isFinite(v)) return null;
+      return { min: v, max: v };
+    }
+    return null;
+  }
+
+  function syncEncounterThac0FromCombatants(encounter) {
+    if (!encounter || !Array.isArray(encounter.combatants) || encounter.combatants.length === 0) {
+      return;
+    }
+    const hdStrings = encounter.combatants.map((c) => combatantResolvedHdText(encounter, c));
+    const uniqueHds = [...new Set(hdStrings.filter((h) => clean(h)))];
+    const fallbackHd = clean(encounter.effectiveHd || encounter.monster?.hd) || "";
+    if (uniqueHds.length === 0) {
+      encounter.thac0Info = describeThac0FromHdText(fallbackHd);
+      return;
+    }
+    if (uniqueHds.length === 1) {
+      encounter.thac0Info = describeThac0FromHdText(uniqueHds[0]);
+      return;
+    }
+
+    const boundsList = [];
+    encounter.combatants.forEach((c) => {
+      const hd = combatantResolvedHdText(encounter, c);
+      const info = describeThac0FromHdText(hd);
+      const b = thac0DisplayToNumericBounds(info.display);
+      if (b) boundsList.push(b);
+    });
+
+    if (!boundsList.length) {
+      encounter.thac0Info = {
+        display: "Varierer",
+        formula: "Forskellig HD i tracker",
+        note: "THAC0 pr. monster i kolonnen Max HP / HD.",
+      };
+      return;
+    }
+
+    const low = Math.min(...boundsList.map((b) => b.min));
+    const high = Math.max(...boundsList.map((b) => b.max));
+    const display = low === high ? String(low) : `${low}\u2013${high}`;
+    encounter.thac0Info = {
+      display,
+      formula: "Ud fra HD pr. monster (20 − hit dice)",
+      note: "Blandet HD — se nøjagtig THAC0 på hver række i trackeren.",
+    };
+  }
+
   function rollSingleMonsterHp(spec) {
     if (spec.kind === "special" || spec.kind === "unknown") {
       return { hp: null, formula: spec.label || "-", note: spec.note || "Unknown HD" };
@@ -1080,6 +1222,41 @@
         avg: numeric.length ? Number((total / numeric.length).toFixed(2)) : null,
       },
     };
+  }
+
+  function recomputeEncounterHpSummary(encounter) {
+    const hpData = encounter && encounter.hp;
+    if (!hpData || !Array.isArray(hpData.rolls)) return;
+    const rolls = hpData.rolls;
+    const numeric = rolls.filter((entry) => Number.isFinite(entry.hp)).map((entry) => entry.hp);
+    const total = numeric.reduce((sum, value) => sum + value, 0);
+    const count = rolls.length;
+    hpData.summary = {
+      count,
+      rollableCount: numeric.length,
+      unresolvedCount: count - numeric.length,
+      total,
+      min: numeric.length ? Math.min(...numeric) : null,
+      max: numeric.length ? Math.max(...numeric) : null,
+      avg: numeric.length ? Number((total / numeric.length).toFixed(2)) : null,
+    };
+  }
+
+  function refreshEncounterDerivedTotals(encounter) {
+    if (!encounter) return;
+    const activeCount = Array.isArray(encounter.combatants)
+      ? encounter.combatants.length
+      : Number.isFinite(encounter.count) ? encounter.count : 0;
+    encounter.count = activeCount;
+    recomputeEncounterHpSummary(encounter);
+    if (encounter.xpRaw) {
+      encounter.xp = xpSummary(encounter.xpRaw, activeCount);
+    }
+    if (encounter.combatants && encounter.combatants.length) {
+      syncEncounterThac0FromCombatants(encounter);
+    } else {
+      encounter.thac0Info = describeThac0FromHdText(encounter.effectiveHd || encounter.monster?.hd || "");
+    }
   }
 
   function normalizeDamageValue(value) {
@@ -1171,6 +1348,13 @@
   function ensureEncounterState(encounter) {
     if (!encounter) return;
 
+    if (!Object.prototype.hasOwnProperty.call(encounter, "effectiveHd")) {
+      encounter.effectiveHd = clean(encounter.monster?.hd) || "";
+    }
+    if (!Object.prototype.hasOwnProperty.call(encounter, "hdOverrideUsed")) {
+      encounter.hdOverrideUsed = false;
+    }
+
     if (!encounter.reaction) {
       encounter.reaction = createReactionState();
     }
@@ -1200,7 +1384,17 @@
       if (!Object.prototype.hasOwnProperty.call(combatant, "moraleBroken")) {
         combatant.moraleBroken = combatant.moraleLastCheck?.outcome === "break";
       }
+
+      if (!Object.prototype.hasOwnProperty.call(combatant, "hdText")) {
+        combatant.hdText = clean(encounter.effectiveHd || encounter.monster?.hd) || "";
+      }
     });
+
+    if (encounter.combatants && encounter.combatants.length) {
+      syncEncounterThac0FromCombatants(encounter);
+    } else if (!encounter.thac0Info) {
+      encounter.thac0Info = describeThac0FromHdText(encounter.effectiveHd || encounter.monster?.hd || "");
+    }
   }
 
   function moraleOutcomeClass(outcome) {
@@ -1567,8 +1761,30 @@
           firstHit: false,
           quarter: false,
         },
+        hdText: "",
       };
     });
+  }
+
+  function applyCombatantHdAndRerollHp(encounter, combatant, rawHdInput) {
+    const fallback = clean(encounter.effectiveHd || encounter.monster?.hd) || "";
+    const typed = clean(rawHdInput);
+    combatant.hdText = typed || fallback;
+
+    const spec = parseHdSpec(combatant.hdText);
+    const rolled = rollSingleMonsterHp(spec);
+    combatant.maxHp = rolled.hp;
+    combatant.formula = rolled.formula;
+    combatant.rollNote = rolled.note || "";
+    combatant.damageTaken = 0;
+
+    const rollEntry = (encounter.hp && encounter.hp.rolls || []).find((r) => r.index === combatant.index);
+    if (rollEntry) {
+      rollEntry.hp = combatant.maxHp;
+      rollEntry.formula = combatant.formula;
+      rollEntry.note = combatant.rollNote;
+    }
+    recomputeEncounterHpSummary(encounter);
   }
 
   function sortCombatantsForDisplay(combatants) {
@@ -1582,6 +1798,11 @@
   function computeCurrentHp(combatant) {
     if (!Number.isFinite(combatant.maxHp)) return null;
     return combatant.maxHp - combatant.damageTaken;
+  }
+
+  function isCombatantDead(combatant) {
+    const currentHp = computeCurrentHp(combatant);
+    return currentHp != null && currentHp <= 0;
   }
 
   function summarizeCombatants(combatants) {
@@ -1811,14 +2032,22 @@
   function buildEncounter(monster, count) {
     const parsedXp = parseXpValue(monster.xp);
     const xp = xpSummary(parsedXp, count);
-    const hp = rollEncounterHp(monster.hd, count);
+    const effectiveHd = getEffectiveHdForEncounter(monster);
+    const hdOverrideUsed = Boolean($hdOverrideInput && clean($hdOverrideInput.value));
+    const hp = rollEncounterHp(effectiveHd, count);
     const weaponModel = createWeaponModel(monster);
     const combatants = buildCombatantsFromRolls(hp.rolls, weaponModel, monster);
+    const defaultRowHd = effectiveHd || clean(monster.hd) || "";
+    combatants.forEach((c) => {
+      c.hdText = defaultRowHd;
+    });
 
-    return {
+    const encounter = {
       generatedAt: new Date(),
       monster,
       count,
+      effectiveHd,
+      hdOverrideUsed,
       xp,
       xpRaw: parsedXp,
       hp,
@@ -1827,6 +2056,8 @@
       reaction: createReactionState(),
       morale: createEncounterMoraleState(),
     };
+    syncEncounterThac0FromCombatants(encounter);
+    return encounter;
   }
 
   function renderHpBox(encounter) {
@@ -1836,7 +2067,14 @@
     const hiddenCount = hpData.rolls.length - rollsToShow.length;
 
     const summaryLines = [];
-    summaryLines.push(`<p><strong>HD input:</strong> ${escapeHtml(encounter.monster.hd || "-")}</p>`);
+    const bookHd = encounter.monster.hd || "-";
+    const effHd = encounter.effectiveHd || encounter.monster.hd || "-";
+    summaryLines.push(`<p><strong>HD (stat block):</strong> ${escapeHtml(bookHd)}</p>`);
+    summaryLines.push(
+      `<p><strong>HD used for HP rolls:</strong> ${escapeHtml(effHd)}${
+        encounter.hdOverrideUsed ? " <span class=\"hp-note\">(override)</span>" : ""
+      }</p>`
+    );
 
     if (summary.rollableCount > 0) {
       summaryLines.push(`<p><strong>HP total:</strong> ${summary.total}</p>`);
@@ -1988,6 +2226,81 @@
     `;
   }
 
+  function renderTrackerMaxHpBlock(combatant) {
+    const maxHpText = Number.isFinite(combatant.maxHp) ? String(combatant.maxHp) : "?";
+    const hdForInput = clean(combatant.hdText) || "";
+    const thac0 = describeThac0FromHdText(combatant.hdText || "");
+    const rollNote = combatant.rollNote ? ` <span class="hp-formula">(${escapeHtml(combatant.rollNote)})</span>` : "";
+    return `
+      <div class="tracker-hp-stack">
+        <div class="tracker-hp-line">
+          <span class="tracker-max-hp-num">${escapeHtml(maxHpText)}</span>
+          <span class="hp-formula">[${escapeHtml(combatant.formula || "-")}]</span>${rollNote}
+        </div>
+        <label class="tracker-hd-label">
+          HD
+          <input
+            type="text"
+            class="tracker-mini-input tracker-hd-input"
+            data-combatant-index="${combatant.index}"
+            value="${escapeHtml(hdForInput)}"
+            title="Skriv HD (fx 2, 4+1, 1/2), tryk Enter eller klik væk — HP genrulles, THAC0 opdateres, skade nulstilles"
+            spellcheck="false"
+          >
+        </label>
+        <div class="tracker-row-thac0" data-role="tracker-row-thac0">THAC0 <strong>${escapeHtml(thac0.display)}</strong> <span class="hp-formula">${escapeHtml(thac0.formula)}</span></div>
+      </div>
+    `;
+  }
+
+  function renderFleeButton(combatant) {
+    return `
+      <button
+        type="button"
+        class="tracker-row-btn tracker-flee-btn"
+        data-action="mark-fled"
+        data-combatant-index="${combatant.index}"
+        title="Fjern dette monster fra encounteret"
+      >Flygtet</button>
+    `;
+  }
+
+  function refreshCombatantMaxHpTd(combatant) {
+    const td = $resultPanel.querySelector(
+      `td[data-tracker-col="maxhp"][data-combatant-index="${combatant.index}"]`
+    );
+    if (td) {
+      td.innerHTML = renderTrackerMaxHpBlock(combatant);
+    }
+  }
+
+  function refreshHpBoxInDom(encounter) {
+    const prev = $resultPanel.querySelector(".hp-box");
+    if (!prev) return;
+    const wrapped = document.createElement("div");
+    wrapped.innerHTML = renderHpBox(encounter);
+    const next = wrapped.firstElementChild;
+    if (next) {
+      prev.replaceWith(next);
+    }
+  }
+
+  function refreshEncounterThac0InDom(encounter) {
+    syncEncounterThac0FromCombatants(encounter);
+    const info = encounter.thac0Info;
+    if (!info) return;
+    const displayEl = $resultPanel.querySelector("[data-role=\"encounter-thac0-display\"]");
+    const formulaEl = $resultPanel.querySelector("[data-role=\"encounter-thac0-formula\"]");
+    const noteEl = $resultPanel.querySelector("[data-role=\"encounter-thac0-note\"]");
+    if (displayEl) displayEl.textContent = info.display;
+    if (formulaEl) formulaEl.textContent = info.formula;
+    if (noteEl) {
+      const n = info.note || "";
+      noteEl.textContent = n;
+      noteEl.style.display = n ? "" : "none";
+    }
+  }
+
   function renderMoraleCell(combatant) {
     const moraleState = describeMoraleCheckForUi(combatant.moraleLastCheck, combatant);
     const moraleValue = Number.isFinite(combatant.moraleScore) ? String(combatant.moraleScore) : "";
@@ -2032,6 +2345,76 @@
     `;
   }
 
+  function renderDeadCombatantRow(combatant) {
+    const initiativeText = Number.isFinite(combatant.initiative) ? String(combatant.initiative) : "-";
+    const maxHpText = Number.isFinite(combatant.maxHp) ? String(combatant.maxHp) : "?";
+    const currentHp = computeCurrentHp(combatant);
+    const currentText = currentHp == null ? "?" : String(currentHp);
+    const state = combatantState(combatant);
+    const noteValue = escapeHtml(combatant.note || "");
+    const treasureSummary = combatant.carriedTreasure
+      ? combatant.carriedTreasure.summaryText
+      : "No carried treasure";
+
+    return `
+      <tr class="tracker-row-dead-collapsed" data-combatant-row="${combatant.index}">
+        <td colspan="${TRACKER_COLUMN_COUNT}">
+          <details class="tracker-dead-details">
+            <summary>
+              <span class="tracker-dead-title">#${combatant.index} Dead</span>
+              <span>HP ${escapeHtml(currentText)} / ${escapeHtml(maxHpText)}</span>
+              <span>Damage ${escapeHtml(combatant.damageTaken)}</span>
+              <span>Init ${escapeHtml(initiativeText)}</span>
+              <span class="tracker-dead-loot-summary">Carrying: ${escapeHtml(treasureSummary)}</span>
+              ${combatant.note ? `<span class="tracker-dead-note">${escapeHtml(combatant.note)}</span>` : ""}
+            </summary>
+            <div class="tracker-dead-grid">
+              <div>${renderTrackerMaxHpBlock(combatant)}</div>
+              <div class="tracker-dead-loot-cell">${renderCarriedTreasureCell(combatant)}</div>
+              <label class="tracker-dead-field">
+                Damage
+                <input
+                  class="tracker-damage-input"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="${combatant.damageTaken}"
+                  data-combatant-index="${combatant.index}"
+                >
+              </label>
+              <div class="tracker-dead-field">
+                Current HP
+                <span
+                  class="tracker-current ${state.statusClass}"
+                  data-role="current-hp"
+                  data-combatant-index="${combatant.index}"
+                >${state.currentText}</span>
+              </div>
+              <div class="tracker-dead-field">
+                Status
+                <span
+                  class="tracker-status ${state.statusClass}"
+                  data-role="status-text"
+                  data-combatant-index="${combatant.index}"
+                >${state.statusText}</span>
+              </div>
+              <div>${renderMoraleCell(combatant)}</div>
+              <label class="tracker-dead-field tracker-dead-notes">
+                Notes
+                <textarea
+                  class="tracker-note-input"
+                  rows="2"
+                  data-combatant-index="${combatant.index}"
+                  placeholder="Notes..."
+                >${noteValue}</textarea>
+              </label>
+            </div>
+          </details>
+        </td>
+      </tr>
+    `;
+  }
+
   function renderCombatTracker(encounter) {
     ensureEncounterState(encounter);
     const combatants = encounter.combatants || [];
@@ -2046,15 +2429,18 @@
     const rows = rowsToShow
       .map((combatant) => {
         const initiativeText = Number.isFinite(combatant.initiative) ? String(combatant.initiative) : "-";
-        const maxHpText = Number.isFinite(combatant.maxHp) ? String(combatant.maxHp) : "?";
         const state = combatantState(combatant);
         const noteValue = escapeHtml(combatant.note || "");
-        const rollNote = combatant.rollNote ? ` <span class="hp-formula">(${escapeHtml(combatant.rollNote)})</span>` : "";
+        if (state.statusText === "Dead") {
+          return renderDeadCombatantRow(combatant);
+        }
         return `
           <tr data-combatant-row="${combatant.index}">
             <td>#${combatant.index}</td>
             <td class="tracker-initiative-cell"><span class="tracker-initiative">${initiativeText}</span></td>
-            <td>${maxHpText} <span class="hp-formula">[${escapeHtml(combatant.formula)}]</span>${rollNote}</td>
+            <td class="tracker-col-maxhp" data-tracker-col="maxhp" data-combatant-index="${combatant.index}">
+              ${renderTrackerMaxHpBlock(combatant)}
+            </td>
             <td>
               <div class="tracker-weapon-cell">
                 ${renderWeaponMasteryBadge(combatant, "melee")}
@@ -2125,6 +2511,7 @@
                 data-role="status-text"
                 data-combatant-index="${combatant.index}"
               >${state.statusText}</span>
+              ${renderFleeButton(combatant)}
             </td>
             <td>${renderMoraleCell(combatant)}</td>
             <td>
@@ -2169,7 +2556,7 @@
               <tr>
                 <th>Monster</th>
                 <th>Init</th>
-                <th>Max HP</th>
+                <th>Max HP / HD</th>
                 <th>Melee</th>
                 <th>Ranged</th>
                 <th>Carrying</th>
@@ -2244,6 +2631,18 @@
         target.textContent = String(mapping[key]);
       }
     });
+  }
+
+  function removeCombatantFromEncounter(encounter, combatant) {
+    if (!encounter || !combatant || !Array.isArray(encounter.combatants)) return false;
+
+    const beforeCount = encounter.combatants.length;
+    encounter.combatants = encounter.combatants.filter((entry) => entry.index !== combatant.index);
+    if (encounter.hp && Array.isArray(encounter.hp.rolls)) {
+      encounter.hp.rolls = encounter.hp.rolls.filter((entry) => entry.index !== combatant.index);
+    }
+    refreshEncounterDerivedTotals(encounter);
+    return encounter.combatants.length !== beforeCount;
   }
 
   function renderAuditBadge(status) {
@@ -2354,6 +2753,10 @@
 
     const categoryText = monster.category || "-";
     const sourceLabel = sourceShort(monster.source);
+    const thac0Info = encounter.thac0Info || describeThac0FromHdText(encounter.effectiveHd || monster.hd);
+    const hdStatSecondary = encounter.hdOverrideUsed
+      ? `<span class="stat-block-sub">Rolls: ${escapeHtml(encounter.effectiveHd || "-")}</span>`
+      : "";
 
     const html = `
       <article class="encounter-card">
@@ -2369,7 +2772,16 @@
 
         <div class="encounter-stats">
           <div class="stat-block"><strong>AC</strong><span>${escapeHtml(monster.ac || "-")}</span></div>
-          <div class="stat-block"><strong>HD</strong><span>${escapeHtml(monster.hd || "-")}</span></div>
+          <div class="stat-block stat-block--hd">
+            <strong>HD</strong>
+            <span>${escapeHtml(monster.hd || "-")}${hdStatSecondary}</span>
+          </div>
+          <div class="stat-block stat-block--thac0" data-role="encounter-thac0-block">
+            <strong>THAC0</strong>
+            <span class="thac0-value" data-role="encounter-thac0-display">${escapeHtml(thac0Info.display)}</span>
+            <span class="thac0-formula" data-role="encounter-thac0-formula">${escapeHtml(thac0Info.formula)}</span>
+            <span class="stat-block-note" data-role="encounter-thac0-note" ${thac0Info.note ? "" : "style=\"display:none\""}>${thac0Info.note ? escapeHtml(thac0Info.note) : ""}</span>
+          </div>
           <div class="stat-block"><strong>Move</strong><span>${escapeHtml(monster.move || "-")}</span></div>
           <div class="stat-block"><strong>Attacks</strong><span>${escapeHtml(monster.attacks || "-")}</span></div>
           <div class="stat-block"><strong>Damage</strong><span>${escapeHtml(monster.damage || "-")}</span></div>
@@ -2481,7 +2893,16 @@
     lines.push("## Stats");
     lines.push("");
     lines.push(`- AC: ${monster.ac || "-"}`);
-    lines.push(`- HD: ${monster.hd || "-"}`);
+    lines.push(`- HD (stat block): ${monster.hd || "-"}`);
+    lines.push(`- HD used for HP rolls: ${encounter.effectiveHd || monster.hd || "-"}`);
+    if (encounter.hdOverrideUsed) {
+      lines.push("- HD override: yes (Effective HD field)");
+    }
+    const mdThac0 = encounter.thac0Info || describeThac0FromHdText(encounter.effectiveHd || monster.hd);
+    lines.push(`- THAC0: ${mdThac0.display} (${mdThac0.formula})`);
+    if (mdThac0.note) {
+      lines.push(`- THAC0 note: ${mdThac0.note}`);
+    }
     lines.push(`- Move: ${monster.move || "-"}`);
     lines.push(`- Attacks: ${monster.attacks || "-"}`);
     lines.push(`- Damage: ${monster.damage || "-"}`);
@@ -2516,7 +2937,8 @@
 
     lines.push("## Hit Points");
     lines.push("");
-    lines.push(`- HD input: ${monster.hd || "-"}`);
+    lines.push(`- HD (stat block): ${monster.hd || "-"}`);
+    lines.push(`- HD used for HP rolls: ${encounter.effectiveHd || monster.hd || "-"}`);
     const hpSummary = encounter.hp.summary;
     if (hpSummary.rollableCount > 0) {
       lines.push(`- HP total: ${hpSummary.total}`);
@@ -2554,8 +2976,11 @@
       const morale = ` | Morale ${formatCombatantMoraleForExport(combatant)}`;
       const rollNote = combatant.rollNote ? ` | Roll-note: ${combatant.rollNote}` : "";
       const note = combatant.note ? ` | Note: ${combatant.note.replaceAll("\n", " ")}` : "";
+      const rowHd = clean(combatant.hdText) || encounter.effectiveHd || monster.hd || "-";
+      const rowThac0 = describeThac0FromHdText(combatant.hdText || "");
+      const thac0Part = ` | HD ${rowHd}; THAC0 ${rowThac0.display} (${rowThac0.formula})`;
       lines.push(
-        `- #${combatant.index}: Init ${initiativeText}, Max ${maxHpText}, Melee ${meleeWeapon} (${meleeDamage}), Ranged ${rangedWeapon} (${rangedDamage}), Carried ${carriedText}, Damage ${combatant.damageTaken}, Current ${currentText} [${combatant.formula}]${mastery}${morale}${rollNote}${carriedDetails}${note}`
+        `- #${combatant.index}: Init ${initiativeText}, Max ${maxHpText}, Melee ${meleeWeapon} (${meleeDamage}), Ranged ${rangedWeapon} (${rangedDamage}), Carried ${carriedText}, Damage ${combatant.damageTaken}, Current ${currentText} [${combatant.formula}]${thac0Part}${mastery}${morale}${rollNote}${carriedDetails}${note}`
       );
     });
     if ((encounter.combatants || []).length > exportCombatants.length) {
@@ -2694,6 +3119,19 @@
       return;
     }
 
+    if (target.classList.contains("tracker-hd-input")) {
+      const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
+      if (!combatant) return;
+      const previewHd = clean(target.value) || combatantResolvedHdText(lastEncounter, combatant);
+      const thac0 = describeThac0FromHdText(previewHd);
+      const stack = target.closest(".tracker-hp-stack");
+      const rowThac = stack && stack.querySelector("[data-role=\"tracker-row-thac0\"]");
+      if (rowThac) {
+        rowThac.innerHTML = `THAC0 <strong>${escapeHtml(thac0.display)}</strong> <span class="hp-formula">${escapeHtml(thac0.formula)}</span>`;
+      }
+      return;
+    }
+
     if (target.classList.contains("tracker-note-input")) {
       const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
       if (!combatant) return;
@@ -2719,16 +3157,41 @@
       return;
     }
 
+    if (target.classList.contains("tracker-hd-input")) {
+      const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
+      if (!combatant) return;
+      const wasDead = isCombatantDead(combatant);
+      applyCombatantHdAndRerollHp(lastEncounter, combatant, target.value);
+      if (wasDead !== isCombatantDead(combatant)) {
+        renderEncounter(lastEncounter);
+        setStatus(`#${combatant.index}: HD ${combatant.hdText} — HP genrullet, skade nulstillet.`, "ok");
+        return;
+      }
+      refreshCombatantMaxHpTd(combatant);
+      updateCombatantRowInDom(combatant);
+      refreshTrackerSummaryInDom(lastEncounter);
+      refreshHpBoxInDom(lastEncounter);
+      refreshEncounterThac0InDom(lastEncounter);
+      setStatus(`#${combatant.index}: HD ${combatant.hdText} — HP genrullet, skade nulstillet.`, "ok");
+      return;
+    }
+
     if (!target.classList.contains("tracker-damage-input")) return;
 
     const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
     if (!combatant) return;
+    const wasDead = isCombatantDead(combatant);
     combatant.damageTaken = normalizeDamageValue(target.value);
     target.value = String(combatant.damageTaken);
     const messages = evaluateMoraleTriggers(lastEncounter, combatant);
     if (messages.length) {
       renderEncounter(lastEncounter);
       setStatus(`Auto morale: ${messages.join(" | ")}`, "ok");
+      return;
+    }
+    if (wasDead !== isCombatantDead(combatant)) {
+      renderEncounter(lastEncounter);
+      refreshTrackerSummaryInDom(lastEncounter);
       return;
     }
     updateCombatantRowInDom(combatant);
@@ -2809,6 +3272,16 @@
       combatant.carriedTreasure = createCarriedTreasure(lastEncounter.monster.treasureType);
       renderEncounter(lastEncounter);
       setStatus(`Carried treasure rerolled for #${combatant.index}.`, "ok");
+      return;
+    }
+
+    if (action === "mark-fled") {
+      const combatant = getCombatantByDomIndex(target.dataset.combatantIndex);
+      if (!combatant) return;
+      const removed = removeCombatantFromEncounter(lastEncounter, combatant);
+      if (!removed) return;
+      renderEncounter(lastEncounter);
+      setStatus(`#${combatant.index} flygtede og blev fjernet fra encounteret.`, "ok");
       return;
     }
 
@@ -2912,6 +3385,9 @@
   function handleReset() {
     hideError();
     $countInput.value = "1";
+    if ($hdOverrideInput) {
+      $hdOverrideInput.value = "";
+    }
     $resultPanel.innerHTML = "<div class=\"result-empty\">No encounter generated yet.</div>";
     $exportMdBtn.disabled = true;
     lastEncounter = null;
@@ -2964,6 +3440,16 @@
 
     $resultPanel.addEventListener("change", (event) => {
       handleTrackerChange(event.target);
+    });
+
+    $resultPanel.addEventListener("keydown", (event) => {
+      if (
+        event.target.classList.contains("tracker-hd-input")
+        && event.key === "Enter"
+      ) {
+        event.preventDefault();
+        event.target.blur();
+      }
     });
 
     $resultPanel.addEventListener("click", (event) => {

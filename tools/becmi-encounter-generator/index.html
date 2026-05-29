@@ -32,7 +32,18 @@
 
         <label for="countInput">Number of Monsters</label>
         <input id="countInput" type="number" min="1" max="5000" step="1" value="1">
+
+        <label for="hdOverrideInput">Effective HD (optional)</label>
+        <input
+          id="hdOverrideInput"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          placeholder="Same as stat block if empty"
+          title="Overrides HD only for HP rolls and THAC0. Examples: 3, 2+1, 1-1, 1/2"
+        >
       </div>
+      <p class="form-hint">THAC0 is shown as <strong>20 − hit dice</strong> (standard monster formula). Use Effective HD to run a variant (e.g. tougher or weaker individuals).</p>
 
       <div class="actions">
         <button id="generateBtn" type="button">Generate</button>
