@@ -533,10 +533,10 @@
       : bookTreasureType && (detail.treasureAuditStatus === "verified" || !rawTreasureType)
         ? bookTreasureType
         : rawTreasureType;
-    const saveAs = normalizeSaveAsText(detail.saveAs);
+    const saveAs = normalizeSaveAsText(detail.saveAs || raw.saveAs);
     const saveAsSpec = parseSaveAsSpec(saveAs);
     const savingThrows = renderSaveThrowValues(saveAsSpec);
-    const intelligence = clean(detail.intelligence).replaceAll("_", "");
+    const intelligence = clean(detail.intelligence || raw.intelligence).replaceAll("_", "");
     const intelligenceScore = parseIntelligenceScore(intelligence);
     const weaponMasteryLevel = usesWeaponAttacks(raw.attacks, raw.damage)
       ? deriveWeaponMasteryLevel(intelligenceScore)

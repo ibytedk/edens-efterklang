@@ -1,0 +1,268 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="6400" height="6800" viewBox="0 0 6400 6800">
+
+<defs>
+  <filter id="paperShadow" x="-10%" y="-10%" width="120%" height="120%">
+    <feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#2d1608" flood-opacity="0.32"/>
+  </filter>
+  <pattern id="paperGrain" width="180" height="180" patternUnits="userSpaceOnUse">
+    <rect width="180" height="180" fill="#e8d0a1"/>
+    <path d="M0,45 C45,25 90,75 180,35 M0,130 C55,110 120,150 180,115" fill="none" stroke="#d0ad78" stroke-width="2" opacity="0.23"/>
+    <circle cx="34" cy="38" r="3" fill="#b68f5a" opacity="0.18"/>
+    <circle cx="102" cy="76" r="2" fill="#8f6a3f" opacity="0.15"/>
+    <circle cx="151" cy="139" r="4" fill="#b68f5a" opacity="0.13"/>
+  </pattern>
+  <linearGradient id="seaGrad" x1="0" x2="1" y1="0" y2="1">
+    <stop offset="0%" stop-color="#8cc7d9"/>
+    <stop offset="100%" stop-color="#2f6d83"/>
+  </linearGradient>
+</defs>
+
+<rect x="0" y="0" width="6400" height="6800" fill="url(#paperGrain)"/>
+<rect x="70" y="70" width="6260" height="6660" rx="38" ry="38" fill="none" stroke="#5a3519" stroke-width="10"/>
+<text x="3200.0" y="150" font-size="86" font-family="Georgia, serif" font-weight="900" fill="#3c2311" text-anchor="middle" style="">Kongeriget Thornmark</text>
+<text x="3200.0" y="210" font-size="34" font-family="Georgia, serif" font-weight="700" fill="#5d3b1f" text-anchor="middle" style="">DM-atlaskort: marker, len, herreder, borge og bekræftede hovedsteder</text>
+<rect x="130" y="300" width="3850" height="3470" rx="30" ry="30" fill="#dfc18a" stroke="#5d371a" stroke-width="5" opacity="0.91" filter="url(#paperShadow)"/>
+<text x="164" y="358" font-size="34" font-family="Georgia, serif" font-weight="800" fill="#4b2d16" text-anchor="start" style="">Fortolket landkort (ikke målfast)</text>
+<path d="M3370,690 C3760,820 3940,1150 3905,1510 C3865,1920 4050,2350 3860,2860 C3710,3260 3930,3520 3860,3730 L3980,3730 L3980,420 L3535,420 C3410,505 3345,590 3370,690 Z" fill="url(#seaGrad)" opacity="0.62" stroke="#245064" stroke-width="5"/>
+<text x="3740" y="500" font-size="34" font-family="Georgia, serif" font-weight="800" fill="#e9fbff" text-anchor="middle" style="paint-order: stroke; stroke: #245064; stroke-width: 6px;">Havet</text>
+<polygon points="510,560 2130,360 3060,820 2700,1570 1950,1840 900,1640 420,1060" fill="#9aa0a5" stroke="#4f555a" stroke-width="8" opacity="0.88" filter="url(#paperShadow)"/>
+<text x="1900" y="780" font-size="48" font-family="Georgia, serif" font-weight="800" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 8px;">Højmark</text>
+<text x="1900" y="824" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 5px;">Bjerglandskaber, miner, Dalhul og handelsveje</text>
+<polygon points="300,1580 1020,1400 1880,1750 1660,2780 760,3180 240,2490" fill="#3f7c48" stroke="#1f4a2d" stroke-width="8" opacity="0.88" filter="url(#paperShadow)"/>
+<text x="1000" y="2190" font-size="48" font-family="Georgia, serif" font-weight="800" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 8px;">Skovfelt Mark</text>
+<text x="1000" y="2234" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 5px;">Tæt skov, jagt, tømmer og randhandel</text>
+<polygon points="1550,1780 2780,1630 3440,2290 3140,3140 1880,3220 1430,2550" fill="#9cc65d" stroke="#4d6d2f" stroke-width="8" opacity="0.88" filter="url(#paperShadow)"/>
+<text x="2450" y="2380" font-size="48" font-family="Georgia, serif" font-weight="800" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 8px;">Grøndal Mark</text>
+<text x="2450" y="2424" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 5px;">Frodige marker, floder, korn og retfærd</text>
+<polygon points="3150,1190 3680,850 3910,1450 3780,2650 3260,3140 2970,2270" fill="#7db7c5" stroke="#2e6172" stroke-width="8" opacity="0.88" filter="url(#paperShadow)"/>
+<text x="3500" y="1870" font-size="48" font-family="Georgia, serif" font-weight="800" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 8px;">Strandfælde Mark</text>
+<text x="3500" y="1914" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 5px;">Kyst, hovedstad, handel, flåde og told</text>
+<polygon points="2480,430 3360,360 3750,750 3340,1330 2720,1410 2290,1040" fill="#8b8f9c" stroke="#565b6b" stroke-width="8" opacity="0.88" filter="url(#paperShadow)"/>
+<text x="3040" y="760" font-size="48" font-family="Georgia, serif" font-weight="800" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 8px;">Tågebjerg Mark</text>
+<text x="3040" y="804" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 5px;">Tågedale, sagn, høje stier og mørke kløfter</text>
+<polygon points="2520,2860 3310,2700 3730,3190 3410,3650 2380,3610 2070,3220" fill="#b49a78" stroke="#6c5940" stroke-width="8" opacity="0.88" filter="url(#paperShadow)"/>
+<text x="2990" y="3260" font-size="48" font-family="Georgia, serif" font-weight="800" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 8px;">Granitdal Mark</text>
+<text x="2990" y="3304" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff8df" text-anchor="middle" style="paint-order: stroke; stroke: #2f1d10; stroke-width: 5px;">Stenbrud, granit, fæstninger og stenhåndværk</text>
+<polygon points="700,824.0 736.0,770 772.0,824.0" fill="#6a6f75" stroke="#342820" stroke-width="3"/>
+<polygon points="737.8,824.0 770.2,783.5 802.6,824.0" fill="#858a90" stroke="#342820" stroke-width="3"/>
+<polygon points="880,964.0 916.0,910 952.0,964.0" fill="#6a6f75" stroke="#342820" stroke-width="3"/>
+<polygon points="917.8,964.0 950.2,923.5 982.6,964.0" fill="#858a90" stroke="#342820" stroke-width="3"/>
+<polygon points="1100,744.0 1136.0,690 1172.0,744.0" fill="#6a6f75" stroke="#342820" stroke-width="3"/>
+<polygon points="1137.8,744.0 1170.2,703.5 1202.6,744.0" fill="#858a90" stroke="#342820" stroke-width="3"/>
+<polygon points="1400,844.0 1436.0,790 1472.0,844.0" fill="#6a6f75" stroke="#342820" stroke-width="3"/>
+<polygon points="1437.8,844.0 1470.2,803.5 1502.6,844.0" fill="#858a90" stroke="#342820" stroke-width="3"/>
+<polygon points="2360,704.0 2396.0,650 2432.0,704.0" fill="#6a6f75" stroke="#342820" stroke-width="3"/>
+<polygon points="2397.8,704.0 2430.2,663.5 2462.6,704.0" fill="#858a90" stroke="#342820" stroke-width="3"/>
+<polygon points="2630,924.0 2666.0,870 2702.0,924.0" fill="#6a6f75" stroke="#342820" stroke-width="3"/>
+<polygon points="2667.8,924.0 2700.2,883.5 2732.6,924.0" fill="#858a90" stroke="#342820" stroke-width="3"/>
+<polygon points="3020,654.0 3056.0,600 3092.0,654.0" fill="#6a6f75" stroke="#342820" stroke-width="3"/>
+<polygon points="3057.8,654.0 3090.2,613.5 3122.6,654.0" fill="#858a90" stroke="#342820" stroke-width="3"/>
+<circle cx="520" cy="1900" r="28.9" fill="#214f2b" opacity="0.95"/>
+<circle cx="499.6" cy="1915.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<circle cx="541.25" cy="1915.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<rect x="514.05" y="1929.75" width="11.9" height="29.75" fill="#5a3d22"/>
+<circle cx="720" cy="2100" r="28.9" fill="#214f2b" opacity="0.95"/>
+<circle cx="699.6" cy="2115.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<circle cx="741.25" cy="2115.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<rect x="714.05" y="2129.75" width="11.9" height="29.75" fill="#5a3d22"/>
+<circle cx="930" cy="1870" r="28.9" fill="#214f2b" opacity="0.95"/>
+<circle cx="909.6" cy="1885.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<circle cx="951.25" cy="1885.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<rect x="924.05" y="1899.75" width="11.9" height="29.75" fill="#5a3d22"/>
+<circle cx="1180" cy="2280" r="28.9" fill="#214f2b" opacity="0.95"/>
+<circle cx="1159.6" cy="2295.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<circle cx="1201.25" cy="2295.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<rect x="1174.05" y="2309.75" width="11.9" height="29.75" fill="#5a3d22"/>
+<circle cx="1430" cy="2010" r="28.9" fill="#214f2b" opacity="0.95"/>
+<circle cx="1409.6" cy="2025.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<circle cx="1451.25" cy="2025.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<rect x="1424.05" y="2039.75" width="11.9" height="29.75" fill="#5a3d22"/>
+<circle cx="1310" cy="2600" r="28.9" fill="#214f2b" opacity="0.95"/>
+<circle cx="1289.6" cy="2615.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<circle cx="1331.25" cy="2615.3" r="22.099999999999998" fill="#214f2b" opacity="0.95"/>
+<rect x="1304.05" y="2629.75" width="11.9" height="29.75" fill="#5a3d22"/>
+<polygon points="3320,1047.2 3344.8,1010 3369.6,1047.2" fill="#777c88" stroke="#342820" stroke-width="3"/>
+<polygon points="3346.04,1047.2 3368.36,1019.3 3390.68,1047.2" fill="#858a90" stroke="#342820" stroke-width="3"/>
+<polygon points="3440,1197.2 3464.8,1160 3489.6,1197.2" fill="#777c88" stroke="#342820" stroke-width="3"/>
+<polygon points="3466.04,1197.2 3488.36,1169.3 3510.68,1197.2" fill="#858a90" stroke="#342820" stroke-width="3"/>
+<polygon points="3540,1337.2 3564.8,1300 3589.6,1337.2" fill="#777c88" stroke="#342820" stroke-width="3"/>
+<polygon points="3566.04,1337.2 3588.36,1309.3 3610.68,1337.2" fill="#858a90" stroke="#342820" stroke-width="3"/>
+<polygon points="3400,1517.2 3424.8,1480 3449.6,1517.2" fill="#777c88" stroke="#342820" stroke-width="3"/>
+<polygon points="3426.04,1517.2 3448.36,1489.3 3470.68,1517.2" fill="#858a90" stroke="#342820" stroke-width="3"/>
+<path d="M3020,830 C2860,1220 2700,1500 2450,1780 C2170,2095 2100,2450 1850,2850" fill="none" stroke="#2b8fb7" stroke-width="18" opacity="0.8"/>
+<path d="M1450,1620 C1820,1850 2280,2050 2720,2260 C3060,2420 3300,2650 3520,2920" fill="none" stroke="#8a4e21" stroke-width="13" opacity="0.82" stroke-dasharray="28 18"/>
+<path d="M2140,850 C2200,1230 2220,1530 2260,1900 C2300,2300 2370,2660 2480,3100" fill="none" stroke="#8a4e21" stroke-width="11" opacity="0.75" stroke-dasharray="24 16"/>
+<rect x="2135" y="1425.52" width="53.28" height="38.879999999999995" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="2140.04" y="1414" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="2171.7200000000003" y="1414" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<path d="M2156.6,1464.4 q5.04,-12.959999999999999 10.08,0 v12.959999999999999 h-20.16 z" fill="#50331f"/>
+<rect x="1980" y="1480" width="420" height="78" rx="16" ry="16" fill="#fff2cb" stroke="#4b2d16" stroke-width="3" opacity="0.93"/>
+<text x="2190" y="1510" font-size="24" font-family="Georgia, serif" font-weight="900" fill="#2f1c0f" text-anchor="middle" style="">Dalhul Len</text>
+<text x="2190" y="1538" font-size="17" font-family="Georgia, serif" font-weight="700" fill="#4b2d16" text-anchor="middle" style="">Dalhulby / Eiriksfæste / Grevskov</text>
+<rect x="2165" y="1795.52" width="53.28" height="38.879999999999995" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="2170.04" y="1784" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="2201.7200000000003" y="1784" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<path d="M2186.6,1834.4 q5.04,-12.959999999999999 10.08,0 v12.959999999999999 h-20.16 z" fill="#50331f"/>
+<rect x="2010" y="1850" width="420" height="78" rx="16" ry="16" fill="#fff2cb" stroke="#4b2d16" stroke-width="3" opacity="0.93"/>
+<text x="2220" y="1880" font-size="24" font-family="Georgia, serif" font-weight="900" fill="#2f1c0f" text-anchor="middle" style="">Brostenborg</text>
+<text x="2220" y="1908" font-size="17" font-family="Georgia, serif" font-weight="700" fill="#4b2d16" text-anchor="middle" style="">flodovergang mod syd</text>
+<rect x="2405" y="1985.52" width="53.28" height="38.879999999999995" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="2410.04" y="1974" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="2441.7200000000003" y="1974" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<path d="M2426.6,2024.4 q5.04,-12.959999999999999 10.08,0 v12.959999999999999 h-20.16 z" fill="#50331f"/>
+<rect x="2250" y="2040" width="420" height="78" rx="16" ry="16" fill="#fff2cb" stroke="#4b2d16" stroke-width="3" opacity="0.93"/>
+<text x="2460" y="2070" font-size="24" font-family="Georgia, serif" font-weight="900" fill="#2f1c0f" text-anchor="middle" style="">Lauenmark Len</text>
+<text x="2460" y="2098" font-size="17" font-family="Georgia, serif" font-weight="700" fill="#4b2d16" text-anchor="middle" style="">Brofæsteborg / Roderiks grænse</text>
+<rect x="3415" y="1465.52" width="53.28" height="38.879999999999995" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="3420.04" y="1454" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="3451.7200000000003" y="1454" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<path d="M3436.6,1504.4 q5.04,-12.959999999999999 10.08,0 v12.959999999999999 h-20.16 z" fill="#50331f"/>
+<rect x="3260" y="1520" width="420" height="78" rx="16" ry="16" fill="#fff2cb" stroke="#4b2d16" stroke-width="3" opacity="0.93"/>
+<text x="3470" y="1550" font-size="24" font-family="Georgia, serif" font-weight="900" fill="#2f1c0f" text-anchor="middle" style="">Thornhavn</text>
+<text x="3470" y="1578" font-size="17" font-family="Georgia, serif" font-weight="700" fill="#4b2d16" text-anchor="middle" style="">Thorngård Slot / havn</text>
+<rect x="3015" y="3065.52" width="53.28" height="38.879999999999995" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="3020.04" y="3054" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="3051.7200000000003" y="3054" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<path d="M3036.6,3104.4 q5.04,-12.959999999999999 10.08,0 v12.959999999999999 h-20.16 z" fill="#50331f"/>
+<rect x="2860" y="3120" width="420" height="78" rx="16" ry="16" fill="#fff2cb" stroke="#4b2d16" stroke-width="3" opacity="0.93"/>
+<text x="3070" y="3150" font-size="24" font-family="Georgia, serif" font-weight="900" fill="#2f1c0f" text-anchor="middle" style="">Granitdal</text>
+<text x="3070" y="3178" font-size="17" font-family="Georgia, serif" font-weight="700" fill="#4b2d16" text-anchor="middle" style="">stenbrud og fæstninger</text>
+<rect x="935" y="2125.52" width="53.28" height="38.879999999999995" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="940.04" y="2114" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="971.72" y="2114" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<path d="M956.6,2164.4 q5.04,-12.959999999999999 10.08,0 v12.959999999999999 h-20.16 z" fill="#50331f"/>
+<rect x="780" y="2180" width="420" height="78" rx="16" ry="16" fill="#fff2cb" stroke="#4b2d16" stroke-width="3" opacity="0.93"/>
+<text x="990" y="2210" font-size="24" font-family="Georgia, serif" font-weight="900" fill="#2f1c0f" text-anchor="middle" style="">Mørkeskov</text>
+<text x="990" y="2238" font-size="17" font-family="Georgia, serif" font-weight="700" fill="#4b2d16" text-anchor="middle" style="">jagt og tømmer</text>
+<rect x="2945" y="915.52" width="53.28" height="38.879999999999995" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="2950.04" y="904" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="2981.7200000000003" y="904" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<path d="M2966.6,954.4 q5.04,-12.959999999999999 10.08,0 v12.959999999999999 h-20.16 z" fill="#50331f"/>
+<rect x="2790" y="970" width="420" height="78" rx="16" ry="16" fill="#fff2cb" stroke="#4b2d16" stroke-width="3" opacity="0.93"/>
+<text x="3000" y="1000" font-size="24" font-family="Georgia, serif" font-weight="900" fill="#2f1c0f" text-anchor="middle" style="">Tågepasser</text>
+<text x="3000" y="1028" font-size="17" font-family="Georgia, serif" font-weight="700" fill="#4b2d16" text-anchor="middle" style="">Tågedal og Slørbjerg</text>
+<rect x="1695" y="795.52" width="53.28" height="38.879999999999995" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="1700.04" y="784" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<rect x="1731.72" y="784" width="11.52" height="20.16" fill="#efe6c8" stroke="#4b3322" stroke-width="3"/>
+<path d="M1716.6,834.4 q5.04,-12.959999999999999 10.08,0 v12.959999999999999 h-20.16 z" fill="#50331f"/>
+<rect x="1540" y="850" width="420" height="78" rx="16" ry="16" fill="#fff2cb" stroke="#4b2d16" stroke-width="3" opacity="0.93"/>
+<text x="1750" y="880" font-size="24" font-family="Georgia, serif" font-weight="900" fill="#2f1c0f" text-anchor="middle" style="">Malmryg</text>
+<text x="1750" y="908" font-size="17" font-family="Georgia, serif" font-weight="700" fill="#4b2d16" text-anchor="middle" style="">miner</text>
+<text x="4080" y="255" font-size="42" font-family="Georgia, serif" font-weight="900" fill="#3c2311" text-anchor="start" style="">Administrativ nøgle fra Arkivet</text>
+<rect x="4080" y="300" width="2190" height="1555" rx="20" ry="20" fill="#f4e1ba" stroke="#4f555a" stroke-width="5" opacity="0.96" filter="url(#paperShadow)"/>
+<rect x="4080" y="300" width="2190" height="70" rx="20" ry="20" fill="#4f555a" opacity="0.98"/>
+<text x="4108" y="347" font-size="34" font-family="Georgia, serif" font-weight="800" fill="#fff4d0" text-anchor="start" style="">Højmark</text>
+<text x="6242" y="347" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff4d0" text-anchor="end" style="">Mark</text>
+<text x="4108" y="404" font-size="20" font-family="Georgia, serif" font-weight="700" fill="#4a321f" text-anchor="start" style="">Bjerglandskaber, miner, Dalhul og handelsveje</text>
+<text x="4108" y="446" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#4f555a" text-anchor="start" style="">Malmryg Len</text>
+<text x="4136" y="480" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Jernbund Herred:</text>
+<text x="4164" y="506" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Smedeklippeborg, Dybborg, Sortflods Borg</text>
+<text x="4136" y="541" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Kobberdal Herred:</text>
+<text x="4164" y="567" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Grubeborg, Handelsfæstet</text>
+<text x="4136" y="602" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Sølvstrøm Herred:</text>
+<text x="4164" y="628" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Glittertind Borg, Måneskinsfæstet</text>
+<text x="4108" y="673" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#4f555a" text-anchor="start" style="">Fjeldtop Len</text>
+<text x="4136" y="707" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Stormvind Herred:</text>
+<text x="4164" y="733" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Vagttårnsborg, Isleborg</text>
+<text x="4136" y="768" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Skykløft Herred:</text>
+<text x="4164" y="794" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Huleportborg, Eremitfæstet</text>
+<text x="4108" y="839" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#4f555a" text-anchor="start" style="">Klippekløft Len</text>
+<text x="4136" y="873" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Dybhule Herred:</text>
+<text x="4164" y="899" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Kløftportborg, Nedgangsborg, Spjærborg</text>
+<text x="4136" y="934" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Grotteskygge Herred:</text>
+<text x="4164" y="960" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Grottemundborg, Skyggegångborg, Dyndportborg</text>
+<text x="4108" y="1005" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#4f555a" text-anchor="start" style="">Dalhul Len</text>
+<text x="4136" y="1039" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Østerdal Herred:</text>
+<text x="4164" y="1065" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Dalhulborg: Eiriksfæste, Dalhulby, Ovredalhulby, Skyggekildeborg: Kildeby,</text>
+<text x="4164" y="1090" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Glimmerstedborg: Malmstrup, Skinnested, Højklippeborg, Furefæsteborg: Korsveje,</text>
+<text x="4164" y="1115" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Aldersro, Egeskovborg: Træhøj, Elverlys, Grønly Slot</text>
+<text x="4136" y="1150" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Vesterdal Herred:</text>
+<text x="4164" y="1176" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Vestkorsborg, Skovrandborg, Dalbundborg, Brostenborg</text>
+<rect x="4080" y="1887" width="2190" height="1109" rx="20" ry="20" fill="#f4e1ba" stroke="#4d6d2f" stroke-width="5" opacity="0.96" filter="url(#paperShadow)"/>
+<rect x="4080" y="1887" width="2190" height="70" rx="20" ry="20" fill="#4d6d2f" opacity="0.98"/>
+<text x="4108" y="1934" font-size="34" font-family="Georgia, serif" font-weight="800" fill="#fff4d0" text-anchor="start" style="">Grøndal Mark</text>
+<text x="6242" y="1934" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff4d0" text-anchor="end" style="">Mark</text>
+<text x="4108" y="1991" font-size="20" font-family="Georgia, serif" font-weight="700" fill="#4a321f" text-anchor="start" style="">Frodige marker, floder, korn og retfærd</text>
+<text x="4108" y="2033" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#4d6d2f" text-anchor="start" style="">Lauenmark Len</text>
+<text x="4136" y="2067" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Lauedal Herred:</text>
+<text x="4164" y="2093" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Lauedalsborg, Skovgårdborg, Brofæsteborg</text>
+<text x="4136" y="2128" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Markrand Herred:</text>
+<text x="4164" y="2154" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Høstborg, Engdalborg, Vestgrænsborg</text>
+<text x="4108" y="2199" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#4d6d2f" text-anchor="start" style="">Kornmark Len</text>
+<text x="4136" y="2233" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Flodeng Herred:</text>
+<text x="4164" y="2259" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Mølleborg, Kornstedborg, Åbredborg</text>
+<text x="4136" y="2294" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Høstakker Herred:</text>
+<text x="4164" y="2320" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Høstakborg, Solbakborg, Tærskeborg</text>
+<text x="4108" y="2365" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#4d6d2f" text-anchor="start" style="">Retfærd Len</text>
+<text x="4136" y="2399" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Vejfæste Herred:</text>
+<text x="4164" y="2425" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Korsvejsborg, Vagtborg, Herbergborg</text>
+<text x="4136" y="2460" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Domdal Herred:</text>
+<text x="4164" y="2486" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Domstedborg, Seglborg, Tingborg</text>
+<rect x="4080" y="3028" width="2190" height="791" rx="20" ry="20" fill="#f4e1ba" stroke="#1f4a2d" stroke-width="5" opacity="0.96" filter="url(#paperShadow)"/>
+<rect x="4080" y="3028" width="2190" height="70" rx="20" ry="20" fill="#1f4a2d" opacity="0.98"/>
+<text x="4108" y="3075" font-size="34" font-family="Georgia, serif" font-weight="800" fill="#fff4d0" text-anchor="start" style="">Skovfelt Mark</text>
+<text x="6242" y="3075" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff4d0" text-anchor="end" style="">Mark</text>
+<text x="4108" y="3132" font-size="20" font-family="Georgia, serif" font-weight="700" fill="#4a321f" text-anchor="start" style="">Tæt skov, jagt, tømmer og randhandel</text>
+<text x="4108" y="3174" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#1f4a2d" text-anchor="start" style="">Mørkeskov Len</text>
+<text x="4136" y="3208" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Bregnekrat Herred:</text>
+<text x="4164" y="3234" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Bregneborg, Hjorteborg, Skovmærkeborg</text>
+<text x="4136" y="3269" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Elskov Herred:</text>
+<text x="4164" y="3295" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Elborg, Træfældeborg, Jægerborg</text>
+<text x="4108" y="3340" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#1f4a2d" text-anchor="start" style="">Bregneskov Len</text>
+<text x="4136" y="3374" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Skyggeskov Herred:</text>
+<text x="4164" y="3400" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Skyggeborg, Pattersborg, Stigborg</text>
+<text x="4136" y="3435" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Lyngmark Herred:</text>
+<text x="4164" y="3461" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Lyngborg, Fugleborg, Randborg</text>
+<rect x="4080" y="3851" width="2190" height="791" rx="20" ry="20" fill="#f4e1ba" stroke="#2e6172" stroke-width="5" opacity="0.96" filter="url(#paperShadow)"/>
+<rect x="4080" y="3851" width="2190" height="70" rx="20" ry="20" fill="#2e6172" opacity="0.98"/>
+<text x="4108" y="3898" font-size="34" font-family="Georgia, serif" font-weight="800" fill="#fff4d0" text-anchor="start" style="">Strandfælde Mark</text>
+<text x="6242" y="3898" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff4d0" text-anchor="end" style="">Mark</text>
+<text x="4108" y="3955" font-size="20" font-family="Georgia, serif" font-weight="700" fill="#4a321f" text-anchor="start" style="">Kyst, hovedstad, handel, flåde og told</text>
+<text x="4108" y="3997" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#2e6172" text-anchor="start" style="">Thornhavn Len</text>
+<text x="4136" y="4031" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Hovedstads Herred:</text>
+<text x="4164" y="4057" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Thorngårdborg: Thorngård Slot, Thornhavn, Havneborg, Købstadborg</text>
+<text x="4136" y="4092" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Kystvej Herred:</text>
+<text x="4164" y="4118" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Strandborg, Fyrborg, Skærborg</text>
+<text x="4108" y="4163" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#2e6172" text-anchor="start" style="">Kystring Len</text>
+<text x="4136" y="4197" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Øststrand Herred:</text>
+<text x="4164" y="4223" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Østhavnsborg, Salteborg, Netborg</text>
+<text x="4136" y="4258" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Veststrand Herred:</text>
+<text x="4164" y="4284" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Vesthavnsborg, Toldborg, Vragborg</text>
+<rect x="4080" y="4674" width="2190" height="791" rx="20" ry="20" fill="#f4e1ba" stroke="#565b6b" stroke-width="5" opacity="0.96" filter="url(#paperShadow)"/>
+<rect x="4080" y="4674" width="2190" height="70" rx="20" ry="20" fill="#565b6b" opacity="0.98"/>
+<text x="4108" y="4721" font-size="34" font-family="Georgia, serif" font-weight="800" fill="#fff4d0" text-anchor="start" style="">Tågebjerg Mark</text>
+<text x="6242" y="4721" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff4d0" text-anchor="end" style="">Mark</text>
+<text x="4108" y="4778" font-size="20" font-family="Georgia, serif" font-weight="700" fill="#4a321f" text-anchor="start" style="">Tågedale, sagn, høje stier og mørke kløfter</text>
+<text x="4108" y="4820" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#565b6b" text-anchor="start" style="">Tågedal Len</text>
+<text x="4136" y="4854" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Tågeeng Herred:</text>
+<text x="4164" y="4880" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Tågeborg, Sagnborg, Tågeportborg</text>
+<text x="4136" y="4915" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Slørdal Herred:</text>
+<text x="4164" y="4941" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Slørborg, Ermitborg, Hviskeborg</text>
+<text x="4108" y="4986" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#565b6b" text-anchor="start" style="">Slørbjerg Len</text>
+<text x="4136" y="5020" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Højtåge Herred:</text>
+<text x="4164" y="5046" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Højtågeborg, Stigfæsteborg, Tindborg</text>
+<text x="4136" y="5081" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Skyggekløft Herred:</text>
+<text x="4164" y="5107" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Skyggekløftborg, Kældeborg, Vogterborg</text>
+<rect x="4080" y="5497" width="2190" height="791" rx="20" ry="20" fill="#f4e1ba" stroke="#6c5940" stroke-width="5" opacity="0.96" filter="url(#paperShadow)"/>
+<rect x="4080" y="5497" width="2190" height="70" rx="20" ry="20" fill="#6c5940" opacity="0.98"/>
+<text x="4108" y="5544" font-size="34" font-family="Georgia, serif" font-weight="800" fill="#fff4d0" text-anchor="start" style="">Granitdal Mark</text>
+<text x="6242" y="5544" font-size="22" font-family="Georgia, serif" font-weight="700" fill="#fff4d0" text-anchor="end" style="">Mark</text>
+<text x="4108" y="5601" font-size="20" font-family="Georgia, serif" font-weight="700" fill="#4a321f" text-anchor="start" style="">Stenbrud, granit, fæstninger og stenhåndværk</text>
+<text x="4108" y="5643" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#6c5940" text-anchor="start" style="">Bruddal Len</text>
+<text x="4136" y="5677" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Grubedal Herred:</text>
+<text x="4164" y="5703" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Grubeborg (Granitdal), Huggermarkborg, Vognborg</text>
+<text x="4136" y="5738" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Stendal Herred:</text>
+<text x="4164" y="5764" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Stenborg, Brostenborg (Granitdal), Murstensborg</text>
+<text x="4108" y="5809" font-size="26" font-family="Georgia, serif" font-weight="800" fill="#6c5940" text-anchor="start" style="">Stenfæst Len</text>
+<text x="4136" y="5843" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Fæstningdal Herred:</text>
+<text x="4164" y="5869" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Fæstningsborg, Tårnborg, Murborg</text>
+<text x="4136" y="5904" font-size="21" font-family="Georgia, serif" font-weight="800" fill="#2f2418" text-anchor="start" style="">Håndværkdal Herred:</text>
+<text x="4164" y="5930" font-size="19" font-family="Georgia, serif" font-weight="400" fill="#2d2017" text-anchor="start" style="">Skulpturborg, Gravstedsborg, Brolæggerborg</text>
+<rect x="145" y="3820" width="3830" height="240" rx="22" ry="22" fill="#f3dfb7" stroke="#5d371a" stroke-width="5" opacity="0.94" filter="url(#paperShadow)"/>
+<text x="175" y="3870" font-size="30" font-family="Georgia, serif" font-weight="900" fill="#3c2311" text-anchor="start" style="">Tegnforklaring og begrænsning</text>
+<text x="183" y="3908" font-size="23" font-family="Georgia, serif" font-weight="600" fill="#3e2818" text-anchor="start" style="">• Farvede felter = Mark. Underinddelinger i højre nøgle: Len &gt; Herred &gt; Borg/understed.</text>
+<text x="183" y="3942" font-size="23" font-family="Georgia, serif" font-weight="600" fill="#3e2818" text-anchor="start" style="">• Brune stiplede linjer = hovedveje/handelsruter. Blå linje = større flod/å-forløb.</text>
+<text x="183" y="3976" font-size="23" font-family="Georgia, serif" font-weight="600" fill="#3e2818" text-anchor="start" style="">• Kortet er fortolkende: præcise koordinater, afstande og fuld kystlinje er ikke bekræftet i materialet.</text>
+<text x="183" y="4010" font-size="23" font-family="Georgia, serif" font-weight="600" fill="#3e2818" text-anchor="start" style="">• Navne og administrative relationer er trukket fra Arkivet for Kongeriget Thornmark og område-noterne.</text>
+<text x="3200.0" y="6730" font-size="24" font-family="Georgia, serif" font-weight="700" fill="#5d3b1f" text-anchor="middle" style="">Kilder: Delt/Arkivet for Kongeriget Thornmark.md; Områder/* kort beskrivelse; Dalhulborg i Østerdal Herred.md</text>
+</svg>

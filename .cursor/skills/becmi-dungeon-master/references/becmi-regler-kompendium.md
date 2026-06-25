@@ -1,6 +1,6 @@
-# BECMI Regelkompendium — Komplet Reference
+# BECMI Regelkompendium — Søgeindeks
 
-Dette dokument indeholder den komplette regelreference for BECMI D&D baseret på Rules Cyclopedia (RC, 1991). Brug det som opslagsværk under spillet.
+Dette dokument er et afledt søgeindeks for BECMI D&D baseret på Rules Cyclopedia (RC, 1991). Det er ikke source of truth. Brug altid `Regelbøger/RulesCyclopedia-Basic.pdf` som autoritativ regelkilde og verificer regelafgørelser, tabeller og sidehenvisninger i PDF'en før endeligt svar.
 
 ---
 

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2048 2048" width="2048" height="2048" role="img" aria-labelledby="title desc">
+  <title id="title">Ovredalhulby - bykort 1:1</title>
+  <desc id="desc">Square bykort over Ovredalhulby med huse H01-H18 og landskab omkring byen.</desc>
+  <defs>
+    <style>
+      .ink { fill: #2b2017; font-family: Georgia, 'Times New Roman', serif; }
+      .label { fill: #20170f; font-family: Consolas, 'Courier New', monospace; font-size: 34px; font-weight: 800; }
+      .legend { fill: #2b2017; font-family: Consolas, 'Courier New', monospace; font-size: 25px; }
+      .road { fill: none; stroke: #9b7449; stroke-width: 46; stroke-linecap: round; stroke-linejoin: round; opacity: 0.72; }
+      .roadline { fill: none; stroke: #4c3321; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 12 14; opacity: 0.55; }
+      .path { fill: none; stroke: #a77f51; stroke-width: 24; stroke-linecap: round; stroke-linejoin: round; opacity: 0.55; }
+      .tree { fill: #385436; stroke: #1d2a1b; stroke-width: 4; }
+      .field { fill: #b7a664; stroke: #7a6a39; stroke-width: 3; opacity: 0.46; }
+      .hill { fill: #96a46e; stroke: #6e774d; stroke-width: 3; opacity: 0.5; }
+      .water { fill: #7fa6a8; stroke: #31575b; stroke-width: 5; }
+      .wall { fill: #cfb37a; stroke: #362315; stroke-width: 4; }
+      .roof { fill: #765038; stroke: #362315; stroke-width: 5; }
+      .special { fill: #be8d55; stroke: #362315; stroke-width: 5; }
+      .ruin { fill: #51463d; stroke: #1c140f; stroke-width: 6; }
+      .box { fill: #f1dfb2; stroke: #2b2017; stroke-width: 3; }
+      .panel { fill: #ead8ae; stroke: #65482d; stroke-width: 5; opacity: 0.94; }
+    </style>
+    <filter id="paper">
+      <feTurbulence type="fractalNoise" baseFrequency="0.010" numOctaves="4" seed="13"/>
+      <feColorMatrix type="saturate" values="0.25"/>
+      <feBlend mode="multiply" in2="SourceGraphic"/>
+    </filter>
+    <g id="pine">
+      <path class="tree" d="M0,-46 L-30,8 L-15,8 L-39,50 L39,50 L15,8 L30,8 Z"/>
+      <rect x="-6" y="43" width="12" height="27" fill="#4a3120"/>
+    </g>
+    <g id="house">
+      <rect class="wall" x="-44" y="-30" width="88" height="62" rx="5"/>
+      <path class="roof" d="M-56,-30 L0,-66 L56,-30 Z"/>
+    </g>
+    <g id="longhouse">
+      <rect class="wall" x="-76" y="-31" width="152" height="64" rx="5"/>
+      <path class="roof" d="M-88,-31 L0,-72 L88,-31 Z"/>
+    </g>
+    <g id="hut">
+      <rect class="wall" x="-36" y="-25" width="72" height="54" rx="5"/>
+      <path class="roof" d="M-46,-25 L0,-56 L46,-25 Z"/>
+    </g>
+    <g id="kiln">
+      <ellipse class="special" cx="0" cy="0" rx="44" ry="32"/>
+      <path d="M-24,0 C-12,-26 12,-26 24,0" fill="none" stroke="#362315" stroke-width="5"/>
+      <circle cx="0" cy="10" r="9" fill="#7a3121"/>
+    </g>
+    <g id="labelbox">
+      <rect class="box" x="-42" y="-24" width="84" height="44" rx="10"/>
+    </g>
+  </defs>
+
+  <rect width="2048" height="2048" fill="#d9bf8d"/>
+  <rect x="42" y="42" width="1964" height="1964" rx="34" fill="#ead8ae" stroke="#543820" stroke-width="18"/>
+  <rect x="74" y="74" width="1900" height="1900" rx="20" fill="#dfc895" filter="url(#paper)" opacity="0.56"/>
+
+  <text x="1024" y="122" text-anchor="middle" class="ink" style="font-size:62px;font-weight:700;">Ovredalhulby</text>
+  <text x="1024" y="166" text-anchor="middle" class="ink" style="font-size:29px;">bykort med nærområde</text>
+  <g transform="translate(1840,130)">
+    <text x="0" y="-18" text-anchor="middle" class="ink" style="font-size:42px;font-weight:700;">N</text>
+    <path d="M0,4 L-28,78 L0,56 L28,78 Z" fill="#2b2017"/>
+  </g>
+
+  <!-- Landskab omkring byen -->
+  <path class="hill" d="M115 1390 C250 1290 395 1295 535 1375 C430 1520 255 1575 110 1525 Z"/>
+  <path class="hill" d="M1420 1340 C1580 1255 1765 1295 1920 1415 C1765 1510 1560 1515 1395 1445 Z"/>
+  <path class="field" d="M140 870 C330 800 520 820 685 910 C575 1010 335 1045 132 965 Z"/>
+  <path class="field" d="M1290 765 C1515 700 1740 760 1905 900 C1685 1010 1460 990 1260 880 Z"/>
+  <path class="field" d="M300 1165 C515 1075 730 1110 890 1210 C705 1325 455 1350 270 1275 Z"/>
+  <path class="field" d="M1175 1110 C1395 1030 1620 1075 1785 1215 C1585 1320 1355 1310 1150 1220 Z"/>
+
+  <g opacity="0.95">
+    <use xlink:href="#pine" x="150" y="270"/><use xlink:href="#pine" x="230" y="230"/><use xlink:href="#pine" x="320" y="280"/>
+    <use xlink:href="#pine" x="485" y="225"/><use xlink:href="#pine" x="605" y="260"/><use xlink:href="#pine" x="750" y="220"/>
+    <use xlink:href="#pine" x="1260" y="240"/><use xlink:href="#pine" x="1380" y="205"/><use xlink:href="#pine" x="1500" y="270"/>
+    <use xlink:href="#pine" x="1690" y="250"/><use xlink:href="#pine" x="1840" y="310"/>
+    <use xlink:href="#pine" x="120" y="610"/><use xlink:href="#pine" x="250" y="585"/><use xlink:href="#pine" x="1765" y="600"/><use xlink:href="#pine" x="1900" y="650"/>
+  </g>
+  <text x="1024" y="248" text-anchor="middle" class="ink" style="font-size:27px;">småskov og kulsti</text>
+
+  <!-- Veje og stier -->
+  <path class="road" d="M1020 260 C990 455 1005 630 970 790 C940 930 980 1045 1004 1180 C980 1340 960 1525 975 1710 C984 1835 982 1928 965 1985"/>
+  <path class="roadline" d="M1020 260 C990 455 1005 630 970 790 C940 930 980 1045 1004 1180 C980 1340 960 1525 975 1710 C984 1835 982 1928 965 1985"/>
+  <text x="965" y="1935" text-anchor="middle" class="ink" style="font-size:28px;">vej mod Dalhulby</text>
+
+  <path class="path" d="M265 820 C480 865 675 930 865 1055 C1045 1095 1245 1095 1525 1025"/>
+  <path class="roadline" d="M265 820 C480 865 675 930 865 1055 C1045 1095 1245 1095 1525 1025"/>
+  <path class="path" d="M410 1240 C610 1225 765 1265 950 1375 C1155 1405 1375 1390 1590 1340"/>
+  <path class="roadline" d="M410 1240 C610 1225 765 1265 950 1375 C1155 1405 1375 1390 1590 1340"/>
+
+  <!-- Høstplads -->
+  <ellipse cx="1010" cy="1040" rx="185" ry="132" fill="#d3b778" stroke="#604226" stroke-width="7"/>
+  <text x="1010" y="1048" text-anchor="middle" class="ink" style="font-size:43px;font-weight:700;">PLADS</text>
+  <text x="1010" y="1085" text-anchor="middle" class="ink" style="font-size:25px;">høstplads</text>
+
+  <!-- Huse og faste steder -->
+  <g transform="translate(1018 360)"><use xlink:href="#hut"/><use xlink:href="#labelbox" y="72"/><text y="80" text-anchor="middle" class="label">H17</text></g>
+  <g transform="translate(660 520)"><use xlink:href="#hut"/><use xlink:href="#labelbox" y="72"/><text y="80" text-anchor="middle" class="label">H08</text></g>
+  <g transform="translate(995 550)"><use xlink:href="#house"/><use xlink:href="#labelbox" y="78"/><text y="86" text-anchor="middle" class="label">H05</text></g>
+  <g transform="translate(1335 590)"><use xlink:href="#house"/><use xlink:href="#labelbox" y="78"/><text y="86" text-anchor="middle" class="label">H11</text></g>
+  <g transform="translate(455 790)"><use xlink:href="#longhouse"/><use xlink:href="#labelbox" y="82"/><text y="90" text-anchor="middle" class="label">H09</text></g>
+  <g transform="translate(815 835)"><use xlink:href="#house"/><use xlink:href="#labelbox" y="78"/><text y="86" text-anchor="middle" class="label">H04</text></g>
+  <g transform="translate(1330 835)"><use xlink:href="#house"/><use xlink:href="#labelbox" y="78"/><text y="86" text-anchor="middle" class="label">H16</text></g>
+  <g transform="translate(1420 1060)"><use xlink:href="#longhouse"/><use xlink:href="#labelbox" y="82"/><text y="90" text-anchor="middle" class="label">H01</text></g>
+  <g transform="translate(520 1140)"><use xlink:href="#hut"/><use xlink:href="#labelbox" y="72"/><text y="80" text-anchor="middle" class="label">H10</text></g>
+  <g transform="translate(900 1280)"><use xlink:href="#longhouse"/><use xlink:href="#labelbox" y="82"/><text y="90" text-anchor="middle" class="label">H02</text></g>
+  <g transform="translate(1345 1285)"><use xlink:href="#house"/><use xlink:href="#labelbox" y="78"/><text y="86" text-anchor="middle" class="label">H13</text></g>
+  <g transform="translate(585 1495)"><use xlink:href="#longhouse"/><use xlink:href="#labelbox" y="82"/><text y="90" text-anchor="middle" class="label">H06</text></g>
+  <g transform="translate(965 1515)"><use xlink:href="#house"/><use xlink:href="#labelbox" y="78"/><text y="86" text-anchor="middle" class="label">H03</text></g>
+  <g transform="translate(1310 1500)"><use xlink:href="#kiln"/><use xlink:href="#labelbox" y="78"/><text y="86" text-anchor="middle" class="label">H12</text></g>
+  <g transform="translate(600 1770)"><use xlink:href="#house"/><use xlink:href="#labelbox" y="78"/><text y="86" text-anchor="middle" class="label">H07</text></g>
+  <g transform="translate(1220 1760)"><use xlink:href="#longhouse"/><use xlink:href="#labelbox" y="82"/><text y="90" text-anchor="middle" class="label">H14</text></g>
+  <g transform="translate(950 1880)"><use xlink:href="#hut"/><use xlink:href="#labelbox" y="72"/><text y="80" text-anchor="middle" class="label">H15</text></g>
+  <g transform="translate(1600 1450)">
+    <path class="ruin" d="M-52,-28 L-10,-60 L48,-32 L48,34 L-50,34 Z"/>
+    <path d="M-35,22 L34,-24 M-25,-30 L42,28" stroke="#1c140f" stroke-width="8"/>
+    <use xlink:href="#labelbox" y="78"/><text y="86" text-anchor="middle" class="label">H18</text>
+  </g>
+
+  <!-- Landskabsmarkører tæt på byen -->
+  <g transform="translate(1495 640)">
+    <ellipse class="water" cx="0" cy="0" rx="70" ry="40"/>
+    <text x="0" y="78" text-anchor="middle" class="ink" style="font-size:25px;">kilde</text>
+  </g>
+  <g transform="translate(330 900)">
+    <ellipse cx="0" cy="0" rx="145" ry="82" fill="none" stroke="#76583a" stroke-width="8" stroke-dasharray="20 15"/>
+    <circle cx="-55" cy="-8" r="13" fill="#f2e7ca" stroke="#58432b" stroke-width="3"/>
+    <circle cx="0" cy="24" r="13" fill="#f2e7ca" stroke="#58432b" stroke-width="3"/>
+    <circle cx="60" cy="-24" r="13" fill="#f2e7ca" stroke="#58432b" stroke-width="3"/>
+    <text x="0" y="115" text-anchor="middle" class="ink" style="font-size:25px;">fårefold</text>
+  </g>
+  <g transform="translate(505 1220)">
+    <circle cx="-25" cy="0" r="13" fill="#bc922d" stroke="#5a4218" stroke-width="3"/>
+    <circle cx="20" cy="12" r="13" fill="#bc922d" stroke="#5a4218" stroke-width="3"/>
+    <circle cx="0" cy="-30" r="13" fill="#bc922d" stroke="#5a4218" stroke-width="3"/>
+  </g>
+  <g transform="translate(1275 1810)">
+    <circle cx="-42" cy="9" r="12" fill="#f6efd4" stroke="#5e452c" stroke-width="3"/>
+    <circle cx="0" cy="-10" r="12" fill="#f6efd4" stroke="#5e452c" stroke-width="3"/>
+    <circle cx="42" cy="12" r="12" fill="#f6efd4" stroke="#5e452c" stroke-width="3"/>
+  </g>
+
+  <!-- Nøglepaneler -->
+  <rect class="panel" x="100" y="1685" width="410" height="265" rx="14"/>
+  <text x="125" y="1728" class="ink" style="font-size:30px;font-weight:700;">Nøgle</text>
+  <text x="125" y="1766" class="legend">H01 Høststuen</text>
+  <text x="125" y="1797" class="legend">H02 Vævergården</text>
+  <text x="125" y="1828" class="legend">H03 Lerværket</text>
+  <text x="125" y="1859" class="legend">H04 Høstmoderens hus</text>
+  <text x="125" y="1890" class="legend">H05 Urtehytten</text>
+  <text x="125" y="1921" class="legend">H06 Kornloftet</text>
+
+  <rect class="panel" x="1500" y="1685" width="445" height="265" rx="14"/>
+  <text x="1525" y="1728" class="legend">H07 Hjulmageren</text>
+  <text x="1525" y="1759" class="legend">H08 Skovfogeden</text>
+  <text x="1525" y="1790" class="legend">H09 Fåregården</text>
+  <text x="1525" y="1821" class="legend">H10 Lindebakken</text>
+  <text x="1525" y="1852" class="legend">H11 Kildehuset</text>
+  <text x="1525" y="1883" class="legend">H12 Lerbrænderne</text>
+  <text x="1525" y="1914" class="legend">H13 Skriverhuset | H18 Ruin</text>
+  <text x="1525" y="1945" class="legend">H14 Gedestalden | H15-H17</text>
+
+  <rect x="74" y="74" width="1900" height="1900" rx="20" fill="none" stroke="#5a3d25" stroke-width="7"/>
+</svg>
